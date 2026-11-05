@@ -13,10 +13,7 @@ Requires Node.js 22+ and npm. No account, API key, backend, or model subscriptio
 ```sh
 git clone https://github.com/heManKuMAR6/sortnow-seed.git
 cd sortnow-seed
-# Until the brand experience PR is merged:
-git switch feat/brand-experiences
 npm ci --ignore-scripts
-npm test
 npm run demo
 ```
 

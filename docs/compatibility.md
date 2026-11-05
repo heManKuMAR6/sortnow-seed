@@ -6,7 +6,7 @@ This page separates what has been exercised from what is only declared. Absence 
 
 | Surface | Evidence | Limit |
 | --- | --- | --- |
-| Node.js 22 | CI runs the build and test suite on it | Linux runner only; the Phase 3 work has not been through CI yet |
+| Node.js 22 | CI runs the build and test suite on it | Linux runner only; Phase 3 PR #3 CI passed before consolidation into main |
 | Node.js 25.8 on macOS | Local targeted tests and CLI | One machine |
 | React 19.3.1 | Tests, plus both example apps | The only React version installed in this repo |
 | React server rendering with hydration | `examples/second-app`: `renderToString` then `hydrateRoot`, no console errors in Chromium | One app, manual browser check |

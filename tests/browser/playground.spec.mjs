@@ -7,7 +7,7 @@ const original = page => hero(page, 'Original website');
 const status = page => page.getByRole('status');
 const approve = page => page.getByRole('button', {name: 'Approve this exact version'}).click();
 const showApprovedSchedule = page => control(page, 'Right-hand preview').selectOption('approved');
-const ACTIVE = 'demo-seasonal';
+const ACTIVE = 'winter-season-20261201-utc';
 const expectBase = async locator => expect(locator).not.toHaveAttribute('data-seed-experience');
 
 test.beforeEach(async ({page}) => {

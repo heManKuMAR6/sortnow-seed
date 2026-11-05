@@ -25,6 +25,7 @@ The open-source runtime must work without our account, backend, telemetry, or mo
 ## 4. Architecture and responsibilities
 
 - packages/core: framework-independent TypeScript experience validation, UTC schedule selection, exact-content approval snapshots, brand policy with path-level diagnostics, preset authoring, JSON Schema contracts, and advisory contrast reports.
+- packages/core/authoring.ts (`@sortnow/seed/authoring`): separate entry that compiles an owner's event, IANA time zone, and date range into a draft schema v1 experience. Authoring only; the runtime never imports it.
 - packages/react: opt-in area wrappers and scoped CSS variables; base SSR output and client activation.
 - packages/cli: bounded JSON input; read-only help, schema export, validation, brand validation, snapshot, schedule inspection, and contrast reports for agents. All output is JSON with exit 0 or 1.
 - examples/playground: local client-rendered React demonstration with no external assets or tracking.
@@ -35,7 +36,7 @@ The open-source runtime must work without our account, backend, telemetry, or mo
 - Future CLI/SDK/MCP/dashboard interfaces must call the same operation layer rather than implement separate business rules.
 - Future backend: authentication, immutable drafts/assets, approval records, generation workers, published configuration delivery. Visitors receive approved artifacts; AI does not generate on every page load.
 
-Use TypeScript first. Rust is deferred until profiling identifies a worthwhile isolated bottleneck. There is no hosted backend, AI model integration, MCP server, remote asset registry, or regional calendar service today.
+Use TypeScript first. Rust is deferred until profiling identifies a worthwhile isolated bottleneck. There is no hosted backend, AI model integration, MCP server, remote asset registry, or regional calendar service today. `temporal-polyfill` is the only runtime dependency and is reached only through the authoring entry and on demand by `seed author` and `seed samples`.
 
 ## 5. Experience lifecycle and contracts
 
@@ -48,6 +49,16 @@ Dates must be real canonical UTC strings YYYY-MM-DDTHH:mm:ss.sssZ. Start is incl
 approvalSnapshot reconstructs validated fields into a deterministic JSON string. Any experience-field change invalidates the old snapshot. This is NOT a cryptographic signature or authentication. The host must store approved snapshots separately in trusted, reviewed configuration. A writer with access to drafts and approvals can authorize changes. CLI snapshot only produces review material. Never silently auto-approve generated drafts in production.
 
 Live React renders base content on the server and first client render, then checks the browser clock every second and on visibility changes. Preview accepts a fixed clock. Sleeping tabs and client clock manipulation mean this is not suitable for enforcing pricing, rights, or legal deadlines. Activation can cause layout shift.
+
+### Calendar authoring
+
+`authorExperience(input, brand)` takes name, timeZone, startDate, lastDate, preset, message, areas, and optional priority, and returns a draft experience plus its schedule, or path-level errors. The playground and `seed author EVENT_FILE BRAND_FILE` call the same function. Output is `draft: true, approved: false`; neither interface creates a snapshot, approves, or publishes.
+
+End-date semantics: lastDate is included. The experience starts at the first instant of startDate in the zone, and endsAt is the first instant of the day after lastDate, which keeps the runtime's exclusive end. Only dates are accepted, not local times, so nothing can name a nonexistent or ambiguous time. Where a DST change skips or repeats midnight, the day starts at its first real instant (America/Havana covers both cases in tests). Days can be 23 or 25 hours long.
+
+The owner chooses the zone; it is never inferred from a host, server, or visitor. Offsets and abbreviations are rejected. The id includes the event name, start date, and zone, so a zone edit changes the snapshot even between zones with identical instants (London and Lisbon). A name edit can leave the id unchanged only if the change falls past the truncated part of a long name.
+
+`sampleEvents` is three invented, clearly labeled entries with no time zone, not a holiday database.
 
 ## 6. Brand integration decision
 
@@ -77,9 +88,11 @@ Implemented: JSON Schema export (SDK and `seed schema`), actionable CLI diagnost
 
 Remaining: automated browser interaction coverage (one manual Chromium pass only; automation needs a new dev dependency, which has not been decided), running the agent task comparison (protocol written, no results), and testing beyond React 19.3.1 and the listed runtimes. Add MCP only after shared operations stabilize.
 
-### Phase 4 — calendar and additional adapters: planned
+### Phase 4 — calendar and additional adapters: first authoring feature in PR #6
 
-Selected markets/events, time-zone authoring, recurring/movable holiday data, multi-stage experiences, Angular and platform-specific integrations according to demand. Maintain explicit approvals and conflict rules.
+Implemented in PR #6: owner-selected event, IANA time zone, and date range authoring; sample events; playground controls; `seed author`. This came first at the founder's request and has no customer validation yet.
+
+Planned: market selection, recurring/movable holiday data, local start times, multi-stage experiences, Angular and platform-specific integrations according to demand. Maintain explicit approvals and conflict rules.
 
 ### Phase 5 — optional AI and managed authoring: planned
 
@@ -93,7 +106,7 @@ Multi-site administration, scoped roles, server-side approval enforcement, audit
 
 Threats: injected HTML/CSS/URLs, prototype keys, malformed dates, excessive input, stale approvals, untrusted dependencies/PR code, leaked credentials, overly broad CI tokens, and unauthorized publication. Controls: strict fields and values, fresh validated objects, escaped React text, bounded input, exact snapshots, no runtime network, scoped rendering, read-only CI, pinned actions, lockfile, and separate publishing authority.
 
-Known limits: snapshots are not authentication; same-origin compromised code can bypass client behavior; brand rules are not a browser sandbox; no contrast certification or enforcement (reports are advisory and cover color pairs, not how a host maps tokens to elements), trusted-time enforcement, visual regression suite, external audit, or general asset validation. Check SECURITY.md for operational security reporting. Never add production secrets or actual customer content to examples.
+Known limits: snapshots are not authentication; same-origin compromised code can bypass client behavior; brand rules are not a browser sandbox; authoring time-zone rules come from the host's Intl data and can differ on outdated runtimes, so an approved experience stores fixed UTC instants that are not recomputed if rules later change; no contrast certification or enforcement (reports are advisory and cover color pairs, not how a host maps tokens to elements), trusted-time enforcement, visual regression suite, external audit, or general asset validation. Check SECURITY.md for operational security reporting. Never add production secrets or actual customer content to examples.
 
 ## 9. Development workflow and proportionate verification
 
@@ -111,7 +124,7 @@ Open: npm namespace ownership; release naming/version policy; production approva
 
 ## 11. Quick handoff
 
-Read this guide, git status, README, and relevant package files. Install with npm ci --ignore-scripts when dependencies are missing. npm run build compiles; node --test tests/brand.test.mjs runs Phase 2 targeted tests after building, and tests/agent-contracts.test.mjs, tests/contrast.test.mjs, and tests/second-app.test.mjs cover Phase 3; npm run demo starts the localhost playground on port 4173; npm run demo:second starts the second app on port 4174. npm run check is the broader CI gate, not required for every edit. Work on the current feature branch; preserve unrelated changes. Update phase status and decision log below before opening the PR.
+Read this guide, git status, README, and relevant package files. Install with npm ci --ignore-scripts when dependencies are missing. npm run build compiles; node --test tests/brand.test.mjs runs Phase 2 targeted tests after building, and tests/agent-contracts.test.mjs, tests/contrast.test.mjs, and tests/second-app.test.mjs cover Phase 3; npm run demo starts the localhost playground on port 4173; npm run demo:second starts the second app on port 4174. node --test tests/authoring.test.mjs covers calendar authoring after building. npm run check is the broader CI gate, not required for every edit. Work on the current feature branch; preserve unrelated changes. Update phase status and decision log below before opening the PR.
 
 ## 12. Decision log
 
@@ -152,6 +165,7 @@ Use this queue to divide work into bounded PRs. These are proposed lanes, not cl
 | P1 — agent evaluation | Execute the existing comparison protocol and record actual task outcomes | docs/agent-task-comparison.md and result artifacts | Same task and constraints in both runs; disclose model, environment, time, failures, and limitations; do not manufacture results | Unassigned |
 | P2 — compatibility | Exercise one additional supported React/runtime combination | compatibility fixtures, docs/compatibility.md | One targeted matrix extension; report evidence without widening support claims beyond it | Unassigned |
 | P2 — calendar design | Specify market selection, timezone authoring, recurring-event data provenance, DST cases | docs/calendar-design.md | Design review first; retain UTC runtime and explicit approvals; no adapter implementation in this lane | Unassigned |
+| P1 — calendar authoring | Owner-selected event, IANA time zone, and date range compile to a draft schema v1 experience | packages/core/authoring.ts, playground authoring controls, `seed author` | Runtime engine and approvals unchanged; no recurrence, feed, or publish command | Implemented in PR #6 by Claude, branch feat/calendar-authoring, base f841ec3, code head a3bc0c5, CI passed; awaiting Codex review, work stopped |
 | Integration / release | Review PRs, maintain guide, merge dependency order, track package namespace decision | this guide, README, release documentation | Read current branch/PR state; no publishing or deployments without explicit authorization | Codex coordination role; future run must recheck state |
 
 When context or token capacity is low: stop starting new features, keep changes on the task branch, and record a compact handoff below before yielding. Include goal, owner, base/head SHAs, changed files, completed decisions, exact verification already run, failures/blockers, and the next concrete command or action. Never rerun checks solely because a new agent took over. Delegate only a bounded independent lane when delegation is authorized, and send its file boundaries and acceptance criteria. Other agents should read the handoff and inspect git status before working, never assume a checkout is theirs or reset someone else's changes.
@@ -165,4 +179,17 @@ When context or token capacity is low: stop starting new features, keep changes 
 - Next product decision: select/claim one lane above. Do not start all planned phases at once.
 - Existing limits: see Sections 7–8 and docs/compatibility.md. Do not treat historical approval snapshots as an authenticated approval service.
 
+### Calendar authoring handoff
+
+- Status: work stopped by founder request; PR #6 stays open for Codex's review. Owner of record: Claude. Auto-fix is off for this PR. Do not start another testing cycle or expand scope from this lane. Additional testing, such as by Grokbot, happens only when explicitly assigned.
+- Branch and commits: feat/calendar-authoring, base f841ec3. Code head a3bc0c5. A later documentation-only commit records this handoff and is marked to skip CI.
+- Implemented: `authorExperience` turns an owner-chosen event name, IANA time zone, first day, included last day, preset, message, areas, and optional priority into a draft schema v1 experience in canonical UTC, or path-level errors. The playground controls and `seed author EVENT_FILE BRAND_FILE` use the same function; `seed samples` and `seed schema event` support agents. No approve or publish path. Editing dates, zone, theme, content, or areas invalidates approval through the existing snapshot mechanism. Schema, engine, approval mechanism, and brand policy are unchanged.
+- Changed: packages/core/authoring.ts (new), schema.ts, index.ts, packages/cli/index.ts, examples/playground/app.jsx and style.css, tests/authoring.test.mjs (new), package.json, package-lock.json, this guide, README.
+- Verification completed: on a3bc0c5, GitHub CI `verify` passed in both push and pull_request runs (Node 22, full suite, build, package check, audit). Locally on Node.js 25.8: TypeScript build, tests/authoring.test.mjs (9 tests), tests/agent-contracts.test.mjs (10 tests), one manual Chromium pass of the playground flow, and one dependency review and audit (0 advisories). Do not rerun these only because ownership changes.
+- Known limitations: whole dates only, with no local start times, recurrence, or holiday data; samples are invented. Zone rules come from the host's Intl data and may differ on outdated runtimes, and approved experiences keep fixed UTC instants that are not recomputed if rules change. Preview date is checked at 12:00 UTC. A name edit past the truncated part of a long name does not change the id. Browser verification was one manual Chromium pass; no automated browser test covers this flow, and tests/browser from #5 has not run against this branch. No customer validation. temporal-polyfill is the first runtime dependency and needs deliberate review.
+- Interaction with PR #5, verified open and unmerged at this handoff, so this guide's browser-coverage statements stay as they are: both PRs change package.json and package-lock.json, so whichever merges second must resolve them. tests/browser/playground.spec.mjs in #5 expects the id demo-seasonal; after both merge its ACTIVE constant must become winter-season-20261201-utc.
+- Next action: Codex reviews #6 as a non-author and applies the merge-order fix above. Local start times, if ever wanted, need explicit disambiguation (Temporal's `reject`, `earlier`, `later`).
+
 - 2026-11-05 consolidation decision: main replaces the stacked branches as the shared baseline. Retain feature branches; new contributions branch from refreshed main. Work allocation and context handoff must remain explicit.
+- 2026-11-05: Calendar authoring chooses temporal-polyfill 1.0.6 (FullCalendar project, MIT) over Luxon, which silently shifts nonexistent times, and over @js-temporal/polyfill, which has had no release since 2025-03. It follows the Temporal standard, so hand-written offset math is unnecessary and native Temporal can replace it later. Pinned to a three-week-old version rather than releases from the previous day; no install scripts; audit reported 0 advisories. It uses the host's Intl time-zone data, so it works offline and ships no zone database. A separate entry keeps it out of the runtime path.
+- 2026-11-05: Authoring accepts dates, not local times, for the first version; lastDate is inclusive. This avoids nonexistent and ambiguous times entirely and leaves the schema, engine, and approval mechanism unchanged.

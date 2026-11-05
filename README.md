@@ -64,6 +64,10 @@ All commands are read-only and return JSON. Exit 0 means the command succeeded; 
 
 See [examples/winter.json](examples/winter.json). UTC timestamps use `YYYY-MM-DDTHH:mm:ss.sssZ`; start is inclusive, end exclusive. Higher priority wins per area, with ASCII ID ordering to resolve ties. IDs must be unique. Up to 100 experiences and approvals are accepted. Invalid collections fail closed. To author from local dates, see [calendar authoring](#calendar-authoring). Recurring rules and holiday data are future work.
 
+## Use a draft in your own site
+
+In the playground, author an experience and choose **Download draft JSON**. Downloading doesn't approve or publish anything. Then follow the [integration recipe](docs/integration-recipe.md) to validate the file, map SEED's variables into your hero, and approve it separately. [examples/existing-project](examples/existing-project) has the files to copy, starting with no approvals.
+
 ## Calendar authoring
 
 Pick an event, an IANA time zone, and a date range. SEED compiles them into a draft experience in UTC. Review and approval work the same as for any other experience.

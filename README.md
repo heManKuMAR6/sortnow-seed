@@ -51,9 +51,14 @@ SEED styles only its wrapper; existing child styles may override inherited color
 node dist/cli/index.js validate examples/winter.json
 node dist/cli/index.js inspect examples/winter.json 2026-12-15T12:00:00.000Z
 node dist/cli/index.js snapshot examples/winter.json
+node dist/cli/index.js help
+node dist/cli/index.js schema experience
+node dist/cli/index.js validate-brand examples/playground/brand.json
+node dist/cli/index.js contrast examples/winter.json
+node dist/cli/index.js contrast-brand examples/playground/brand.json
 ```
 
-All commands return JSON. Exit 0 means success; exit 1 means invalid arguments, file, or configuration. Inspect is a schedule preview, never approval. After reviewing exact content, the owner stores the snapshot string in trusted approval configuration. Editing any field invalidates the stored snapshot. See [SECURITY.md](SECURITY.md) for the authorization boundary.
+All commands are read-only and return JSON. Exit 0 means the command succeeded; exit 1 means invalid arguments, file, or configuration. Errors carry a code, path, and message, and CLI-level errors add a hint. `schema` (`experience` or `brand`) prints structural JSON Schema; `validate` remains authoritative for real dates and schedule order. Contrast reports are advisory: they exit 0 even when a pair misses its minimum, so read `meetsMinimums`, and they certify nothing. Inspect is a schedule preview, never approval. After reviewing exact content, the owner stores the snapshot string in trusted approval configuration. Editing any field invalidates the stored snapshot. See [SECURITY.md](SECURITY.md) for the authorization boundary.
 
 ## Configuration
 
@@ -65,6 +70,7 @@ See [examples/winter.json](examples/winter.json). UTC timestamps use `YYYY-MM-DD
 - `packages/react`: explicit-area adapter, safe text rendering, lifecycle cleanup, SSR fallback.
 - `packages/cli`: bounded JSON input and structured diagnostics for agents.
 - `examples/playground`: working React integration and date preview.
+- `examples/second-app`: differently structured app with server rendering and hydration (`npm run demo:second`, port 4174).
 - `tests`: security regressions, scheduling boundaries, SSR, and CLI behavior.
 
 ## Development
@@ -73,7 +79,7 @@ See [examples/winter.json](examples/winter.json). UTC timestamps use `YYYY-MM-DD
 
 ## Roadmap
 
-Next: browser interaction tests, machine-readable JSON Schema, contrast diagnostics, a second integration fixture, then regional calendars and MCP. AI authoring, Angular/Shopify adapters, hosted approvals, and enterprise controls are not implemented. No claim of universal compatibility or security certification.
+Next: automated browser interaction tests and the [agent task comparison](docs/agent-task-comparison.md), then regional calendars and MCP. See [compatibility](docs/compatibility.md) for what has actually been exercised. AI authoring, Angular/Shopify adapters, hosted approvals, and enterprise controls are not implemented. No claim of universal compatibility or security certification.
 
 MIT licensed. See [CONTRIBUTING.md](CONTRIBUTING.md).
 

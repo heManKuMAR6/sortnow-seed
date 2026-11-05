@@ -1,0 +1,4 @@
+[
+  "{\"schemaVersion\":1,\"id\":\"launch-week\",\"startsAt\":\"2027-03-08T00:00:00.000Z\",\"endsAt\":\"2027-03-15T00:00:00.000Z\",\"priority\":10,\"areas\":[\"hero\"],\"theme\":{\"background\":\"#10202b\",\"foreground\":\"#ffffff\",\"accent\":\"#b7c4ff\",\"message\":\"Bank feeds are here.\"}}",
+  "{\"schemaVersion\":1,\"id\":\"approved-banner\",\"startsAt\":\"2027-03-08T00:00:00.000Z\",\"endsAt\":\"2027-03-15T00:00:00.000Z\",\"priority\":10,\"areas\":[\"banner\"],\"theme\":{\"background\":\"#10202b\",\"foreground\":\"#ffffff\",\"accent\":\"#b7c4ff\",\"message\":\"Approved, but the brand policy forbids banners.\"}}"
+]

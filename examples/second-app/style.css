@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #0b161e; color: #f2f5f7; font: 16px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+a { color: #7fd1c7; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #2a3a46; }
+.toolbar button { font: inherit; color: inherit; background: transparent; border: 1px solid #2a3a46; border-radius: 4px; padding: 6px 12px; cursor: pointer; }
+.toolbar button[aria-pressed="true"] { background: #f2f5f7; color: #0b161e; }
+.toolbar button:focus-visible { outline: 2px solid #7fd1c7; outline-offset: 2px; }
+
+.shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; }
+.sidebar { display: flex; flex-direction: column; gap: 12px; padding: 24px 16px; border-right: 1px solid #2a3a46; }
+main { min-width: 0; padding: 24px; }
+
+/* The one mapping this app makes to SEED: three tokens, each with its base value as fallback. */
+.masthead { padding: 32px; border-radius: 6px; background: var(--seed-background, #10202b); color: var(--seed-foreground, #f2f5f7); border-left: 4px solid var(--seed-accent, #7fd1c7); }
+.masthead a { color: var(--seed-accent, #7fd1c7); }
+.kicker { margin: 0; font-size: 13px; letter-spacing: .08em; }
+.masthead h1 { margin: 8px 0 16px; font-size: 28px; line-height: 1.2; }
+
+.plans { margin-top: 32px; }
+.plans table { width: 100%; border-collapse: collapse; }
+.plans th, .plans td { padding: 8px; text-align: left; border-bottom: 1px solid #2a3a46; }
+
+@media (max-width: 640px) {
+  .shell { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .sidebar { flex-direction: row; justify-content: space-between; padding: 12px 16px; border-right: 0; border-bottom: 1px solid #2a3a46; }
+  main { padding: 16px; }
+  .masthead { padding: 20px; }
+}

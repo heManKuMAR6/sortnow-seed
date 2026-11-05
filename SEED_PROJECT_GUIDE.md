@@ -24,10 +24,12 @@ The open-source runtime must work without our account, backend, telemetry, or mo
 
 ## 4. Architecture and responsibilities
 
-- packages/core: framework-independent TypeScript experience validation, UTC schedule selection, exact-content approval snapshots, brand policy, and preset authoring.
+- packages/core: framework-independent TypeScript experience validation, UTC schedule selection, exact-content approval snapshots, brand policy with path-level diagnostics, preset authoring, JSON Schema contracts, and advisory contrast reports.
 - packages/react: opt-in area wrappers and scoped CSS variables; base SSR output and client activation.
-- packages/cli: bounded JSON input; structured validation, snapshot, and schedule inspection for agents.
-- examples/playground: local React demonstration with no external assets or tracking.
+- packages/cli: bounded JSON input; read-only help, schema export, validation, brand validation, snapshot, schedule inspection, and contrast reports for agents. All output is JSON with exit 0 or 1.
+- examples/playground: local client-rendered React demonstration with no external assets or tracking.
+- examples/second-app: independently structured fictional docs/pricing page, server rendered and hydrated, with separate configuration files and a hero-only brand policy.
+- docs/compatibility.md: what has been exercised versus only declared. docs/agent-task-comparison.md: a comparison protocol that has not been run.
 - tests: behavior/security regressions for changed contracts.
 - Future adapters (Angular, Shopify, others) share core contracts. Universal arbitrary-site restyling is not promised.
 - Future CLI/SDK/MCP/dashboard interfaces must call the same operation layer rather than implement separate business rules.
@@ -69,9 +71,11 @@ Core validation, selection, snapshots, React adapter, CLI, UTC example, package 
 
 Implemented brand policy, seasonal/promotion/launch presets, CSS variable integration, isolated before/after preview, and targeted behavior coverage. Reuses an existing demo component across all three presets without changing its markup. This demonstrates integration, not validation on a customer-owned site. Requires founder/customer feedback before broadening scope.
 
-### Phase 3 — integration quality and agent contracts: planned
+### Phase 3 — integration quality and agent contracts: partly implemented on feat/agent-contracts
 
-JSON Schema export, actionable CLI diagnostics, browser interaction coverage, accessibility/contrast diagnostics, second independently structured app, compatibility documentation, agent task comparisons. Add MCP only after shared operations stabilize.
+Implemented: JSON Schema export (SDK and `seed schema`), actionable CLI diagnostics (`seed help`, coded errors with paths and hints, per-path brand errors), advisory contrast reports, second independently structured app, and compatibility documentation.
+
+Remaining: automated browser interaction coverage (one manual Chromium pass only; automation needs a new dev dependency, which has not been decided), running the agent task comparison (protocol written, no results), and testing beyond React 19.3.1 and the listed runtimes. Add MCP only after shared operations stabilize.
 
 ### Phase 4 — calendar and additional adapters: planned
 
@@ -89,11 +93,11 @@ Multi-site administration, scoped roles, server-side approval enforcement, audit
 
 Threats: injected HTML/CSS/URLs, prototype keys, malformed dates, excessive input, stale approvals, untrusted dependencies/PR code, leaked credentials, overly broad CI tokens, and unauthorized publication. Controls: strict fields and values, fresh validated objects, escaped React text, bounded input, exact snapshots, no runtime network, scoped rendering, read-only CI, pinned actions, lockfile, and separate publishing authority.
 
-Known limits: snapshots are not authentication; same-origin compromised code can bypass client behavior; brand rules are not a browser sandbox; no automatic contrast certification, trusted-time enforcement, visual regression suite, external audit, or general asset validation. Check SECURITY.md for operational security reporting. Never add production secrets or actual customer content to examples.
+Known limits: snapshots are not authentication; same-origin compromised code can bypass client behavior; brand rules are not a browser sandbox; no contrast certification or enforcement (reports are advisory and cover color pairs, not how a host maps tokens to elements), trusted-time enforcement, visual regression suite, external audit, or general asset validation. Check SECURITY.md for operational security reporting. Never add production secrets or actual customer content to examples.
 
 ## 9. Development workflow and proportionate verification
 
-Use feature branches and PRs. Phase 2 initially stacks on feat/seed-foundation until PR #1 merges; retarget to main afterward. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
+Use feature branches and PRs. Phase 2 initially stacks on feat/seed-foundation until PR #1 merges; retarget to main afterward. feat/agent-contracts likewise stacks on feat/brand-experiences until PR #2 merges. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
 
 Owner preference: avoid redundant testing. Run targeted checks for changed behavior and security boundaries. Build when types or integration change. Do not repeat audits, full suites, package installations, or unrelated checks without a new dependency, failure, or relevant risk. Documentation-only changes need review, not runtime tests. CI can provide one broad integration gate for submitted code. Report precise results and untested limits.
 
@@ -107,7 +111,7 @@ Open: npm namespace ownership; release naming/version policy; production approva
 
 ## 11. Quick handoff
 
-Read this guide, git status, README, and relevant package files. Install with npm ci --ignore-scripts when dependencies are missing. npm run build compiles; node --test tests/brand.test.mjs runs Phase 2 targeted tests after building; npm run demo starts the localhost playground on port 4173. npm run check is the broader CI gate, not required for every edit. Work on the current feature branch; preserve unrelated changes. Update phase status and decision log below before opening the PR.
+Read this guide, git status, README, and relevant package files. Install with npm ci --ignore-scripts when dependencies are missing. npm run build compiles; node --test tests/brand.test.mjs runs Phase 2 targeted tests after building, and tests/agent-contracts.test.mjs, tests/contrast.test.mjs, and tests/second-app.test.mjs cover Phase 3; npm run demo starts the localhost playground on port 4173; npm run demo:second starts the second app on port 4174. npm run check is the broader CI gate, not required for every edit. Work on the current feature branch; preserve unrelated changes. Update phase status and decision log below before opening the PR.
 
 ## 12. Decision log
 
@@ -119,3 +123,6 @@ Read this guide, git status, README, and relevant package files. Install with np
 - 2026-11-05: Brand policy vetoes incompatible approved content rather than silently changing it; preset output remains schema v1.
 
 - 2026-11-05: Phase 2 implements three presets, scoped variables, runtime brand vetoes, before/after comparison, and draft/approved view separation. No new dependencies. Validation: one TypeScript build passed, all six targeted brand tests passed, and demo bundling passed; visual browser QA remains outstanding.
+- 2026-11-05: Contrast reports are advisory: they never change validation, approval, selection, or rendering, because accessible palette enforcement remains an open decision. Ratios are judged exactly and displayed rounded down, and accent is held to the 4.5:1 text minimum because the documented mapping uses it for links.
+- 2026-11-05: JSON Schemas are structural; runtime validators stay authoritative. Tests compare schema patterns and required fields with the validators, without adding a schema-validator dependency.
+- 2026-11-05: Automated browser tests deferred rather than adding a browser dependency without founder review. Phase 3 validation: all 40 tests passed on local Node.js 25.8, the TypeScript build passed, and a manual Chromium pass covered presets, approval, edit invalidation, expiry, and revocation in the playground, plus hydration, veto, expiry, and 375px layout in the second app, with no console errors. CI, Firefox, Safari, React 18, and customer sites were not exercised.

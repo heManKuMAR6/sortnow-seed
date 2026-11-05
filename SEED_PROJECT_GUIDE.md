@@ -61,17 +61,17 @@ Before/after previews must distinguish proposed appearance from approved/schedul
 
 ### Phase 0 — identity and repository: complete
 
-Public sortnow-seed repository exists. main is the default branch. MIT license and security documentation are in the foundation branch. Nightly Codex automation was created for 23:00 America/Chicago and corrected from master to main. It is local-app scheduling, not a guaranteed always-on GitHub merge service.
+Public sortnow-seed repository exists. main is the default branch. MIT license and security documentation are on main. Nightly Codex automation was created for 23:00 America/Chicago and corrected from master to main. It is local-app scheduling, not a guaranteed always-on GitHub merge service.
 
-### Phase 1 — usable foundation: implemented, PR #1
+### Phase 1 — usable foundation: merged to main, PR #1
 
 Core validation, selection, snapshots, React adapter, CLI, UTC example, package tarball installation, README, CI, and security policy. Foundation verification: 11 tests, build, install/import/CLI smoke test, dependency audit with zero known advisories at that time, both CI runs passed. Do not interpret this as a security certification or complete browser testing.
 
-### Phase 2 — brand-aware experiences: implemented on feat/brand-experiences
+### Phase 2 — brand-aware experiences: merged to main, PR #2
 
 Implemented brand policy, seasonal/promotion/launch presets, CSS variable integration, isolated before/after preview, and targeted behavior coverage. Reuses an existing demo component across all three presets without changing its markup. This demonstrates integration, not validation on a customer-owned site. Requires founder/customer feedback before broadening scope.
 
-### Phase 3 — integration quality and agent contracts: partly implemented on feat/agent-contracts
+### Phase 3 — integration quality and agent contracts: implemented subset merged to main, PR #3
 
 Implemented: JSON Schema export (SDK and `seed schema`), actionable CLI diagnostics (`seed help`, coded errors with paths and hints, per-path brand errors), advisory contrast reports, second independently structured app, and compatibility documentation.
 
@@ -97,7 +97,7 @@ Known limits: snapshots are not authentication; same-origin compromised code can
 
 ## 9. Development workflow and proportionate verification
 
-Use feature branches and PRs. Phase 2 initially stacks on feat/seed-foundation until PR #1 merges; retarget to main afterward. feat/agent-contracts likewise stacks on feat/brand-experiences until PR #2 merges. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
+Use feature branches and PRs against current main. PRs #1, #2, and #3 were reviewed and merged in dependency order on 2026-11-05. Their feature branches are historical snapshots, not the integration baseline. New work starts from refreshed main; explicitly document any necessary stacked dependency. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
 
 Owner preference: avoid redundant testing. Run targeted checks for changed behavior and security boundaries. Build when types or integration change. Do not repeat audits, full suites, package installations, or unrelated checks without a new dependency, failure, or relevant risk. Documentation-only changes need review, not runtime tests. CI can provide one broad integration gate for submitted code. Report precise results and untested limits.
 
@@ -125,4 +125,44 @@ Read this guide, git status, README, and relevant package files. Install with np
 - 2026-11-05: Phase 2 implements three presets, scoped variables, runtime brand vetoes, before/after comparison, and draft/approved view separation. No new dependencies. Validation: one TypeScript build passed, all six targeted brand tests passed, and demo bundling passed; visual browser QA remains outstanding.
 - 2026-11-05: Contrast reports are advisory: they never change validation, approval, selection, or rendering, because accessible palette enforcement remains an open decision. Ratios are judged exactly and displayed rounded down, and accent is held to the 4.5:1 text minimum because the documented mapping uses it for links.
 - 2026-11-05: JSON Schemas are structural; runtime validators stay authoritative. Tests compare schema patterns and required fields with the validators, without adding a schema-validator dependency.
-- 2026-11-05: Automated browser tests deferred rather than adding a browser dependency without founder review. Phase 3 validation: all 40 tests passed on local Node.js 25.8, the TypeScript build passed, and a manual Chromium pass covered presets, approval, edit invalidation, expiry, and revocation in the playground, plus hydration, veto, expiry, and 375px layout in the second app, with no console errors. CI, Firefox, Safari, React 18, and customer sites were not exercised.
+- 2026-11-05: Automated browser tests deferred rather than adding a browser dependency without founder review. Phase 3 validation: all 40 tests passed on local Node.js 25.8, the TypeScript build passed, and a manual Chromium pass covered presets, approval, edit invalidation, expiry, and revocation in the playground, plus hydration, veto, expiry, and 375px layout in the second app, with no console errors. At authoring time CI was not yet exercised; CI subsequently passed for PR #3 before consolidation. Firefox, Safari, React 18, and customer sites remain untested.
+
+
+## 13. Consolidation checkpoint — 2026-11-05
+
+All three implementation PRs are merged into main:
+
+| PR | Source branch | Scope | Reviewed head |
+| --- | --- | --- | --- |
+| #1 | feat/seed-foundation | Core, React, CLI, playground, security and CI | bbd535a |
+| #2 | feat/brand-experiences | Brand constraints, three presets, scoped tokens, comparison UI, guide | 6fcc1b6 |
+| #3 | feat/agent-contracts | Claude's schemas, CLI diagnostics, FIFO hardening, advisory contrast, second SSR app, compatibility docs | 2cf4443 |
+
+Consolidation review covered the new source, CLI file handling, demo server routes, approval semantics, schemas, test evidence, and workflow permissions. CI passed on all three reviewed heads. Each intermediate main tree matched the next branch's original base; final main's source tree matched the tested agent-contracts branch before documentation changes. Therefore no redundant local tests, audit, or dependency installation were performed during this merge-only review. No dependency additions, merge conflict resolutions, or runtime edits were needed. Existing manual browser evidence is credited to the prior Phase 3 work, not rerun or independently claimed here.
+
+main is the consolidated integration baseline. Historical branches are retained so other agents' work is not disrupted. npm publication, hosted deployment, universal compatibility, security certification, and commercial validation remain unclaimed. The current consolidation commit changes documentation only.
+
+## 14. Work allocation and low-context handoff protocol
+
+Use this queue to divide work into bounded PRs. These are proposed lanes, not claims that another agent has received or started a task. Claim an item with owner, branch, base SHA, and status before editing. Avoid simultaneous edits to shared core contracts or this guide. The integration owner updates this guide after collecting lane results.
+
+| Priority / lane | Deliverable | Files primarily owned | Acceptance / dependency | Status |
+| --- | --- | --- | --- | --- |
+| P1 — browser integration | Small automated coverage of approval, edit invalidation, expiration, revocation, and hydration | tests/browser, browser runner config | Choose and document the browser dependency first; test only these critical flows, not every cosmetic detail | Unassigned |
+| P1 — agent evaluation | Execute the existing comparison protocol and record actual task outcomes | docs/agent-task-comparison.md and result artifacts | Same task and constraints in both runs; disclose model, environment, time, failures, and limitations; do not manufacture results | Unassigned |
+| P2 — compatibility | Exercise one additional supported React/runtime combination | compatibility fixtures, docs/compatibility.md | One targeted matrix extension; report evidence without widening support claims beyond it | Unassigned |
+| P2 — calendar design | Specify market selection, timezone authoring, recurring-event data provenance, DST cases | docs/calendar-design.md | Design review first; retain UTC runtime and explicit approvals; no adapter implementation in this lane | Unassigned |
+| Integration / release | Review PRs, maintain guide, merge dependency order, track package namespace decision | this guide, README, release documentation | Read current branch/PR state; no publishing or deployments without explicit authorization | Codex coordination role; future run must recheck state |
+
+When context or token capacity is low: stop starting new features, keep changes on the task branch, and record a compact handoff below before yielding. Include goal, owner, base/head SHAs, changed files, completed decisions, exact verification already run, failures/blockers, and the next concrete command or action. Never rerun checks solely because a new agent took over. Delegate only a bounded independent lane when delegation is authorized, and send its file boundaries and acceptance criteria. Other agents should read the handoff and inspect git status before working, never assume a checkout is theirs or reset someone else's changes.
+
+### Current handoff
+
+- Goal completed: consolidate existing implementation branches and correct the shared development record.
+- Runtime baseline: main includes PRs #1–#3; no known merge-blocking findings from this review.
+- Documentation branch: docs/consolidated-handoff, based on consolidated main at 377ada5.
+- Verification: existing passing CI and tree-equivalence checks; documentation review only for this follow-up.
+- Next product decision: select/claim one lane above. Do not start all planned phases at once.
+- Existing limits: see Sections 7–8 and docs/compatibility.md. Do not treat historical approval snapshots as an authenticated approval service.
+
+- 2026-11-05 consolidation decision: main replaces the stacked branches as the shared baseline. Retain feature branches; new contributions branch from refreshed main. Work allocation and context handoff must remain explicit.

@@ -27,6 +27,23 @@ export const experienceSchema = {
     },
   },
 } as const;
+export const eventSchema = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  title: 'SortNow SEED event authoring input',
+  description: 'Structural contract only. Run seed author for real dates, known IANA zones, and brand rules. Output is a draft that still needs review and approval.',
+  type: 'object', additionalProperties: false,
+  required: ['name', 'timeZone', 'startDate', 'lastDate', 'preset', 'message', 'areas'],
+  properties: {
+    name: { type: 'string', minLength: 1, maxLength: 80 },
+    timeZone: { type: 'string', description: 'IANA name chosen by the owner, or UTC. Offsets and abbreviations are rejected.' },
+    startDate: { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$', description: 'Begins at the start of this day in timeZone.' },
+    lastDate: { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$', description: 'Included. Ends when the following day begins in timeZone.' },
+    preset: { enum: ['seasonal', 'promotion', 'launch'] },
+    message: { type: 'string', minLength: 1, maxLength: 240 },
+    areas: { type: 'array', minItems: 1, maxItems: 2, uniqueItems: true, items: { enum: ['banner', 'hero'] } },
+    priority: { type: 'integer', minimum: 0, maximum: 100, default: 10 },
+  },
+} as const;
 export const brandSchema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
   title: 'SortNow SEED brand policy',

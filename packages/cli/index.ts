@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {open} from 'node:fs/promises';
 import {constants} from 'node:fs';
-import {validateExperience,approvalSnapshot,instant,selectExperience,validateBrand,experienceSchema,brandSchema,contrastReport,brandContrastReport} from '../core/index.js';
+import {validateExperience,approvalSnapshot,instant,selectExperience,validateBrand,experienceSchema,brandSchema,eventSchema,contrastReport,brandContrastReport} from '../core/index.js';
 const [command,file,...args]=process.argv.slice(2);
 class InputError extends Error {
   constructor(public code:string,message:string,public path='$',public hint='Run seed help for supported commands.') { super(message); }
@@ -12,11 +12,13 @@ const help={
   ok:true,protocolVersion:1,readOnly:true,
   commands:[
     {command:'help',description:'Discover commands, limits, and trust boundaries.'},
-    {command:'schema experience|brand',description:'Print raw JSON Schema for editor or agent use.'},
+    {command:'schema experience|brand|event',description:'Print raw JSON Schema for editor or agent use.'},
     {command:'validate FILE',description:'Validate one experience, including real dates and schedule order.'},
     {command:'validate-brand FILE',description:'Validate a brand policy; does not approve any experiences.'},
     {command:'snapshot FILE',description:'Create exact-content review material. Does not grant approval.'},
     {command:'inspect FILE UTC_INSTANT',description:'Preview schedule eligibility without approving or publishing.'},
+    {command:'author EVENT_FILE BRAND_FILE',description:'Compile an event, IANA time zone, and date range into a draft experience. The last day is included. Does not approve or publish.'},
+    {command:'samples',description:'List illustrative sample events. Not a holiday database; the owner still chooses the time zone.'},
     {command:'contrast FILE',description:'Advisory WCAG contrast ratios for one experience. Exit 0 even when a pair misses its minimum; read meetsMinimums.'},
     {command:'contrast-brand FILE',description:'Advisory contrast for the base and each preset palette after locked tokens apply.'},
   ],
@@ -41,9 +43,22 @@ async function readJson(path: string) {
 }
 async function main() {
   if(command==='help' && !file && args.length===0){console.log(JSON.stringify(help));return;}
-  if(command==='schema' && args.length===0 && (file==='experience'||file==='brand')){console.log(JSON.stringify(file==='experience'?experienceSchema:brandSchema));return;}
-  if(!file || !['validate','validate-brand','snapshot','inspect','contrast','contrast-brand'].includes(command) || (command==='inspect' ? args.length!==1 : args.length!==0)) throw new InputError('USAGE','Unsupported command or arguments.');
+  const schemas={experience:experienceSchema,brand:brandSchema,event:eventSchema};
+  if(command==='schema' && args.length===0 && (file==='experience'||file==='brand'||file==='event')){console.log(JSON.stringify(schemas[file]));return;}
+  if(command==='samples' && !file && args.length===0){
+    // Loaded on demand so other commands never touch the time-zone library.
+    const {sampleEvents,SAMPLE_NOTICE,END_SEMANTICS}=await import('../core/authoring.js');
+    console.log(JSON.stringify({ok:true,events:sampleEvents,notice:SAMPLE_NOTICE,endSemantics:END_SEMANTICS}));return;
+  }
+  if(!file || !['validate','validate-brand','snapshot','inspect','author','contrast','contrast-brand'].includes(command) || (command==='inspect'||command==='author' ? args.length!==1 : args.length!==0)) throw new InputError('USAGE','Unsupported command or arguments.');
   const input=await readJson(file);
+  if(command==='author'){
+    const {authorExperience,END_SEMANTICS}=await import('../core/authoring.js');
+    const authored=authorExperience(input,await readJson(args[0]));
+    if(authored.ok)console.log(JSON.stringify({...authored,endSemantics:END_SEMANTICS,notice:'Draft only. Preview it, then store its snapshot in trusted configuration only after owner review.'}));
+    else {console.log(JSON.stringify(authored));process.exitCode=1;}
+    return;
+  }
   if(command==='validate-brand'||command==='contrast-brand'){
     const brand=validateBrand(input);
     if(!brand.ok){console.log(JSON.stringify({ok:false,errors:brand.errors.map(e=>({...e,hint:brandHint}))}));process.exitCode=1;}

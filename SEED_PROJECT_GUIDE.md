@@ -2,6 +2,73 @@
 
 Last updated: 2026-11-05. Audience: the founder, contributors, and coding agents including Claude, Codex, and other LLM tools. Read this file before changing the product. Update it in the same PR whenever behavior, decisions, constraints, or phase status change. This records decisions and implemented capabilities, not a promise that every future idea exists.
 
+## Product north star — preserve the founder's original idea
+
+**Install SEED alongside an existing website, connect its brand and permitted areas once, choose relevant occasions on a calendar, preview and approve brand-matched themes/content/effects, and let approved experiences activate and restore automatically. Humans and coding agents must both be able to operate it.**
+
+The ultimate product includes optional AI-assisted understanding of permitted website context and services, brand-consistent design proposals, regional/event calendars, tasteful effects, and multiple platform adapters. One SortNow umbrella repository and a useful open-source runtime are non-negotiable. Optional managed/enterprise services can improve authoring and team operations without making the basic package dependent on our servers.
+
+This is not a pivot into a generic campaign dashboard, a website builder, a testing framework, or an agency-only service. Campaigns and React agencies are initial use cases and adoption hypotheses. Reliability checks, schemas, and CLI tooling support the product; they are not the customer-facing destination. AI remains part of the intended product, not something removed from the roadmap. It must create reviewable drafts rather than unbounded runtime code.
+
+### Intended end-to-end experience
+
+1. A developer or agent installs SEED into an existing project.
+2. It connects the brand (logo/typography protected by integration boundaries), design tokens, allowed areas, and event preferences. Later AI assistance proposes mappings for review; it must not silently rewrite the whole site.
+3. The owner chooses audience markets, occasions, dates, and time zones. Location follows audience/business configuration, never server hosting location.
+4. Theme packs or optional AI prepare coordinated accents, assets, content slots, and constrained effects appropriate to the brand and event.
+5. The owner compares before/after previews and edits the proposal. Approval binds the exact publishable experience.
+6. The site activates that approved version on schedule and restores its base appearance afterward. Changes require renewed review. Recurring occasions produce new drafts unless an explicit future approval policy permits reuse.
+7. The next event reuses the same integration. Agents can discover and perform authoring/validation operations through documented contracts without gaining publication authority by default.
+
+### Where we are against that vision (verified repository checkpoint: 2026-11-05)
+
+| Original requirement | Actual state | Remaining gap |
+| --- | --- | --- |
+| Easy open-source installation | Public GitHub repo and locally installable tarball | Verify namespace, simplify onboarding, and publish a reviewed npm alpha |
+| Works alongside existing frontends | React adapter with explicit wrappers and CSS variables | Customer-site adoption and additional adapters; universal support is not implemented |
+| Brand identity stays recognizable | Color palettes, locked tokens, allowed banner/hero areas | Brand setup UX, approved assets/content slots, richer design packs; no automatic logo/typography protection |
+| Calendar-driven seasonal changes | UTC runtime on main; date/time-zone authoring implemented in open PR #6 | Consolidate #6; selected-market event calendars, editable yearly planning, recurrence authoring |
+| Preview, approval, start/end, restoration | Implemented on main with trusted-host snapshots | Production approval UX, revocation/delivery choices, explicit security boundaries |
+| Portable output for an existing site | Draft download and integration recipe in open PR #7 | Consolidate, then try recipe on a site not designed for SEED |
+| Tasteful illustrations/icons/entrances | Not implemented; current visual output is primarily colors and text | Small constrained asset/effect system, reduced-motion behavior, performance limits |
+| AI understands brand/context and proposes a design | Not implemented | Optional bounded authoring service or bring-your-own-model path; no secrets in the browser |
+| Friendly to many coding agents | Read-only JSON CLI, schemas, diagnostics | Actual adoption feedback; MCP only if useful, no mandatory benchmark marathon |
+| Open source plus enterprise | MIT community code | Paid services remain conditional on demand; no evidence of paying customers yet |
+
+Overall: **engineering foundation with early authoring prototypes**, not the full intelligent seasonal-design product. Count merged capability separately from code in open PRs. Do not use phase counts or invented completion percentages to imply the original vision is almost done.
+
+### Delivery sequence tied to user outcomes
+
+| Order | User-visible milestone | Bounded completion evidence |
+| --- | --- | --- |
+| A — consolidate current work | One main branch has browser coverage, calendar authoring, download, and favicon correction | Review/merge #5–#8 with dependency preservation, updated browser ID, reconciled guide; reuse existing evidence and check only changed integration |
+| B — adoption and brand setup | A person/agent brings a real site's brand and exports a usable draft without hand-editing playground source | One independently structured site follows the recipe; practical brand setup/import UX, clear incompatibility feedback; private data stays out of examples |
+| C — recognizable seasonal design | An event changes the experience gracefully beyond recoloring | A small curated pack of approved illustrations/icons and optional non-blocking effects, explicit slots, graceful mobile/reduced-motion fallback |
+| D — useful calendar planning | Owner can plan relevant occasions over a period and edit their schedules | Selected markets/events, documented date sources, owner overrides, time zones and conflicts; no automatic global observance assumptions |
+| E — optional AI-assisted design | Owner supplies permitted context and receives a brand-matched draft that fits supported capabilities | Constrained structured output, asset provenance review, validation and preview, cost limits and explicit approval; runtime does not call a model |
+| F — wider reach and release | Another platform uses the shared engine; developers can install a reviewed package | Choose the next adapter from actual demand; verify namespace and package boundaries before npm publication |
+| G — managed/enterprise operations | Teams manage many sites and approvals if they need it | Scoped roles, server-side authorization, delivery/revocation model and audit history; justify through customer demand |
+
+These milestones refine the historical numbered phases below. They do not authorize starting all work or redesigning existing APIs. Customer conversations run alongside B onward. Feedback guides scope and sequence; it does not erase the original vision or create an indefinite stop-work gate. Server-side scheduling, cryptographic signatures, extra layers, and Rust are options justified by concrete needs, not mandatory milestones.
+
+### Collaboration and current assignments
+
+- Codex: integration/review owner. First clear the existing backlog and reconcile this guide; no new feature is claimed by this documentation update.
+- Claude: implementation lanes when explicitly assigned; currently stopped after PR #7 according to handoff. Do not infer a background task from an open PR.
+- Grokbot: explicitly assigned, bounded real-browser checks. Credit reported evidence and commit SHA; do not pretend another agent's results were independently rerun.
+- Founder: selects product priorities, supplies/authorizes a real-site integration, and decides external outreach, paid services, publishing, and deployments.
+- Agent comparison: postponed until explicitly assigned; no 40-run or eight-run experiment is a prerequisite for completing the product.
+
+Every handoff must include branch/base/head, file ownership, completed capability, existing evidence, limitations, dependencies, and next action. When context is low, narrow the task and record that handoff rather than inventing a new roadmap or rerunning verification. Update this same file in each meaningful PR. Supporting docs may explain details but must not maintain competing product goals.
+
+### Open-PR checkpoint and evidence
+
+Main remains f841ec3; PRs #1–#4 are merged. #5 browser tests, #6 calendar authoring, #7 draft export, and #8 favicon correction are open. #7 depends on #6; #8 depends on #7; #5 overlaps package files with #6 and its browser fixture expects the older experience ID. Preserve both dependency additions and update that assumption during integration.
+
+Grokbot's user-supplied report on 05363808e1196479379940043a21ba6f49e2646f verified a real download, filename, CLI validation, no approval data, unchanged draft status, and invalid-zone disabling. It found a favicon 404 but no CSP violations. PR #8 addresses the missing icon; post-fix browser confirmation is not claimed. Do not repeat the successful export flows merely because ownership changes.
+
+PR #6's code commit a3bc0c5 has passing CI; head 5346466 changes only the guide. Reuse earlier code evidence only after confirming the diff, and respect any required latest-head checks. Do not bypass branch protections or assume independent branch results establish the combined integration candidate.
+
 ## 1. Identity and concept
 
 SEED means **Scheduled Experiences & Extensible Design**. It belongs under SortNow. Public repository: https://github.com/heManKuMAR6/sortnow-seed. One large, modular repository owns the shared engine, integrations, experiences, examples, and future services. Do not create a separate product or repository for each holiday or use case.
@@ -75,11 +142,11 @@ Implemented brand policy, seasonal/promotion/launch presets, CSS variable integr
 
 Implemented: JSON Schema export (SDK and `seed schema`), actionable CLI diagnostics (`seed help`, coded errors with paths and hints, per-path brand errors), advisory contrast reports, second independently structured app, and compatibility documentation.
 
-Remaining: automated browser interaction coverage (one manual Chromium pass only; automation needs a new dev dependency, which has not been decided), running the agent task comparison (protocol written, no results), and testing beyond React 19.3.1 and the listed runtimes. Add MCP only after shared operations stabilize.
+Remaining on main: merge automated browser coverage from PR #5 (Playwright chosen; code and CI evidence exist), and assess compatibility beyond React 19.3.1 as needed. Agent comparison has no results and is postponed until explicitly assigned. Add MCP only after shared operations stabilize.
 
-### Phase 4 — calendar and additional adapters: planned
+### Phase 4 — calendar authoring/export implemented in open PRs; broader calendars and adapters planned
 
-Selected markets/events, time-zone authoring, recurring/movable holiday data, multi-stage experiences, Angular and platform-specific integrations according to demand. Maintain explicit approvals and conflict rules.
+PR #6 implements whole-date/time-zone authoring; PR #7 adds portable draft export and a recipe. Neither is merged at this checkpoint. Selected markets/events, recurrence, multi-stage experiences, and additional adapters remain planned. Maintain explicit approvals and conflict rules.
 
 ### Phase 5 — optional AI and managed authoring: planned
 
@@ -148,15 +215,15 @@ Use this queue to divide work into bounded PRs. These are proposed lanes, not cl
 
 | Priority / lane | Deliverable | Files primarily owned | Acceptance / dependency | Status |
 | --- | --- | --- | --- | --- |
-| P1 — browser integration | Small automated coverage of approval, edit invalidation, expiration, revocation, and hydration | tests/browser, browser runner config | Choose and document the browser dependency first; test only these critical flows, not every cosmetic detail | Unassigned |
-| P1 — agent evaluation | Execute the existing comparison protocol and record actual task outcomes | docs/agent-task-comparison.md and result artifacts | Same task and constraints in both runs; disclose model, environment, time, failures, and limitations; do not manufacture results | Unassigned |
-| P2 — compatibility | Exercise one additional supported React/runtime combination | compatibility fixtures, docs/compatibility.md | One targeted matrix extension; report evidence without widening support claims beyond it | Unassigned |
-| P2 — calendar design | Specify market selection, timezone authoring, recurring-event data provenance, DST cases | docs/calendar-design.md | Design review first; retain UTC runtime and explicit approvals; no adapter implementation in this lane | Unassigned |
+| P1 — browser integration | Small automated coverage of approval, edit invalidation, expiration, revocation, and hydration | tests/browser, browser runner config | Choose and document the browser dependency first; test only these critical flows, not every cosmetic detail | Unassigned; see current north-star delivery sequence |
+| P1 — agent evaluation | Execute the existing comparison protocol and record actual task outcomes | docs/agent-task-comparison.md and result artifacts | Same task and constraints in both runs; disclose model, environment, time, failures, and limitations; do not manufacture results | Unassigned; see current north-star delivery sequence |
+| P2 — compatibility | Exercise one additional supported React/runtime combination | compatibility fixtures, docs/compatibility.md | One targeted matrix extension; report evidence without widening support claims beyond it | Unassigned; see current north-star delivery sequence |
+| P2 — calendar design | Specify market selection, timezone authoring, recurring-event data provenance, DST cases | docs/calendar-design.md | Design review first; retain UTC runtime and explicit approvals; no adapter implementation in this lane | Unassigned; see current north-star delivery sequence |
 | Integration / release | Review PRs, maintain guide, merge dependency order, track package namespace decision | this guide, README, release documentation | Read current branch/PR state; no publishing or deployments without explicit authorization | Codex coordination role; future run must recheck state |
 
 When context or token capacity is low: stop starting new features, keep changes on the task branch, and record a compact handoff below before yielding. Include goal, owner, base/head SHAs, changed files, completed decisions, exact verification already run, failures/blockers, and the next concrete command or action. Never rerun checks solely because a new agent took over. Delegate only a bounded independent lane when delegation is authorized, and send its file boundaries and acceptance criteria. Other agents should read the handoff and inspect git status before working, never assume a checkout is theirs or reset someone else's changes.
 
-### Current handoff
+### Historical consolidation handoff (superseded by current checkpoint above)
 
 - Goal completed: consolidate existing implementation branches and correct the shared development record.
 - Runtime baseline: main includes PRs #1–#3; no known merge-blocking findings from this review.
@@ -166,3 +233,8 @@ When context or token capacity is low: stop starting new features, keep changes 
 - Existing limits: see Sections 7–8 and docs/compatibility.md. Do not treat historical approval snapshots as an authenticated approval service.
 
 - 2026-11-05 consolidation decision: main replaces the stacked branches as the shared baseline. Retain feature branches; new contributions branch from refreshed main. Work allocation and context handoff must remain explicit.
+
+
+## Current documentation handoff — vision alignment
+
+Owner: Codex. Branch: docs/vision-and-delivery-plan. Base: main f841ec3. Scope: this guide only. Records the original product promise, requirement-to-capability map, practical remaining milestones, current open PR dependencies, agent responsibilities, and postponed evaluation. Verification: repository/PR read-only inspection and documentation diff review; no runtime tests needed or run. During merging of #5–#8 preserve their detailed implementation and evidence handoffs and reconcile status into this file rather than choosing one branch's guide wholesale. Next action: finish backlog consolidation, then select one bounded adoption/brand-setup task. No runtime changes or new feature authorization are implied by this roadmap update.

@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createElement} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {isBrand,brandAllows,createPreset,approvalSnapshot} from '../dist/core/index.js';
+import {SeedArea} from '../dist/react/index.js';
+const brand=JSON.parse(readFileSync(new URL('../examples/playground/brand.json',import.meta.url)));
+const settings={id:'example',startsAt:'2026-12-01T00:00:00.000Z',endsAt:'2027-01-01T00:00:00.000Z',priority:10,areas:['hero'],message:'A brand experience'};
+const at=Date.parse('2026-12-15T00:00:00Z');
+const render=(experience,policy=brand,approvals=[approvalSnapshot(experience)],time=at)=>renderToStaticMarkup(createElement(SeedArea,{experiences:[experience],approvals,brand:policy,area:'hero',mode:'variables',previewAt:time},createElement('h1',null,'Existing heading')));
+test('all three presets preserve locked tokens and do not mutate brand settings',()=>{const b=structuredClone(brand);b.palettes.launch.foreground='#ff0000';const before=JSON.stringify(b);for(const p of ['seasonal','promotion','launch']){const e=createPreset(p,b,settings);assert.equal(e.theme.foreground,b.base.foreground);assert.equal(brandAllows(e,b),true);}assert.equal(JSON.stringify(b),before);});
+test('rejects unknown fields, invalid palette styles, and disallowed areas',()=>{assert.equal(isBrand({...brand,css:'body{}'}),false);const b=structuredClone(brand);b.palettes.launch.accent='url(https://example.test)';assert.equal(isBrand(b),false);assert.throws(()=>createPreset('launch',b,settings));assert.throws(()=>createPreset('seasonal',{...brand,allowedAreas:['banner']},settings));});
+test('runtime rejects approved colors outside brand rules without rewriting content',()=>{const e=createPreset('seasonal',brand,settings);e.theme.accent='#abcdef';assert.equal(brandAllows(e,brand),false);const html=render(e);assert.ok(!html.includes('--seed-accent'));assert.ok(html.includes('Existing heading'));});
+test('tightening brand policy restores base and malformed policy fails closed',()=>{const e=createPreset('seasonal',brand,settings);for(const policy of [{...brand,allowedAreas:['banner']},{...brand,lockedTokens:['accent']},{}])assert.ok(!render(e,policy).includes('--seed-background'));});
+test('variable integration changes only scoped tokens and restores them on expiration',()=>{const e=createPreset('promotion',brand,settings),html=render(e);assert.ok(html.includes('--seed-accent:#8a3a1e'));assert.ok(html.includes('<h1>Existing heading</h1>'));assert.ok(!html.includes('padding:'));assert.ok(!html.includes('A brand experience'));assert.ok(!render(e,brand,[],at).includes('--seed-accent'));assert.ok(!render(e,brand,[approvalSnapshot(e)],Date.parse(e.endsAt)).includes('--seed-accent'));});
+test('preset or message edits require new exact-version approval',()=>{const old=createPreset('seasonal',brand,settings);const next=createPreset('launch',brand,settings);assert.ok(!render(next,brand,[approvalSnapshot(old)]).includes('--seed-accent'));old.theme.message='Changed';assert.notEqual(approvalSnapshot(old),approvalSnapshot(createPreset('seasonal',brand,settings)));});

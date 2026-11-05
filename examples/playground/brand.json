@@ -1,0 +1,10 @@
+{
+  "base":{"background":"#ffffff","foreground":"#1d3029","accent":"#234b3d"},
+  "palettes":{
+    "seasonal":{"background":"#e7eee4","foreground":"#1d3029","accent":"#7a4e23"},
+    "promotion":{"background":"#fff1d6","foreground":"#1d3029","accent":"#8a3a1e"},
+    "launch":{"background":"#e7eafa","foreground":"#1d3029","accent":"#4945a3"}
+  },
+  "allowedAreas":["banner","hero"],
+  "lockedTokens":["foreground"]
+}

@@ -11,7 +11,7 @@ This is an experimental alpha, not an audited security product. Report vulnerabi
 - CLI snapshot creates review material only. It never publishes or grants permissions. CLI reads bounded regular files and never executes configuration.
 - The library performs no network requests, telemetry, or credential storage. The demo binds localhost only. Inline React style attributes require compatible CSP; strict style-src users should assess integration before adoption.
 - Server render and first live client render use base content to avoid hydration mismatch. Client activation can cause layout shift. Pricing, checkout, and legal claims must not depend on this client clock or display layer.
-- CSS colors are syntactically constrained, not automatically contrast-certified. Authors must review accessibility and content accuracy. No animations are included yet.
+- CSS colors are syntactically constrained, not contrast-certified. `seed contrast` and `seed contrast-brand` report ratios as advice only and do not gate approval. Authors must review accessibility and content accuracy. No animations are included yet.
 
 ## Contributions and releases
 

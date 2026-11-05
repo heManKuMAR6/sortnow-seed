@@ -161,7 +161,7 @@ Use this queue to divide work into bounded PRs. These are proposed lanes, not cl
 
 | Priority / lane | Deliverable | Files primarily owned | Acceptance / dependency | Status |
 | --- | --- | --- | --- | --- |
-| P1 — browser integration | Small automated coverage of approval, edit invalidation, expiration, revocation, and hydration | tests/browser, browser runner config | Choose and document the browser dependency first; test only these critical flows, not every cosmetic detail | Unassigned |
+| P1 — browser integration | Small automated coverage of approval, edit invalidation, expiration, revocation, and hydration | tests/browser, browser runner config | Choose and document the browser dependency first; test only these critical flows, not every cosmetic detail | Claimed: Claude, branch test/browser-integration, base f841ec3, implemented in PR #5, awaiting review. Founder approved Playwright, Chromium only |
 | P1 — agent evaluation | Execute the existing comparison protocol and record actual task outcomes | docs/agent-task-comparison.md and result artifacts | Same task and constraints in both runs; disclose model, environment, time, failures, and limitations; do not manufacture results | Unassigned |
 | P2 — compatibility | Exercise one additional supported React/runtime combination | compatibility fixtures, docs/compatibility.md | One targeted matrix extension; report evidence without widening support claims beyond it | Unassigned |
 | P2 — calendar design | Specify market selection, timezone authoring, recurring-event data provenance, DST cases | docs/calendar-design.md | Design review first; retain UTC runtime and explicit approvals; no adapter implementation in this lane | Unassigned |

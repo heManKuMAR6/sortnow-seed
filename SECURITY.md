@@ -16,3 +16,7 @@ This is an experimental alpha, not an audited security product. Report vulnerabi
 ## Contributions and releases
 
 Review dependency and workflow changes before running them with credentials. CI uses read-only permissions and no secrets. Never use pull_request_target to execute submitted code. Keep lockfiles and dependency audit results current. Publish npm only through an explicitly reviewed release process; no automatic publication is configured.
+
+## Brand policy and previews
+
+Optional brand policy restricts allowed areas and color values, including locked base tokens. Policy rejects incompatible approved content instead of changing its meaning. CSS variables are scoped to an opt-in wrapper; they are not a DOM sandbox. Draft previews use ephemeral approval snapshots only in an isolated demonstration pane and do not persist production approvals. Runtime accepts no arbitrary brand CSS or selectors. The host is responsible for access control and preserving sensitive descendants.

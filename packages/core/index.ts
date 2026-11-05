@@ -70,3 +70,6 @@ export function selectExperience(inputs: readonly unknown[], trustedApprovals: r
   candidates.sort((a,b)=> b.priority-a.priority || (a.id<b.id ? -1 : a.id>b.id ? 1 : 0));
   return {experience:candidates[0] ?? null,errors};
 }
+
+export {isBrand,brandAllows,createPreset} from './brand.js';
+export type {Brand,Palette,Preset,ColorToken} from './brand.js';

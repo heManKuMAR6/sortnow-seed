@@ -31,7 +31,8 @@
     "test": "npm run build && node --test tests/*.test.mjs",
     "check": "npm test && npm pack --dry-run",
     "demo": "npm run build && node scripts/demo.mjs",
-    "demo:second": "npm run build && node scripts/demo-second-app.mjs"
+    "demo:second": "npm run build && node scripts/demo-second-app.mjs",
+    "test:browser": "npm run build && playwright test"
   },
   "peerDependencies": {
     "react": ">=18 <20"
@@ -42,6 +43,7 @@
     }
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",

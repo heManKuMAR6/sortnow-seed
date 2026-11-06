@@ -30,6 +30,7 @@ The open-source runtime must work without our account, backend, telemetry, or mo
 - packages/cli: bounded JSON input; read-only help, schema export, validation, brand validation, snapshot, schedule inspection, and contrast reports for agents. All output is JSON with exit 0 or 1.
 - examples/playground: local client-rendered React demonstration with no external assets or tracking.
 - examples/second-app: independently structured fictional docs/pricing page, server rendered and hydrated, with separate configuration files and a hero-only brand policy.
+- examples/existing-project and docs/integration-recipe.md: copyable hero integration and steps for an existing React site, starting with no approvals.
 - docs/compatibility.md: what has been exercised versus only declared. docs/agent-task-comparison.md: a comparison protocol that has not been run.
 - tests: behavior/security regressions for changed contracts.
 - Future adapters (Angular, Shopify, others) share core contracts. Universal arbitrary-site restyling is not promised.
@@ -59,6 +60,10 @@ End-date semantics: lastDate is included. The experience starts at the first ins
 The owner chooses the zone; it is never inferred from a host, server, or visitor. Offsets and abbreviations are rejected. The id includes the event name, start date, and zone, so a zone edit changes the snapshot even between zones with identical instants (London and Lisbon). A name edit can leave the id unchanged only if the change falls past the truncated part of a long name.
 
 `sampleEvents` is three invented, clearly labeled entries with no time zone, not a holiday database.
+
+### Draft export
+
+The playground's Download draft JSON button saves the validated Experience object as `<id>.draft.json`, compatible with `seed validate`. It is enabled only when authoring succeeds. `examples/playground/export.mjs` re-validates before saving, so extra fields cannot be exported, and it releases the temporary object URL. Export contains no snapshot, approval, credential, or UI state, and it does not change approval state. An imported draft stays inactive until a person adds its snapshot to the host's approvals file; no SEED code derives approvals from drafts. Exported colors come from the brand the playground was using, which by default is its fictional sample. There is no installer and nothing scans or rewrites a user's project.
 
 ## 6. Brand integration decision
 
@@ -91,6 +96,8 @@ Remaining: automated browser interaction coverage (one manual Chromium pass only
 ### Phase 4 — calendar and additional adapters: first authoring feature in PR #6
 
 Implemented in PR #6: owner-selected event, IANA time zone, and date range authoring; sample events; playground controls; `seed author`. This came first at the founder's request and has no customer validation yet.
+
+Implemented in PR #7, stacked on PR #6: draft JSON download and an integration recipe for existing React sites.
 
 Planned: market selection, recurring/movable holiday data, local start times, multi-stage experiences, Angular and platform-specific integrations according to demand. Maintain explicit approvals and conflict rules.
 
@@ -166,6 +173,7 @@ Use this queue to divide work into bounded PRs. These are proposed lanes, not cl
 | P2 — compatibility | Exercise one additional supported React/runtime combination | compatibility fixtures, docs/compatibility.md | One targeted matrix extension; report evidence without widening support claims beyond it | Unassigned |
 | P2 — calendar design | Specify market selection, timezone authoring, recurring-event data provenance, DST cases | docs/calendar-design.md | Design review first; retain UTC runtime and explicit approvals; no adapter implementation in this lane | Unassigned |
 | P1 — calendar authoring | Owner-selected event, IANA time zone, and date range compile to a draft schema v1 experience | packages/core/authoring.ts, playground authoring controls, `seed author` | Runtime engine and approvals unchanged; no recurrence, feed, or publish command | Implemented in PR #6 by Claude, branch feat/calendar-authoring, base f841ec3, code head a3bc0c5, CI passed; awaiting Codex review, work stopped |
+| P1 — draft export | Playground draft download and existing-project recipe | examples/playground/export.mjs, examples/existing-project, docs/integration-recipe.md | No approval, publishing, installer, or new dependency. Depends on PR #6 | Implemented in PR #7 by Claude, branch feat/draft-export, base 5346466 (feat/calendar-authoring), awaiting review; browser check assigned below only when explicitly requested |
 | Integration / release | Review PRs, maintain guide, merge dependency order, track package namespace decision | this guide, README, release documentation | Read current branch/PR state; no publishing or deployments without explicit authorization | Codex coordination role; future run must recheck state |
 
 When context or token capacity is low: stop starting new features, keep changes on the task branch, and record a compact handoff below before yielding. Include goal, owner, base/head SHAs, changed files, completed decisions, exact verification already run, failures/blockers, and the next concrete command or action. Never rerun checks solely because a new agent took over. Delegate only a bounded independent lane when delegation is authorized, and send its file boundaries and acceptance criteria. Other agents should read the handoff and inspect git status before working, never assume a checkout is theirs or reset someone else's changes.
@@ -190,6 +198,18 @@ When context or token capacity is low: stop starting new features, keep changes 
 - Interaction with PR #5, verified open and unmerged at this handoff, so this guide's browser-coverage statements stay as they are: both PRs change package.json and package-lock.json, so whichever merges second must resolve them. tests/browser/playground.spec.mjs in #5 expects the id demo-seasonal; after both merge its ACTIVE constant must become winter-season-20261201-utc.
 - Next action: Codex reviews #6 as a non-author and applies the merge-order fix above. Local start times, if ever wanted, need explicit disambiguation (Temporal's `reject`, `earlier`, `later`).
 
+### Draft export handoff
+
+- Status: work stopped after opening the PR. Owner of record: Claude. Auto-fix is off. Do not expand scope from this lane.
+- Branch and dependency: feat/draft-export, PR #7, based on feat/calendar-authoring at 5346466 and stacked on PR #6. Do not merge before #6. After #6 merges, retarget #7 to main.
+- Changed: examples/playground/export.mjs (new), examples/playground/app.jsx, examples/existing-project/ (new), docs/integration-recipe.md (new), tests/draft-export.test.mjs (new), this guide, README.
+- Verification completed on local Node.js 25.8: TypeScript build; tests/draft-export.test.mjs (5 tests), including `seed validate` and `seed snapshot` on an exported file and a simulated browser environment for the object URL; the playground bundle compiled; a one-off render of the example showed base content with `[]` and activation only with a hand-supplied snapshot. Do not repeat these only because ownership changes.
+- Not verified: the button has not been clicked in a real browser, and the recipe has not been followed from a real tarball into a separate project.
+- Bounded browser check, for Grokbot only when explicitly assigned: run `npm run demo`, open http://127.0.0.1:4173, and download the default draft once. Confirm the filename is winter-season-20261201-utc.draft.json; `node dist/cli/index.js validate` accepts the file; the file has no snapshot; the status line still says draft; there are no console or CSP errors; and an invalid time zone disables the button. Report results without testing anything else.
+- Limitations: colors come from the playground's brand unless brand.json is edited first; one draft file holds one experience; the recipe's approval step is manual; snapshots are not authentication; React 19.3.1 is the only React version tested.
+- PR #5 was verified open and unmerged, so this guide's browser-coverage statements stay as they are. Its spec is unaffected by the new button.
+
 - 2026-11-05 consolidation decision: main replaces the stacked branches as the shared baseline. Retain feature branches; new contributions branch from refreshed main. Work allocation and context handoff must remain explicit.
 - 2026-11-05: Calendar authoring chooses temporal-polyfill 1.0.6 (FullCalendar project, MIT) over Luxon, which silently shifts nonexistent times, and over @js-temporal/polyfill, which has had no release since 2025-03. It follows the Temporal standard, so hand-written offset math is unnecessary and native Temporal can replace it later. Pinned to a three-week-old version rather than releases from the previous day; no install scripts; audit reported 0 advisories. It uses the host's Intl time-zone data, so it works offline and ships no zone database. A separate entry keeps it out of the runtime path.
 - 2026-11-05: Authoring accepts dates, not local times, for the first version; lastDate is inclusive. This avoids nonexistent and ambiguous times entirely and leaves the schema, engine, and approval mechanism unchanged.
+- 2026-11-05: Draft export stays in the playground, not core, because downloading is browser UI and agents already get the same JSON from `seed author`. No new dependency. Integration is a written recipe and copyable example, not an installer, so SEED never scans or rewrites a user's project.

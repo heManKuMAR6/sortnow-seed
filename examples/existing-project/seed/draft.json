@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "winter-season-20261201-utc",
+  "startsAt": "2026-12-01T00:00:00.000Z",
+  "endsAt": "2027-01-01T00:00:00.000Z",
+  "priority": 10,
+  "areas": [
+    "hero"
+  ],
+  "theme": {
+    "background": "#e7eee4",
+    "foreground": "#1d3029",
+    "accent": "#7a4e23",
+    "message": "A little warmth for the winter season."
+  }
+}

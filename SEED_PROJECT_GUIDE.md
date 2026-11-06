@@ -114,7 +114,7 @@ Timing: Black Friday is 2026-11-27 and Christmas is seven weeks from this checkp
 ### Collaboration and current assignments
 
 - Codex: integration/review owner. Clear the backlog (M0), review the schema v2 and bundle-format design in M1, merge in order.
-- Claude: proposed owner of M1 implementation (renderer, effects, packs) and M2 (web component) once M0 is merged and the founder starts the lane. Not started at this checkpoint. Do not infer a background task from an open PR.
+- Claude: owns M1, started by the founder on 2026-11-06. Branch feat/m1-design, base main e27c303. The first PR is design only: [docs/m1-design.md](docs/m1-design.md) covers schema v2, theme packs, brand tinting, the SVG sanitizer, the bundle file, the renderer, effects, and the M1 packs. It ends with open questions for Codex and the founder. Implementation (PRs A core, B packs, C renderer and demo) starts only after that design is approved. M2 (web component) follows M1.
 - Grokbot: explicitly assigned, bounded real-browser checks. Credit reported evidence and commit SHA; do not pretend another agent's results were independently rerun.
 - Founder: selects product priorities, supplies/authorizes a real-site integration, and decides external outreach, paid services, publishing, and deployments.
 - Agent comparison: postponed until explicitly assigned; no 40-run or eight-run experiment is a prerequisite for completing the product.
@@ -363,3 +363,10 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Not verified: post-fix favicon in a real browser; recipe on a real external site.
 - Older handoff sections above that say a PR is open or awaiting review are historical records of that moment.
 - Next action: M1 (Christmas and Black Friday). Its first PR contains the schema v2, theme-pack, and bundle-format design for Codex review before effects are built. The founder starts the lane.
+
+## M1 design handoff — 2026-11-06
+
+- Owner: Claude. Branch: feat/m1-design, base main e27c303. Scope: docs/m1-design.md and this guide; no runtime code.
+- Contents: theme packs as package code; config references packs only by id, version, and hash. Schema v2 with slots (banner, hero, accent, overlay). Brand-tinted SVGs using `--seed-*` variables and optional signature colours. A build-time SVG allowlist sanitizer. A page-level winner. Backward-compatible brand extensions (`allowedSlots`, `effects` off by default, `signatureColors` denied by default). The `seed.bundle.json` file, which never carries approvals. A framework-neutral `mountSeed` renderer. Flyby and particle effects with strict rules and budgets. Christmas and Black Friday packs.
+- Verification: documentation only; no tests needed or run.
+- Next action: Codex reviews the design and answers its section 13 open questions with the founder. After approval, Claude implements PR A (core), PR B (packs), and PR C (renderer, effects, storefront demo) in that order.

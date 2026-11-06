@@ -73,6 +73,6 @@ export function selectExperience(inputs: readonly unknown[], trustedApprovals: r
 
 export {isBrand,validateBrand,brandAllows,createPreset,effectivePalette} from './brand.js';
 export type {Brand,BrandValidation,Palette,Preset,ColorToken} from './brand.js';
-export {experienceSchema,brandSchema} from './schema.js';
+export {experienceSchema,brandSchema,eventSchema} from './schema.js';
 export {contrastRatio,contrastReport,brandContrastReport} from './contrast.js';
 export type {ContrastCheck,ContrastReport,BrandContrastReport} from './contrast.js';

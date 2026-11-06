@@ -53,13 +53,42 @@ node dist/cli/index.js schema experience
 node dist/cli/index.js validate-brand examples/playground/brand.json
 node dist/cli/index.js contrast examples/winter.json
 node dist/cli/index.js contrast-brand examples/playground/brand.json
+node dist/cli/index.js samples
+node dist/cli/index.js schema event
+node dist/cli/index.js author event.json examples/playground/brand.json
 ```
 
 All commands are read-only and return JSON. Exit 0 means the command succeeded; exit 1 means invalid arguments, file, or configuration. Errors carry a code, path, and message, and CLI-level errors add a hint. `schema` (`experience` or `brand`) prints structural JSON Schema; `validate` remains authoritative for real dates and schedule order. Contrast reports are advisory: they exit 0 even when a pair misses its minimum, so read `meetsMinimums`, and they certify nothing. Inspect is a schedule preview, never approval. After reviewing exact content, the owner stores the snapshot string in trusted approval configuration. Editing any field invalidates the stored snapshot. See [SECURITY.md](SECURITY.md) for the authorization boundary.
 
 ## Configuration
 
-See [examples/winter.json](examples/winter.json). UTC timestamps use `YYYY-MM-DDTHH:mm:ss.sssZ`; start is inclusive, end exclusive. Higher priority wins per area, with ASCII ID ordering to resolve ties. IDs must be unique. Up to 100 experiences and approvals are accepted. Invalid collections fail closed. Regional calendar conversion and recurring rules are future work.
+See [examples/winter.json](examples/winter.json). UTC timestamps use `YYYY-MM-DDTHH:mm:ss.sssZ`; start is inclusive, end exclusive. Higher priority wins per area, with ASCII ID ordering to resolve ties. IDs must be unique. Up to 100 experiences and approvals are accepted. Invalid collections fail closed. To author from local dates, see [calendar authoring](#calendar-authoring). Recurring rules and holiday data are future work.
+
+## Use a draft in your own site
+
+In the playground, author an experience and choose **Download draft JSON**. Downloading doesn't approve or publish anything. Then follow the [integration recipe](docs/integration-recipe.md) to validate the file, map SEED's variables into your hero, and approve it separately. [examples/existing-project](examples/existing-project) has the files to copy, starting with no approvals.
+
+## Calendar authoring
+
+Pick an event, an IANA time zone, and a date range. SEED compiles them into a draft experience in UTC. Review and approval work the same as for any other experience.
+
+```js
+import { authorExperience } from '@sortnow/seed/authoring';
+
+const result = authorExperience({
+  name: 'Anniversary sale',
+  timeZone: 'America/New_York', // You choose this; SEED never infers it.
+  startDate: '2027-03-14',
+  lastDate: '2027-03-14', // Included in the event.
+  preset: 'promotion',
+  message: 'Ten years of thoughtful objects.',
+  areas: ['hero'],
+}, brand);
+// result.experience.startsAt: 2027-03-14T05:00:00.000Z
+// result.experience.endsAt:   2027-03-15T04:00:00.000Z (a 23-hour day: clocks change)
+```
+
+The event runs from the start of the first day through the end of the last day in that zone. Invalid input returns `{ ok: false, errors }` with a path and message per problem. The result is always a draft: `approvalSnapshot` and owner review remain separate, and editing any date, zone, theme, or content invalidates an earlier approval. Only dates are accepted for now, not local times. Zone rules come from the host's `Intl` data, so no network is needed. The sample events are invented examples, not a holiday database.
 
 ## Architecture
 

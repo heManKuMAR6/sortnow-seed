@@ -1,0 +1,8 @@
+/* Your existing hero, with its current colors kept as the fallbacks. */
+.hero {
+  background: var(--seed-background, #ffffff);
+  color: var(--seed-foreground, #1d3029);
+}
+.hero a {
+  color: var(--seed-accent, #234b3d);
+}

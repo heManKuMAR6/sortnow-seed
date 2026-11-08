@@ -10,7 +10,6 @@
  * - The owner-supplied site description is sent to the model provider. It is treated as data, not instructions.
  * - The result is always a draft: approved is false and nothing is published.
  */
-import type Anthropic from '@anthropic-ai/sdk';
 import {authorExperience, type AuthoringResult, type EventInput} from '../core/authoring.js';
 import {validateBrand, type Brand} from '../core/brand.js';
 import type {CompiledPack, Diagnostic} from '../core/index.js';
@@ -39,15 +38,20 @@ export type AIDraftResult =
   | ({ok: true; draft: true; approved: false; proposal: AIProposal; model: string; attempts: number} & Omit<Extract<AuthoringResult, {ok: true}>, 'ok' | 'draft' | 'approved'>)
   | {ok: false; errors: Diagnostic[]; proposal?: AIProposal};
 
-/** The smallest client surface this module needs, so tests can supply a fake and the SDK stays optional. */
-export interface MessagesClient { beta: {messages: {create(params: Anthropic.Beta.MessageCreateParamsNonStreaming): Promise<Anthropic.Beta.BetaMessage>}} }
+/**
+ * The smallest client surface this module needs, so tests can supply a fake and the SDK stays optional.
+ * Defined locally so SEED's published types never require @anthropic-ai/sdk to be installed.
+ */
+export interface ModelResponse { model: string; stop_reason: string | null; content: Array<{type: string; text?: string; [key: string]: unknown}> }
+export type ModelMessage = {role: 'user' | 'assistant'; content: string | Array<Record<string, unknown>>};
+export interface MessagesClient { beta: {messages: {create(params: Record<string, unknown>): Promise<ModelResponse>}} }
 
 /** Creates an Anthropic client from the standard credential chain (ANTHROPIC_API_KEY, or an `ant auth login` profile). */
 export async function createClient(): Promise<MessagesClient> {
-  let mod: typeof import('@anthropic-ai/sdk');
-  try { mod = await import('@anthropic-ai/sdk'); }
+  let mod: {default: new () => unknown};
+  try { mod = await import('@anthropic-ai/sdk') as unknown as {default: new () => unknown}; }
   catch { throw new Error('AI drafting needs the optional dependency @anthropic-ai/sdk. Install it with: npm install @anthropic-ai/sdk'); }
-  return new mod.default();
+  return new mod.default() as MessagesClient;
 }
 
 const unique = (xs: string[]) => [...new Set(xs)].sort();
@@ -124,10 +128,10 @@ function toEvent(req: AIDraftRequest, p: AIProposal) {
   return {...base, pack: p.pack, illustration: p.illustration, icon: p.icon, decoration: p.decoration, effect: p.effect, signatureColors: p.signatureColors};
 }
 
-function parseProposal(message: Anthropic.Beta.BetaMessage): {ok: true; proposal: AIProposal} | {ok: false; errors: Diagnostic[]} {
+function parseProposal(message: ModelResponse): {ok: true; proposal: AIProposal} | {ok: false; errors: Diagnostic[]} {
   if (message.stop_reason === 'refusal') return {ok: false, errors: [{path: '$', code: 'REFUSAL', message: 'The model declined this request. Revise the description and try again.'}]};
   if (message.stop_reason === 'max_tokens') return {ok: false, errors: [{path: '$', code: 'TRUNCATED', message: 'The model response was cut off. Try again.'}]};
-  const text = message.content.find((b): b is Anthropic.Beta.BetaTextBlock => b.type === 'text')?.text;
+  const text = message.content.find(b => b.type === 'text')?.text;
   try {
     const value = JSON.parse(text ?? '') as AIProposal;
     if (typeof value.rationale !== 'string' || value.rationale.length > 600) value.rationale = String(value.rationale ?? '').slice(0, 600);
@@ -147,14 +151,14 @@ export async function draftWithAI(request: unknown, brand: unknown, options: {cl
   if (problems.length) return {ok: false, errors: problems};
   const req = request as AIDraftRequest, b = (policy as {ok: true; value: Brand}).value;
   const model = options.model ?? DEFAULT_MODEL;
-  const messages: Anthropic.Beta.BetaMessageParam[] = [{role: 'user', content: userPrompt(req, b, packs)}];
+  const messages: ModelMessage[] = [{role: 'user', content: userPrompt(req, b, packs)}];
   let last: AIProposal | undefined, lastErrors: Diagnostic[] = [];
   for (let attempt = 1; attempt <= 2; attempt++) {
     const response = await options.client.beta.messages.create({
       model, max_tokens: 4000,
       // Server-side refusal fallback: a policy decline is retried on a fallback model chosen by the API.
       betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default',
-      output_config: {effort: 'medium', format: {type: 'json_schema', schema: proposalSchema(packs, req.pack) as unknown as Record<string, unknown>}},
+      output_config: {effort: 'medium', format: {type: 'json_schema', schema: proposalSchema(packs, req.pack)}},
       system: SYSTEM, messages,
     });
     const parsed = parseProposal(response);
@@ -167,7 +171,7 @@ export async function draftWithAI(request: unknown, brand: unknown, options: {cl
     }
     lastErrors = authored.errors;
     // Append-only repair turn: return the model's own content unchanged, then the validation errors.
-    messages.push({role: 'assistant', content: response.content as Anthropic.Beta.BetaContentBlockParam[]});
+    messages.push({role: 'assistant', content: response.content as Array<Record<string, unknown>>});
     messages.push({role: 'user', content: `SEED rejected that proposal:\n${authored.errors.map(e => `- ${e.path}: ${e.message}`).join('\n')}\nPropose again, fixing these problems.`});
   }
   return {ok: false, errors: lastErrors, proposal: last};

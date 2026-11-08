@@ -166,6 +166,10 @@ React apps use `SeedRoot` from `@sortnow/seed/react`. See [docs/platforms.md](do
 - `examples/second-app`: differently structured app with server rendering and hydration (`npm run demo:second`, port 4174).
 - `tests`: security regressions, scheduling boundaries, SSR, and CLI behavior.
 
+## Releases
+
+`@sortnow/seed` is pre-1.0 and not yet on npm. Releases are published from `master` by a tagged, reviewed GitHub workflow with npm provenance. `npm run smoke:install` checks that a fresh project can install and use the package. See [CHANGELOG.md](CHANGELOG.md), and [docs/enterprise-design.md](docs/enterprise-design.md) for the planned hosted mode.
+
 ## Development
 
 `npm run check` builds, tests, and inspects package contents. `npm audit` checks known dependency advisories. Branch from `develop` as `feature/<name>` and open PRs against `develop`; `master` receives only production-ready releases from `develop`. Automated nightly review is configured separately in the owner's Codex app; it is not a GitHub-hosted merge service. Never merge absent or failing checks.

@@ -43,7 +43,7 @@ This table is the current-status record. The handoff sections further down are h
 
 | Original requirement | Actual state (on develop) | Remaining gap |
 | --- | --- | --- |
-| Easy open-source installation | Release-ready package `sortnow-seed` 0.2.0-alpha.0 on the `alpha` dist-tag; fresh-install test in CI; release workflow pins Node 22.23.4 and npm 11.21.2; GitHub `npm` environment exists | Not published. Founder publishes the placeholder from npm account `hemankumar6`, adds the trusted publisher right before tagging, merges the release PR, tags, approves, then sets `latest`. Install will be `npm install sortnow-seed`. |
+| Easy open-source installation | **On npm:** `npm install sortnow-seed` installs 0.2.0-alpha.0 (`latest`), published by hand on 2026-11-08 from develop `d260cfa` by `hemankumar6`, without provenance. Fresh-install test in CI; reviewed release workflow ready | develop is 0.2.0-alpha.1, the first workflow release with provenance. Founder adds the trusted publisher right before tagging. Pending tag cleanup: add `alpha`, remove `bootstrap`, deprecate `0.0.0-bootstrap.0` and `0.0.0-stage`. |
 | Works alongside existing frontends | One script (`<seed-root>`, about 21 KB) and React `SeedRoot` on a shared renderer; late slots decorated | Plain HTML and React are exercised. Angular, Vue, and Shopify have recipes only. **No real third-party site has been integrated yet.** |
 | Brand identity stays recognizable | Brand import from CSS or tokens (`seed init`), derived palettes, locked text colour, explicit slots; pack themes require a valid brand policy | Logo and typography are protected only by slot boundaries; mapping can misread unusual token names (shown for review) |
 | Calendar-driven occasions by market | 16 occasions across US, IN, AE, and SG with sources; planner; overrides; yearly re-planning; nothing pre-selected | Movable dates (Diwali, Eid, Lunar New Year) need yearly table updates; no packs for Thanksgiving or US Mother's Day |
@@ -553,3 +553,21 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Earlier sections of this guide that say `@sortnow/seed` are history.
 - `hemu9116` and the empty `@sortnow` org are unused and hold no packages. Removing them is optional, through the bot's email, and not required for release.
 - Verification, run once: 101 unit tests and the stranger install (fresh project, all entry points under the new name, strict types, CLI via npx).
+
+## npm package created, 2026-11-08
+
+- `sortnow-seed` exists on npm, with maintainer `hemankumar6` (2FA for authorization and publishing, security key). The founder's local publish of `0.0.0-bootstrap.0` was staged rather than published, because the account uses npm staged publishing. npm reserved the name with an empty `0.0.0-stage` version, currently `latest`. The staged bootstrap was later approved and published: registry versions are `0.0.0-stage` and `0.0.0-bootstrap.0`, with `latest` on `0.0.0-bootstrap.0` and `bin.seed` intact. Both get deprecated after the alpha becomes `latest`.
+- npm's publish-time warnings (`"bin[seed]" script name ... was invalid and removed` and the `repository.url` normalization) only rewrite `./dist/cli/index.js` to `dist/cli/index.js`. npm's normalize code keeps the bin entry. package.json now uses those normalized forms, so publishes are warning-free.
+- Next: release PR from develop to master; the trusted publisher on `sortnow-seed` (user heManKuMAR6, repository sortnow-seed, workflow release.yml, environment npm, direct `npm publish` ticked) right before the tag; tag `v0.2.0-alpha.0`; approve; then `npm dist-tag add sortnow-seed@0.2.0-alpha.0 latest`.
+
+## First npm release, 2026-11-08
+
+- What happened: while creating the package, the founder's local `npm publish --provenance=false --tag bootstrap` ran three times.
+  - `0.0.0-stage`: npm's name marker (16:34 UTC).
+  - `0.0.0-bootstrap.0`: staged, then approved (16:36).
+  - `0.2.0-alpha.0`: published by hand from develop `d260cfa`, which passed all 101 unit tests at publish time (16:37), with tag `bootstrap`.
+  - All three are by `hemankumar6`, without provenance, and include `bin.seed`.
+- Decision (Claude's recommendation, accepted): keep 0.2.0-alpha.0 as the first alpha, because npm never allows reusing a version number. `latest` now points to it, set by the founder.
+- Still for the founder: `npm dist-tag add sortnow-seed@0.2.0-alpha.0 alpha`, `npm dist-tag rm sortnow-seed bootstrap`, and deprecate `0.0.0-bootstrap.0` and `0.0.0-stage`.
+- Repository: version bumped to 0.2.0-alpha.1 on develop. README install now says `npm install sortnow-seed`. README Releases, CHANGELOG, SECURITY, and the release workflow comment describe the manual first release and the workflow-only rule from 0.2.0-alpha.1 on.
+- **Do not push `v0.2.0-alpha.0`**: the workflow would try to republish an existing version. The next tag is `v0.2.0-alpha.1`.

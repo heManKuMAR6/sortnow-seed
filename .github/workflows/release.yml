@@ -1,5 +1,5 @@
 name: Release
-# Publishes to npm only when a maintainer pushes a version tag (v0.2.0-alpha.0) that matches package.json AND a
+# Publishes to npm only when a maintainer pushes a version tag (for example v0.2.0-alpha.1) that matches package.json AND a
 # required reviewer approves the "npm" environment. Uses npm trusted publishing (OIDC) with provenance:
 # no npm token is stored in this repository. Never triggered by merges.
 # Node 22.23.4 bundles npm 10.9.9. Trusted publishing requires npm CLI >= 11.5.1 and Node >= 22.14.0

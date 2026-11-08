@@ -1,6 +1,6 @@
 {
   "name": "sortnow-seed",
-  "version": "0.2.0-alpha.0",
+  "version": "0.2.0-alpha.1",
   "description": "Scheduled Experiences & Extensible Design: occasion themes for existing websites, preserving brand identity, approved before they go live. For developers and agents.",
   "keywords": [
     "seasonal",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heManKuMAR6/sortnow-seed.git"
+    "url": "git+https://github.com/heManKuMAR6/sortnow-seed.git"
   },
   "license": "MIT",
   "type": "module",
@@ -39,7 +39,7 @@
   },
   "types": "./dist/core/index.d.ts",
   "bin": {
-    "seed": "./dist/cli/index.js"
+    "seed": "dist/cli/index.js"
   },
   "files": [
     "dist",

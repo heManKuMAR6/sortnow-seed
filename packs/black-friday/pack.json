@@ -1,0 +1,31 @@
+{
+  "packVersion": 1,
+  "id": "black-friday",
+  "version": "1.0.0",
+  "name": "Black Friday",
+  "occasions": ["black-friday", "cyber-monday"],
+  "license": "CC0-1.0",
+  "signatureColors": {"night": "#141414", "spark": "#ffc629"},
+  "illustrations": {
+    "shopping-bag": {"file": "shopping-bag.svg", "label": "Shopping bag with a sale tag", "source": "original, SortNow SEED"},
+    "price-tag": {"file": "price-tag.svg", "label": "Sale price tag", "source": "original, SortNow SEED"}
+  },
+  "icons": {
+    "tag": {"file": "icon-tag.svg", "label": "Tag", "source": "original, SortNow SEED"},
+    "bag": {"file": "icon-bag.svg", "label": "Bag", "source": "original, SortNow SEED"},
+    "bolt": {"file": "icon-bolt.svg", "label": "Lightning bolt", "source": "original, SortNow SEED"}
+  },
+  "decorations": {
+    "ribbon-corner": {"file": "ribbon-corner.svg", "source": "original, SortNow SEED"}
+  },
+  "particles": {
+    "confetti": {"file": "particle-confetti.svg", "source": "original, SortNow SEED"}
+  },
+  "copy": {
+    "hero": ["Our biggest week of the year is here.", "This year's picks, ready for the weekend."],
+    "banner": ["Black Friday week: explore this year's picks.", "Cyber Monday picks are live."]
+  },
+  "effects": {
+    "particles": {"assets": ["confetti"]}
+  }
+}

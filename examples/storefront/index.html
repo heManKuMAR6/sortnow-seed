@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fernway Home — SEED storefront demo</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="announce" data-seed-slot="banner"></div>
+  <header class="masthead">
+    <a class="logo" href="#top">Fernway<span>Home</span></a>
+    <nav aria-label="Main"><a href="#shop">Shop</a><a href="#journal">Journal</a><a href="#visit">Visit us</a></nav>
+    <button class="cart" type="button">Cart (0)</button>
+  </header>
+  <main id="top">
+    <section class="hero" data-seed-slot="hero accent" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">Objects for slow mornings</h1>
+        <p>Hand-thrown ceramics, linen, and small-batch goods from makers we know by name.</p>
+        <a class="button" href="#shop">Shop the collection</a>
+      </div>
+    </section>
+    <section id="shop" class="products" aria-label="Featured products">
+      <article class="card"><div class="swatch clay"></div><h2>Stoneware mug</h2><p>Speckled glaze, 350 ml</p><button type="button" class="add">Add to cart</button></article>
+      <article class="card"><div class="swatch linen"></div><h2>Linen napkins</h2><p>Set of four, oat</p><button type="button" class="add">Add to cart</button></article>
+      <article class="card"><div class="swatch oak"></div><h2>Oak serving board</h2><p>Oiled, 40 cm</p><button type="button" class="add">Add to cart</button></article>
+      <article class="card"><div class="swatch wax"></div><h2>Beeswax candles</h2><p>Pair, hand-dipped</p><button type="button" class="add">Add to cart</button></article>
+    </section>
+  </main>
+  <aside class="owner" aria-label="SEED owner preview">
+    <details open><summary><h2>SEED owner preview</h2></summary>
+    <p class="note">Not part of the store. Approvals here live in memory only; a real site keeps them in a reviewed file.</p>
+    <fieldset>
+      <legend>Preview date</legend>
+      <div class="dates">
+        <button type="button" data-date="2026-11-07">Today</button>
+        <button type="button" data-date="2026-11-28">Black Friday</button>
+        <button type="button" data-date="2026-12-12">Christmas</button>
+        <button type="button" data-date="2026-12-27">After</button>
+      </div>
+      <label>Date (12:00 UTC) <input type="date" id="date" value="2026-12-12"></label>
+    </fieldset>
+    <label class="check"><input type="checkbox" id="draft-preview"> Preview drafts (not approval)</label>
+    <label class="check"><input type="checkbox" id="reduce"> Simulate reduced motion</label>
+    <ul id="experiences"></ul>
+    <button type="button" id="replay">Replay effect</button>
+    </details>
+    <p id="status" role="status"></p>
+  </aside>
+  <script type="module" src="/store.js"></script>
+</body>
+</html>

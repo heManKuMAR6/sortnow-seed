@@ -14,5 +14,5 @@ export default defineConfig({
   retries: 0, // A flaky critical flow should be visible, not retried away.
   reporter: 'list',
   use: {...devices['Desktop Chrome'], trace: 'retain-on-failure'},
-  webServer: [server('scripts/demo.mjs', 4183), server('scripts/demo-second-app.mjs', 4184)],
+  webServer: [server('scripts/demo.mjs', 4183), server('scripts/demo-second-app.mjs', 4184), server('scripts/demo-storefront.mjs', 4185)],
 });

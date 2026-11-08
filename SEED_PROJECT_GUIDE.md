@@ -202,7 +202,7 @@ Before/after previews must distinguish proposed appearance from approved/schedul
 
 ### Phase 0 — identity and repository: complete
 
-Public sortnow-seed repository exists. main is the default branch. MIT license and security documentation are on main. Nightly Codex automation was created for 23:00 America/Chicago and corrected from master to main. It is local-app scheduling, not a guaranteed always-on GitHub merge service.
+Public sortnow-seed repository exists. develop is the default branch; master holds production releases (renamed from main on 2026-11-08). MIT license and security documentation are on main. Nightly Codex automation was created for 23:00 America/Chicago and corrected from master to main. It is local-app scheduling, not a guaranteed always-on GitHub merge service.
 
 ### Phase 1 — usable foundation: merged to main, PR #1
 
@@ -242,7 +242,7 @@ Known limits: snapshots are not authentication; same-origin compromised code can
 
 ## 9. Development workflow and proportionate verification
 
-Use feature branches and PRs against current main. PRs #1, #2, and #3 were reviewed and merged in dependency order on 2026-11-05. Their feature branches are historical snapshots, not the integration baseline. New work starts from refreshed main; explicitly document any necessary stacked dependency. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
+Branching model (founder decision, 2026-11-08): `master` holds production-ready releases only. `develop` is the integration branch and the GitHub default. All new work starts from refreshed `develop` on a `feature/<name>` branch (or `fix/<name>`) and merges into `develop` by PR. `master` receives only release merges from `develop` once that code is production ready, by the founder's decision. Feature branches are deleted after merging. Explicitly document any necessary stacked dependency. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
 
 Owner preference: avoid redundant testing. Run targeted checks for changed behavior and security boundaries. Build when types or integration change. Do not repeat audits, full suites, package installations, or unrelated checks without a new dependency, failure, or relevant risk. Documentation-only changes need review, not runtime tests. CI can provide one broad integration gate for submitted code. Report precise results and untested limits.
 
@@ -268,6 +268,8 @@ Read this guide, git status, README, and relevant package files. Install with np
 - 2026-11-05: Brand policy vetoes incompatible approved content rather than silently changing it; preset output remains schema v1.
 
 - 2026-11-05: Founder's original brief recorded at the top of this guide as the reference for all plans. Review found the visible product (packs, effects, calendars, AI, other frameworks) had fallen behind safety tooling. Founder approved the plan of record: theme packs as the unit, brand-tinted SVG illustrations, a fixed effects library, more slots, a framework-neutral renderer with a web component for universality, a data-driven occasion calendar, AI as an author only, and the backend as the enterprise delivery channel. Milestones M0–M6 replace sequence A–G; M1 (Christmas and Black Friday) is the next lane after consolidation. Removed the earlier claim that holiday effects are low-differentiation.
+
+- 2026-11-08: Adopted git-flow: master (production), develop (integration, default), feature branches into develop. main renamed to master.
 
 - 2026-11-05: Phase 2 implements three presets, scoped variables, runtime brand vetoes, before/after comparison, and draft/approved view separation. No new dependencies. Validation: one TypeScript build passed, all six targeted brand tests passed, and demo bundling passed; visual browser QA remains outstanding.
 - 2026-11-05: Contrast reports are advisory: they never change validation, approval, selection, or rendering, because accessible palette enforcement remains an open decision. Ratios are judged exactly and displayed rounded down, and accent is held to the 4.5:1 text minimum because the documented mapping uses it for links.
@@ -382,3 +384,11 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Verification run once: all 63 unit tests (9 new in tests/m1.test.mjs), all 13 browser tests (5 new in tests/browser/storefront.spec.mjs; one test assumption fixed and that file rerun), and a manual Chromium check of both packs at 1280 px and 375 px. The 640 px hero fallback was added after the browser run and checked manually only.
 - Not done: authoring and CLI generation of v2 drafts (owners or agents write v2 JSON by hand or copy the demo); the playground export still writes v1; the React `SeedArea` does not render v2 yet (M2); the hero fallback does not re-evaluate on resize; the founder has not reviewed the artwork; performance budgets are not measured (Grokbot, when assigned).
 - Next: founder reviews the demo and artwork; Codex reviews PRs #10 and this one; then M2 (web component, React on the renderer) or M1 polish from feedback.
+
+## Branch consolidation — 2026-11-08
+
+- Founder decision: git-flow with only two long-lived branches. `master` is production-ready code; `develop` is integration and the GitHub default; new work goes `feature/<name>` → PR → `develop`; releases go `develop` → PR → `master`.
+- Done by Claude: renamed `main` to `master` on GitHub (it stays at e27c303, PRs #1–#9, the first consolidated code). Created `develop` from it and merged PR #11 (M1) into `develop` at 4e86286. Closed PR #10, whose design commit is included in #11. Made `develop` the default branch. Deleted all 11 merged feature, fix, test, and docs branches after confirming each was already in `master` or in #11.
+- CI: pushes run only on `master` and `develop`, and pull requests run on PRs into either, so feature branches no longer run CI twice.
+- References to `main` in older handoff sections are historical and now mean `master`.
+- Next release to `master`: M1 when the founder judges it production ready, after Codex review and artwork review.

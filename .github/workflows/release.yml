@@ -1,0 +1,37 @@
+name: Release
+# Publishes to npm only when a maintainer pushes a version tag (v0.2.0-alpha.0) that matches package.json AND a
+# required reviewer approves the "npm" environment. Uses npm trusted publishing (OIDC) with provenance:
+# no npm token is stored in this repository. Never triggered by merges.
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - name: Tag matches package version
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - name: Tag is on master
+        run: |
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/master
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm run smoke:install
+      - run: npm audit --audit-level=high
+      - run: npm publish --provenance

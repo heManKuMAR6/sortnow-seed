@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <g transform="translate(80 80)">
+    <rect x="-52" y="-52" width="104" height="104" fill="var(--seed-sig-emerald)"/>
+    <rect x="-52" y="-52" width="104" height="104" transform="rotate(45)" fill="var(--seed-sig-emerald)"/>
+    <rect x="-44" y="-44" width="88" height="88" fill="none" stroke="var(--seed-sig-gold)" stroke-width="2.4"/>
+    <rect x="-44" y="-44" width="88" height="88" transform="rotate(45)" fill="none" stroke="var(--seed-sig-gold)" stroke-width="2.4"/>
+    <circle r="30" fill="var(--seed-sig-gold)"/>
+    <rect x="-17" y="-17" width="34" height="34" fill="var(--seed-sig-emerald)"/>
+    <rect x="-17" y="-17" width="34" height="34" transform="rotate(45)" fill="var(--seed-sig-emerald)"/>
+    <circle r="8" fill="var(--seed-sig-gold)"/>
+  </g>
+</svg>

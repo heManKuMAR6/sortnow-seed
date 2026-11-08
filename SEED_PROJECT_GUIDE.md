@@ -444,3 +444,12 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Verification, run once: 86 unit tests (7 new in tests/m4.test.mjs) and 19 browser tests (1 new), all passed first time; checked manually in Chromium that pasted colours drive the approved pack preview.
 - Limits: no reading of computed styles from a live URL (deliberate: no network, no scanning). Roles can be mis-mapped in unusual naming schemes, which is why the mapping is shown for review. Font and logo protection is still by slot boundaries, not imported.
 - Next: Eid and Halloween packs, recurrence (re-plan next year from this year's choices), then M5 AI drafting.
+
+## Eid and Halloween packs, 2026-11-08
+
+- Owner: Claude. Branch feature/eid-halloween-packs from develop 87e1b7f, PR into develop.
+- Eid pack: crescent with a hanging lantern, an eight-point geometric star, crescent and lantern icons, a lantern corner, and gold star particles. Signature colours are gold, emerald, and night. No figures or religious text. Used by both Eid al-Fitr and Eid al-Adha, whose dates stay flagged to confirm locally.
+- Halloween pack: friendly jack-o'-lantern, moon with bats, and a three-bat flight for the fly-by. Also pumpkin and bat icons, a cobweb corner, and autumn-leaf particles. The bats have a thin moonlight outline so the fly-by stays visible on dark sites; this was found by reviewing the artwork on light and dark backgrounds.
+- The occasion catalogue now points Eid al-Fitr, Eid al-Adha, and Halloween at these packs; Thanksgiving and US Mother's Day still plan as colours only. Nine packs in total. The single-file script is about 20.8 KB gzipped (24 KB budget). Existing pack hashes are unchanged, so existing approvals and demo bundles stay valid.
+- Verification, run once: all 87 unit tests; one earlier test used "halloween" as its example of a missing pack and was updated, then that file was rerun. Browser tests were not rerun because no renderer, element, or playground code changed. Artwork was reviewed on light and dark backgrounds in Chromium.
+- Next: yearly re-planning (next year's drafts from this year's choices), then M5 AI drafting, or a release from develop to master.

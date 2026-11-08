@@ -126,7 +126,7 @@ planExperiences({markets: ['IN', 'AE'], from: '2026-11-08', timeZone: 'Asia/Duba
   occasions: ['national-day-ae-2026', 'christmas-2026']}, brand); // -> one draft bundle; overlaps reported
 ```
 
-CLI: `seed occasions IN,AE 2026-11-08 120` and `seed plan PLAN_FILE BRAND_FILE`. In the playground, use **Plan by market**. Installed packs: Christmas, Black Friday, New Year, Diwali, Lunar New Year, Valentine's Day, and Celebration (for national days, using brand colours and bunting rather than flags).
+CLI: `seed occasions IN,AE 2026-11-08 120` and `seed plan PLAN_FILE BRAND_FILE`. In the playground, use **Plan by market**. Installed packs: Christmas, Black Friday, New Year, Diwali, Lunar New Year, Valentine's Day, Eid, Halloween, and Celebration (for national days, using brand colours and bunting rather than flags).
 
 ## Any website: plain HTML, React, Angular, Vue, Shopify
 

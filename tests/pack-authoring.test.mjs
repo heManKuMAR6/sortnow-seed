@@ -47,7 +47,7 @@ test('explicit choices the brand or pack forbids are errors, never silently drop
   errorAt({decoration: 'holly-corner'}, 'decoration', 'BRAND_AREA', legacy);
   errorAt({pack: 'black-friday', preset: 'promotion', effect: 'flyby'}, 'effect', 'EFFECT');
   errorAt({illustration: 'gift'}, 'illustration', 'ASSET');
-  errorAt({pack: 'halloween'}, 'pack', 'PACK');
+  errorAt({pack: 'not-a-pack'}, 'pack', 'PACK');
   errorAt({pack: undefined, effect: 'flyby'}, 'effect', 'PACK_REQUIRED');
   errorAt({signatureColors: 'yes'}, 'signatureColors', 'BOOLEAN');
 });

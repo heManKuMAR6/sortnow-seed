@@ -1,0 +1,10 @@
+{
+  "packVersion": 1, "id": "eid", "version": "1.0.0", "name": "Eid", "occasions": ["eid-al-fitr", "eid-al-adha"], "license": "CC0-1.0",
+  "signatureColors": {"gold": "#c9a227", "emerald": "#0f6b4f", "night": "#14213d"},
+  "illustrations": {"crescent-lantern": {"file": "crescent-lantern.svg", "label": "Crescent moon with a hanging lantern", "source": "original, SortNow SEED"}, "geometric-star": {"file": "geometric-star.svg", "label": "Eight-point geometric star", "source": "original, SortNow SEED"}},
+  "icons": {"crescent": {"file": "icon-crescent.svg", "label": "Crescent and star", "source": "original, SortNow SEED"}, "lantern": {"file": "icon-lantern.svg", "label": "Lantern", "source": "original, SortNow SEED"}},
+  "decorations": {"lantern-corner": {"file": "lantern-corner.svg", "source": "original, SortNow SEED"}},
+  "particles": {"star": {"file": "particle-star.svg", "source": "original, SortNow SEED"}},
+  "copy": {"hero": ["Eid Mubarak to everyone celebrating.", "Wishing you and your family a blessed Eid."], "banner": ["Eid Mubarak from all of us.", "Our Eid hours are on the visit page."]},
+  "effects": {"particles": {"assets": ["star"]}}
+}

@@ -462,3 +462,19 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Playground: Download plan choices (`*.plan.json`, no approvals) and Plan the same occasions next year, which shows waiting occasions and notes.
 - Verification, run once: unit tests (5 new in tests/replan.test.mjs; one quoting typo fixed, then that file rerun) and the playground browser tests (9 passed, 1 new).
 - Next: M5 AI drafting, or a release from develop to master.
+
+## M5 handoff: AI drafting, 2026-11-08
+
+- Owner: Claude. Branch feature/m5-ai-drafting from develop 3998719, PR into develop.
+- `@sortnow/seed/ai` (packages/ai): `draftWithAI(request, brand, {client})` and `seed ai-draft REQUEST_FILE BRAND_FILE`.
+  - Request: description (1–2000 characters), event fields, optional pack restriction.
+  - The model uses structured outputs (`output_config.format` json_schema). The pack, illustration, icon, decoration, effect, and preset are enums built from the installed packs; only message and rationale are free text.
+  - The proposal goes through `authorExperience`, so brand rules, asset-pack matching, and text validation apply. On rejection, one append-only repair turn returns the model's content unchanged plus SEED's errors.
+  - The result is a draft with `approved: false`, the proposal, its rationale, and the attempt count.
+  - Refusal and truncation stop reasons are handled; provider errors are mapped to plain messages without echoing credentials.
+- Model and API choices follow the claude-api skill: model `claude-opus-5-5`, effort `medium` (set explicitly), thinking left at the model default, `max_tokens` 4000 for a short JSON answer, and server-side refusal fallback (`betas: ['server-side-fallback-2026-07-01']`, `fallbacks: 'default'`).
+- Dependency: `@anthropic-ai/sdk` 1.3.0, pinned exactly and released 2026-10-23, installed with --ignore-scripts; the audit reported 0 vulnerabilities. It is an optional peer dependency and a dev dependency, loaded only by dynamic import in `createClient()`. Credentials come from the SDK's standard chain (ANTHROPIC_API_KEY or an `ant auth login` profile).
+- Trust boundaries: the site description is wrapped as data and the system prompt says to treat instructions in it as text. The model cannot add markup, URLs, code, or artwork. Nothing is approved or published. No AI code appears in dist/core, render, element, react, or seed-element.js, enforced by a test.
+- Verification, run once: 99 unit tests (7 new in tests/m5.test.mjs with a fake client covering the request shape, enums, repair, brand override, refusal, truncation, bad output, and input checks). **No live model call was made**: it costs money on the founder's account and needs their go-ahead. The playground has no AI panel, deliberately, because a browser would expose the key.
+- Live smoke test (2026-11-08, founder-approved): the request reached the Claude API with the founder's key and was rejected with 400 "credit balance is too low". No generation ran and nothing was charged. This exposed an unhelpful CLI message, fixed by `describeProviderError`, which passes on the provider's own explanation (capped, control characters stripped, never credentials) and is covered by a test. The model output itself is still unverified live.
+- Next: rerun the smoke test after adding API credits; then M6 (npm release, and the hosted backend where AI drafting can run server-side for teams).

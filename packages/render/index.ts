@@ -21,11 +21,15 @@ export interface MountOptions {
   /** 'reduce' forces the static fallback; 'auto' follows the visitor's settings and screen. */
   motion?: Motion;
   onChange?: (state: {experience: ExperienceV2 | null; errors: Diagnostic[]}) => void;
+  /** Decorate slots that appear after mounting (single-page app routes, late templates). Default true. */
+  watch?: boolean;
 }
 export interface SeedMount {
   update(next?: Partial<Pick<MountOptions, 'experiences' | 'approvals' | 'now' | 'motion' | 'brand'>>): void;
   /** Plays the current experience's effect again (preview tooling). */
   replay(): void;
+  /** Decorates any slots that were added since the last pass. Rarely needed: new slots are watched by default. */
+  refresh(): void;
   destroy(): void;
   readonly current: ExperienceV2 | null;
 }
@@ -41,11 +45,12 @@ export function mountSeed(options: MountOptions): SeedMount {
   const doc = (root as Element).ownerDocument ?? (root as Document);
   const undo: (() => void)[] = [];
   let key = '', current: ExperienceV2 | null = null, effect: EffectHandle | null = null, timer: ReturnType<typeof setInterval> | undefined;
+  let active: {e: ExperienceV2; pack: CompiledPack; vars: Record<string, string>} | null = null, pending = false;
 
   const restore = () => {
     effect?.cancel(); effect = null;
     while (undo.length) undo.pop()!();
-    current = null;
+    current = null; active = null;
   };
   const setStyle = (el: HTMLElement, prop: string, value: string) => {
     const before = el.style.getPropertyValue(prop), priority = el.style.getPropertyPriority(prop), hadStyle = el.hasAttribute('style');
@@ -74,14 +79,26 @@ export function mountSeed(options: MountOptions): SeedMount {
     return el;
   };
 
+  const slotsIn = (scope: ParentNode) => Array.from(scope.querySelectorAll<HTMLElement>('[data-seed-slot]'));
+  /** Decorates slots the current experience has not touched yet. Safe to call repeatedly. */
+  function decorateNew() {
+    pending = false;
+    if (!active) return;
+    for (const el of slotsIn(root)) if (el.getAttribute('data-seed-experience') !== active.e.id) decorate(el, active.e, active.pack, active.vars);
+  }
   function render(e: ExperienceV2, pack: CompiledPack) {
     const vars: Record<string, string> = {'--seed-background': e.palette.background, '--seed-foreground': e.palette.foreground, '--seed-accent': e.palette.accent};
     // Signature colours the experience did not choose (or the brand denied) fall back to the brand accent.
     for (const [name, hex] of Object.entries(pack.signatureColors)) vars[`--seed-sig-${name}`] = e.signatureColors.includes(name) ? hex : e.palette.accent;
-    for (const el of Array.from(root.querySelectorAll<HTMLElement>('[data-seed-slot]'))) {
+    active = {e, pack, vars};
+    for (const el of slotsIn(root)) decorate(el, e, pack, vars);
+    effect = runEffect(doc, e, pack, vars, opts.motion);
+  }
+  function decorate(el: HTMLElement, e: ExperienceV2, pack: CompiledPack, vars: Record<string, string>) {
+    {
       const names = (el.getAttribute('data-seed-slot') ?? '').split(/\s+/);
       const used = names.filter(n => n === 'banner' || n === 'hero' || n === 'accent').filter(n => e.slots[n as 'banner'] !== undefined);
-      if (!used.length) continue;
+      if (!used.length) return;
       setAttr(el, 'data-seed-experience', e.id);
       for (const [k, v] of Object.entries(vars)) setStyle(el, k, v);
       const tint = el.getAttribute('data-seed-mode') !== 'variables';
@@ -120,8 +137,17 @@ export function mountSeed(options: MountOptions): SeedMount {
         add(el, deco);
       }
     }
-    effect = runEffect(doc, e, pack, vars, opts.motion);
   }
+  // New slots (route changes, late templates) are decorated in place without restarting the effect.
+  const ownNode = (n: Node) => n instanceof Element && (n.hasAttribute('data-seed-part') || n.hasAttribute('data-seed-overlay') || !!n.closest('[data-seed-part]'));
+  const observer = opts.watch !== false && typeof MutationObserver !== 'undefined' ? new MutationObserver(records => {
+    if (!active || pending) return;
+    const fresh = records.some(r => r.type === 'attributes'
+      ? (r.target as Element).hasAttribute('data-seed-slot')
+      : Array.from(r.addedNodes).some(n => n instanceof Element && !ownNode(n) && (n.hasAttribute('data-seed-slot') || !!n.querySelector('[data-seed-slot]'))));
+    if (fresh) { pending = true; queueMicrotask(decorateNew); }
+  }) : null;
+  observer?.observe(root, {childList: true, subtree: true, attributes: true, attributeFilter: ['data-seed-slot']});
 
   function apply() {
     const now = opts.now ?? Date.now();
@@ -147,7 +173,8 @@ export function mountSeed(options: MountOptions): SeedMount {
       forgetEffect(doc.defaultView, current.id);
       key = ''; apply();
     },
-    destroy() { clearInterval(timer); doc.removeEventListener('visibilitychange', apply); restore(); key = ''; },
+    refresh() { decorateNew(); },
+    destroy() { observer?.disconnect(); clearInterval(timer); doc.removeEventListener('visibilitychange', apply); restore(); key = ''; },
     get current() { return current; },
   };
 }

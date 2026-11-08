@@ -16,7 +16,9 @@
     "./authoring": "./dist/core/authoring.js",
     "./react": "./dist/react/index.js",
     "./render": "./dist/render/index.js",
-    "./packs": "./dist/packs/index.js"
+    "./packs": "./dist/packs/index.js",
+    "./element": "./dist/element/index.js",
+    "./seed-element.js": "./dist/seed-element.js"
   },
   "types": "./dist/core/index.d.ts",
   "bin": {
@@ -29,14 +31,15 @@
     "SECURITY.md"
   ],
   "scripts": {
-    "build": "node scripts/build-packs.mjs --check && tsc",
+    "build": "node scripts/build-packs.mjs --check && tsc && node scripts/build-element.mjs",
     "test": "npm run build && node --test tests/*.test.mjs",
     "check": "npm test && npm pack --dry-run",
     "demo": "npm run build && node scripts/demo.mjs",
     "demo:second": "npm run build && node scripts/demo-second-app.mjs",
     "test:browser": "npm run build && playwright test",
     "packs": "node scripts/build-packs.mjs",
-    "demo:store": "npm run build && node scripts/demo-storefront.mjs"
+    "demo:store": "npm run build && node scripts/demo-storefront.mjs",
+    "demo:html": "npm run build && node scripts/demo-plain.mjs"
   },
   "peerDependencies": {
     "react": ">=18 <20"

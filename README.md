@@ -105,6 +105,18 @@ const result = authorExperience({
 
 Effects and signature colours stay off until the integrator turns them on in `brand.json` (`"effects": "on"`, `"signatureColors": "allow"`, and `allowedSlots`). Explicit choices that the brand forbids return errors rather than being silently dropped. In the playground, choose **Theme pack** and download the result as a `.bundle.json`. `seed author EVENT_FILE BRAND_FILE` does the same from the command line. Render it with `mountSeed` from `@sortnow/seed/render` (see `examples/storefront`).
 
+## Any website: plain HTML, React, Angular, Vue, Shopify
+
+One self-contained script (`dist/seed-element.js`, about 13 KB gzipped, no framework) adds `<seed-root>`. Mark your own elements with `data-seed-slot="banner"`, `"hero accent"`, and so on:
+
+```html
+<script type="module" src="/seed-element.js"></script>
+<seed-root bundle="/seed/seed.bundle.json" approvals="/seed/approvals.json" brand="/seed/brand.json"></seed-root>
+<section class="hero" data-seed-slot="hero accent">…your hero…</section>
+```
+
+React apps use `SeedRoot` from `@sortnow/seed/react`. See [docs/platforms.md](docs/platforms.md) for React, Angular, Vue, and Shopify, and `npm run demo:html` for a framework-free example on port 4176.
+
 ## Architecture
 
 - `packages/core`: typed contracts, validation, exact-content approval snapshots, deterministic selection.

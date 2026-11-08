@@ -42,7 +42,7 @@ This is not a pivot into a generic campaign dashboard, a website builder, a test
 | Original requirement | Actual state | Remaining gap |
 | --- | --- | --- |
 | Easy open-source installation | Public GitHub repo and locally installable tarball | Verify namespace, simplify onboarding, and publish a reviewed npm alpha |
-| Works alongside existing frontends | React adapter; M1 adds a framework-neutral renderer (`@sortnow/seed/render`) demonstrated on a plain HTML storefront | Customer-site adoption and additional adapters; universal support is not implemented |
+| Works alongside existing frontends | M2: one self-contained script with `<seed-root>`/`<seed-area>` for plain HTML, Angular, Vue, and Shopify; React `SeedRoot`; both on the shared renderer. Exercised: plain HTML and React | Customer-site adoption and additional adapters; universal support is not implemented |
 | Brand identity stays recognizable | Color palettes, locked tokens, allowed banner/hero areas | Brand setup UX, approved assets/content slots, richer design packs; no automatic logo/typography protection |
 | Calendar-driven seasonal changes | UTC runtime and date/time-zone authoring on main (PR #6) | selected-market event calendars, editable yearly planning, recurrence authoring |
 | Preview, approval, start/end, restoration | Implemented on main with trusted-host snapshots | Production approval UX, revocation/delivery choices, explicit security boundaries |
@@ -401,3 +401,15 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Verification, run once: all unit tests (5 new in tests/pack-authoring.test.mjs; the brand schema-alignment test now allows optional fields), and all browser tests (1 new playground pack test). Two new-test mistakes and two ambiguous locators were fixed, and only the affected files were rerun.
 - Limits: React `SeedArea` still renders only v1 (M2); in the playground the renderer adds nodes inside a React-managed hero, which is fine for this static component but is not a pattern for dynamic React content until M2. Effect timing, direction, and density use fixed defaults (4.5 s, left to right, light) that are not exposed in the form.
 - Next: M2, the `<seed-area>` web component with React rebuilt on the renderer.
+
+## M2 handoff — universal integration, 2026-11-08
+
+- Owner: Claude. Branch feature/m2-universal from develop c5a2535, PR into develop.
+- Renderer: `mountSeed` now watches for slots added after mounting (single-page app routes, late templates) and decorates them in place without restarting the effect. It ignores its own nodes and adds `refresh()`.
+- Custom elements (packages/element): `<seed-root>` loads the bundle, approvals, and brand only from the page's own origin, or from inline `<script type="application/json" data-seed>` children, with a 256 KB limit each. It checks them, mounts the renderer on the document, and reports `data-state` plus `seed-change` and `seed-error` events. `preview-at` and `motion` are observed attributes; an unreadable `preview-at` fails closed. The `config` property is for frameworks that import JSON. `<seed-area slots>` is an optional wrapper. scripts/build-element.mjs bundles everything, including the installed packs, into dist/seed-element.js (about 13 KB gzipped, 24 KB budget, no React). It runs as part of `npm run build`. Package exports: `./element`, `./seed-element.js`.
+- React: `SeedRoot` (packs passed explicitly; optional `root` ref to scope it) renders nothing on the server and activates after mount. The playground pack preview now uses it. `SeedArea` remains the v1 component.
+- Example: examples/plain-html, a fictional bakery with its own brand, no framework, served by `npm run demo:html` on port 4176. Its approvals file stands in for a reviewed file and contains exact snapshots of its bundle.
+- Docs: docs/platforms.md covers plain HTML, React, Angular, Vue, and Shopify. Angular, Vue, and Shopify snippets are marked as not run here; no such projects or dependencies were added.
+- Verification, run once: all 73 unit tests (5 new in tests/m2.test.mjs) and all 17 browser tests (3 new in tests/browser/plain-html.spec.mjs: themed page with no React global, date switching, late slots and the seed-area wrapper, broken approvals failing closed). The plain HTML page was checked manually in Chromium with no console errors.
+- Limits: Angular, Vue, and Shopify are unverified in real projects. Live mode on a real site still relies on the visitor's clock. Two `<seed-root>` elements on one page would both decorate it; use one. In React, a slot container whose only child is text that React replaces would lose SEED's parts until the next pass.
+- Next: founder review of M1 and M2, then a release from develop to master, or M3 (occasion calendar and more packs).

@@ -2,7 +2,16 @@
 
 All notable changes to `sortnow-seed`. This project is pre-1.0: minor versions may change contracts, and every change that affects stored experiences or approvals is called out.
 
-## 0.2.0-alpha.0 (unreleased)
+## 0.2.0-alpha.1 (unreleased)
+
+### Changed
+- Package name is `sortnow-seed`, unscoped and owned by the maintainer's npm account; `@sortnow/seed` was never published.
+- `bin` and `repository` use npm's normalized forms, so publishing prints no warnings.
+- The first release through the reviewed workflow, with npm trusted publishing and provenance.
+
+## 0.2.0-alpha.0 (2026-11-08)
+
+Published to npm by hand from `develop` commit `d260cfa`, without provenance, and later made `latest`. The contents are the tested `develop` code, with all unit tests passing at publish time.
 
 Everything below was merged to `develop` between 2026-11-05 and 2026-11-08.
 
@@ -24,7 +33,6 @@ Everything below was merged to `develop` between 2026-11-05 and 2026-11-08.
 
 ### Compatibility
 - Schema v1 experiences, approvals, `selectExperience`, and React `SeedArea` behave as in 0.1.0.
-- This version is not released. The release that publishes it uses the `alpha` dist-tag (`npm install sortnow-seed@alpha`) and does not move `latest`.
 
 ## 0.1.0-alpha.1
 

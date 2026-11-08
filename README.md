@@ -105,6 +105,16 @@ const result = authorExperience({
 
 Effects and signature colours stay off until the integrator turns them on in `brand.json` (`"effects": "on"`, `"signatureColors": "allow"`, and `allowedSlots`). Explicit choices that the brand forbids return errors rather than being silently dropped. In the playground, choose **Theme pack** and download the result as a `.bundle.json`. `seed author EVENT_FILE BRAND_FILE` does the same from the command line. Render it with `mountSeed` from `@sortnow/seed/render` (see `examples/storefront`).
 
+## Bring your own brand
+
+Point SEED at the stylesheet or design-tokens file that defines your colours. It never scans your project.
+
+```sh
+npx seed init src/styles/theme.css     # or tokens.json (W3C $value, Style Dictionary, or nested)
+```
+
+SEED reads colour values only (hex, rgb, hsl, and `var()` references between colour variables). It maps background, text, and accent by name, or infers them from the colours when names don't say. It derives seasonal, promotion, and launch palettes as gentle tints of your own colours, keeps your text colour locked, and darkens any accent that would not be readable (4.5:1), noting each change. The output is a draft `brand.json` for you to review and save. Effects and pack signature colours stay off until you set `"effects": "on"` and `"signatureColors": "allow"`. In the playground, use **Your brand** to paste CSS, preview every pack in your colours, and download `brand.json`.
+
 ## Plan by market: upcoming occasions
 
 Choose the markets your audience is in (US, India, UAE, Singapore) and SEED lists what is coming up, with theme windows, suggested packs, and the source for each date. **SEED never selects occasions for you.** Religious, national, and cultural days appear only as choices, and moon-sighting or almanac dates (Diwali, Eid, Lunar New Year) are marked to confirm locally. Years without published dates are not listed rather than guessed.

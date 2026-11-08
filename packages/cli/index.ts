@@ -17,6 +17,7 @@ const help={
     {command:'validate FILE',description:'Validate one experience (v1 or v2) or a bundle, including real dates, schedule order, and v2 pack references against installed packs.'},
     {command:'occasions MARKETS FROM_DATE [DAYS]',description:'List upcoming occasions for comma-separated markets (US,IN,AE,SG) from a date, default 120 days, with dates, theme windows, suggested packs, and sources. SEED never selects occasions for you; confirm=true marks moon-sighting or almanac dates to verify.'},
     {command:'plan PLAN_FILE BRAND_FILE',description:'Turn the occasions you chose into one draft bundle: {markets, from, days?, timeZone, areas, occasions: [ids], overrides?}. Reports overlaps. Does not approve or publish.'},
+    {command:'init FILE',description:'Propose a brand.json from a CSS file or design-tokens JSON you point to (it never scans your project). Reads colour values only, maps background, text, and accent, derives palettes, and fixes accent contrast. Effects and signature colours stay off. Prints a draft for review; writes nothing.'},
     {command:'packs',description:'List installed theme packs with id, version, and hash.'},
     {command:'pack ID',description:'Describe one pack: asset ids, effects, copy suggestions, and signature colours. Artwork is not printed.'},
     {command:'validate-brand FILE',description:'Validate a brand policy; does not approve any experiences.'},
@@ -31,7 +32,7 @@ const help={
   exitCodes:{success:0,invalidInput:1},
   authorization:'All commands are read-only. Store snapshots in trusted configuration only after owner review. No publish or approve command exists.',
 };
-async function readJson(path: string) {
+async function readJson(path: string, raw = false) {
   // Nonblocking open prevents FIFOs from hanging before the regular-file check on POSIX.
   const handle=await open(path,constants.O_RDONLY | constants.O_NONBLOCK);
   try {
@@ -42,6 +43,7 @@ async function readJson(path: string) {
     let total=0;
     while(total<buffer.length) { const {bytesRead}=await handle.read(buffer,total,buffer.length-total,null); if(!bytesRead)break; total+=bytesRead; }
     if(total>65536)throw new InputError('FILE_SIZE','Input exceeds 64 KiB.',path,'Reduce the JSON file to at most 65536 bytes.');
+    if(raw)return buffer.subarray(0,total).toString('utf8');
     try {return JSON.parse(buffer.subarray(0,total).toString('utf8'));}
     catch {throw new InputError('JSON_SYNTAX','Input is not valid JSON.',path,'Use strict JSON: double-quoted keys, no comments or trailing commas.');}
   } finally {await handle.close();}
@@ -60,6 +62,11 @@ async function main() {
     const {planExperiences}=await import('../core/authoring.js');
     const r=planExperiences(await readJson(file),await readJson(args[0]));
     console.log(JSON.stringify(r));if(!r.ok)process.exitCode=1;return;
+  }
+  if(command==='init' && file && args.length===0){
+    const {importBrand}=await import('../core/authoring.js');
+    const r=importBrand(await readJson(file,true));
+    console.log(JSON.stringify(r.ok?{...r,notice:'Draft brand policy. Review the mapping, then save it as brand.json yourself.'}:r));if(!r.ok)process.exitCode=1;return;
   }
   if(command==='packs' && !file && args.length===0){console.log(JSON.stringify({ok:true,packs:packs.map(p=>({id:p.id,version:p.version,hash:p.hash,name:p.name,occasions:p.occasions}))}));return;}
   if(command==='pack' && file && args.length===0){

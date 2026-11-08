@@ -1,0 +1,12 @@
+/* A fictional site's existing stylesheet. SEED reads only the colour variables. */
+:root {
+  --color-surface: #f8f6f1;
+  --color-text: #1f2a24;
+  --color-primary: hsl(152, 38%, 32%);
+  --color-primary-hover: #1d5a40;
+  --color-muted: rgb(120 128 122);
+  --button-bg: var(--color-primary);
+  --radius: 8px;
+  --font-body: "Inter", sans-serif;
+}
+body { background: var(--color-surface); color: var(--color-text); }

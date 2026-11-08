@@ -430,3 +430,17 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Verification, run once: unit tests (6 new in tests/m3.test.mjs; three existing assertions updated for seven packs, the authoring-only occasions module, and an extended guard that now also covers dist/render and dist/element) and all 18 browser tests (1 new playground planner test). The new artwork was reviewed in a gallery page in Chromium.
 - Limits: no packs yet for Eid, Halloween, Thanksgiving, or US Mother's Day (they plan as colours only). Movable-date tables cover 2026–2027 only and need yearly maintenance. Lead and duration windows are SEED's defaults, not market research. The founder has not reviewed the new artwork.
 - Next: founder review, then release develop to master; later Eid and Halloween packs, recurrence (re-planning next year from this year's choices), and M4 brand onboarding.
+
+## M4 handoff: brand onboarding, 2026-11-08
+
+- Owner: Claude. Branch feature/m4-brand-onboarding from develop 2e9f2a9, PR into develop.
+- packages/core/brand-import.ts, exported from `@sortnow/seed/authoring`:
+  - `importBrand(text)` accepts CSS or design-tokens JSON, with a 64 KiB limit.
+  - It reads colour values only. Hex, rgb, hsl, and `var()` chains between custom properties are resolved; names, selectors, URLs, and other CSS are never copied.
+  - Roles are mapped by name (surface or background, text or foreground, primary, brand, or accent), skipping hover, muted, and similar variants. Otherwise they are inferred: the lightest colour, the highest contrast with it, and the most saturated remaining colour. Each role reports its source token and reason.
+  - Palettes are tints of the brand's own background and accent (seasonal 10% plus a slightly deeper accent, promotion 16%, launch 5%). The foreground is locked. Accents are moved towards the text colour until they reach 4.5:1, and each adjustment is noted.
+  - The proposal has effects off and signature colours denied.
+- CLI: `seed init FILE` prints the draft and writes nothing. The playground has a Your brand panel: paste, propose, review the mapping and swatches, opt into effects or signature colours, use the brand for all previews (approvals reset), download brand.json, and return to the sample. Examples: examples/brand-import/site.css and tokens.json.
+- Verification, run once: 86 unit tests (7 new in tests/m4.test.mjs) and 19 browser tests (1 new), all passed first time; checked manually in Chromium that pasted colours drive the approved pack preview.
+- Limits: no reading of computed styles from a live URL (deliberate: no network, no scanning). Roles can be mis-mapped in unusual naming schemes, which is why the mapping is shown for review. Font and logo protection is still by slot boundaries, not imported.
+- Next: Eid and Halloween packs, recurrence (re-plan next year from this year's choices), then M5 AI drafting.

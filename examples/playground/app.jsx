@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {SeedArea} from '../../dist/react/index.js';
+import {SeedArea,SeedRoot} from '../../dist/react/index.js';
 import {approvalSnapshot} from '../../dist/core/index.js';
 import {authorExperience,sampleEvents,SAMPLE_NOTICE,END_SEMANTICS} from '../../dist/core/authoring.js';
-import {mountSeed} from '../../dist/render/index.js';
+import {forgetEffects} from './replay.mjs';
 import {packs} from '../../dist/packs/index.js';
 import {downloadDraft} from './export.mjs';
 import brand from './brand.json';
@@ -15,11 +15,9 @@ function Site({experiences,approvals,at,label}){return <section className="previ
 // Pack themes render through the framework-neutral renderer. The host only marks which slots SEED may use.
 const heroSlot={'data-seed-slot':'hero accent','data-seed-mode':'variables'};
 function PackSite({experiences,approvals,at,label,replay}){
- const ref=useRef(null),seed=useRef(null);
- useEffect(()=>{seed.current=mountSeed({root:ref.current,experiences,approvals,packs,brand,now:at});return ()=>{seed.current.destroy();seed.current=null;};},[]);
- useEffect(()=>{seed.current?.update({experiences,approvals,now:at});},[experiences,approvals,at]);
- useEffect(()=>{if(replay)seed.current?.replay();},[replay]);
- return <section ref={ref} className="preview" aria-label={label}><nav><strong>FIELDNOTES</strong><span>Objects for everyday living</span></nav><div data-seed-slot="banner"/><ExistingHero slot={heroSlot}/><div className="site-note">Logo, typography, and navigation stay the same.</div></section>;
+ const ref=useRef(null);
+ // SeedRoot is scoped to this pane so the original and the proposal render independently. Replay remounts it.
+ return <section ref={ref} className="preview" aria-label={label}><SeedRoot key={replay} root={ref} experiences={experiences} approvals={approvals} packs={packs} brand={brand} previewAt={at}/><nav><strong>FIELDNOTES</strong><span>Objects for everyday living</span></nav><div data-seed-slot="banner"/><ExistingHero slot={heroSlot}/><div className="site-note">Logo, typography, and navigation stay the same.</div></section>;
 }
 const assetOptions=record=>Object.entries(record).map(([id,a])=>({id,label:a.label??id.replace(/-/g,' ')}));
 function App(){
@@ -61,6 +59,6 @@ function App(){
  <fieldset className="areas"><legend>Areas this brand permits</legend>{brand.allowedAreas.map(a=><label key={a}><input type="checkbox" checked={areas.includes(a)} onChange={()=>toggleArea(a)}/>{a==='hero'?'Hero':'Banner'}</label>)}</fieldset>
  {result.ok?<dl className="schedule"><dt>Starts (UTC)</dt><dd>{result.schedule.startsAt}</dd><dt>Ends before (UTC)</dt><dd>{result.schedule.endsAt}</dd></dl>:<ul className="problems" role="alert">{result.errors.map(e=><li key={e.path+e.code}><strong>{e.path}:</strong> {e.message}</li>)}</ul>}
  <label>Preview date (checked at 12:00 UTC)<input type="date" value={date} onChange={e=>setDate(e.target.value)}/></label>
- <label>Right-hand preview<select value={view} onChange={e=>setView(e.target.value)}><option value="draft">Proposed draft — not published</option><option value="approved">Approved schedule</option></select></label><button className="secondary" disabled={!result.ok} onClick={()=>downloadDraft(result.experience)}>{pack?'Download draft bundle':'Download draft JSON'}</button>{slots.overlay&&<button className="secondary" onClick={()=>setReplay(replay+1)}>Replay effect</button>}<small>Saves a file to your computer. Downloading does not approve or publish this draft.</small><button disabled={!snapshot} onClick={()=>{setApprovals([snapshot]);setView('approved');}}>Approve this exact version</button><button className="secondary" onClick={()=>setApprovals([])}>Revoke approval</button><p role="status">{status}</p><small>Brand rules lock text color and restrict changes to the hero and banner. Approvals are session-only. Production permissions belong to the host.</small></aside><div className="comparison"><div><h3>Before · Original website</h3><SitePreview experiences={experiences} approvals={[]} at={at} label="Original website"/></div><div><h3>{view==='draft'?'After · Isolated proposal':'After · Approved schedule'}</h3><SitePreview experiences={experiences} approvals={displayed} at={at} label="Experience preview" replay={replay}/></div><p className="comparison-note">Outside the scheduled dates, both views restore the original design. Previewing a draft never saves approval.</p></div></main><section id="collection" className="collection-note">FIELDNOTES / A fictional storefront demonstrating integration. No checkout or live promotions.</section><footer>SEED — Scheduled Experiences & Extensible Design. No tracking. No external assets.</footer></>;
+ <label>Right-hand preview<select value={view} onChange={e=>setView(e.target.value)}><option value="draft">Proposed draft — not published</option><option value="approved">Approved schedule</option></select></label><button className="secondary" disabled={!result.ok} onClick={()=>downloadDraft(result.experience)}>{pack?'Download draft bundle':'Download draft JSON'}</button>{slots.overlay&&<button className="secondary" onClick={()=>{forgetEffects();setReplay(replay+1);}}>Replay effect</button>}<small>Saves a file to your computer. Downloading does not approve or publish this draft.</small><button disabled={!snapshot} onClick={()=>{setApprovals([snapshot]);setView('approved');}}>Approve this exact version</button><button className="secondary" onClick={()=>setApprovals([])}>Revoke approval</button><p role="status">{status}</p><small>Brand rules lock text color and restrict changes to the hero and banner. Approvals are session-only. Production permissions belong to the host.</small></aside><div className="comparison"><div><h3>Before · Original website</h3><SitePreview experiences={experiences} approvals={[]} at={at} label="Original website"/></div><div><h3>{view==='draft'?'After · Isolated proposal':'After · Approved schedule'}</h3><SitePreview experiences={experiences} approvals={displayed} at={at} label="Experience preview" replay={replay}/></div><p className="comparison-note">Outside the scheduled dates, both views restore the original design. Previewing a draft never saves approval.</p></div></main><section id="collection" className="collection-note">FIELDNOTES / A fictional storefront demonstrating integration. No checkout or live promotions.</section><footer>SEED — Scheduled Experiences & Extensible Design. No tracking. No external assets.</footer></>;
 }
 createRoot(document.getElementById('root')).render(<App/>);

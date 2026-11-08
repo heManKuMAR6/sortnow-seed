@@ -1,0 +1,13 @@
+{
+  "base": {"background": "#fffaf3", "foreground": "#33261c", "accent": "#a8462b"},
+  "palettes": {
+    "seasonal": {"background": "#f5ece0", "foreground": "#33261c", "accent": "#8c2f22"},
+    "promotion": {"background": "#fbf0e4", "foreground": "#33261c", "accent": "#b4532a"},
+    "launch": {"background": "#eef1ea", "foreground": "#33261c", "accent": "#4e6b3a"}
+  },
+  "allowedAreas": ["banner", "hero"],
+  "lockedTokens": ["foreground"],
+  "allowedSlots": ["banner", "hero", "accent", "overlay"],
+  "effects": "on",
+  "signatureColors": "allow"
+}

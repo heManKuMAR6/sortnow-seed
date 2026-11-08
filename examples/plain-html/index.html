@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hearth &amp; Crumb — SEED with plain HTML</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <!-- The only SEED code on this page: one self-contained module, no framework. -->
+  <script type="module" src="/seed-element.js"></script>
+</head>
+<body>
+  <!-- Reviewed configuration. preview-at is for this demo; omit it on a live site to follow the real clock. -->
+  <seed-root bundle="/seed/seed.bundle.json" approvals="/seed/approvals.json" brand="/seed/brand.json" preview-at="2026-12-12T18:00:00.000Z"></seed-root>
+
+  <div class="notice" data-seed-slot="banner"></div>
+  <header class="top">
+    <a class="mark" href="#">Hearth <span>&amp;</span> Crumb</a>
+    <nav aria-label="Main"><a href="#breads">Breads</a><a href="#order">Order</a><a href="#visit">Visit</a></nav>
+  </header>
+  <main>
+    <section class="hero" data-seed-slot="hero accent">
+      <div class="copy">
+        <h1>Bread worth waking up for.</h1>
+        <p>Naturally leavened loaves, baked before sunrise in a wood-fired oven on Elm Street.</p>
+        <a class="cta" href="#order">Order for pickup</a>
+      </div>
+    </section>
+    <section id="breads" class="breads">
+      <article><h2>Country sourdough</h2><p>Three-day ferment, crackling crust.</p><button type="button">Add</button></article>
+      <article><h2>Seeded rye</h2><p>Dark, dense, and generous with seeds.</p><button type="button">Add</button></article>
+      <article><h2>Morning buns</h2><p>Orange zest and cardamom sugar.</p><button type="button">Add</button></article>
+    </section>
+  </main>
+  <footer class="demo" aria-label="Demo controls">
+    <span>Demo date:</span>
+    <button type="button" data-at="2026-11-08T18:00:00.000Z">Today</button>
+    <button type="button" data-at="2026-11-28T18:00:00.000Z">Black Friday</button>
+    <button type="button" data-at="2026-12-12T18:00:00.000Z">Christmas</button>
+    <button type="button" data-at="2026-12-27T18:00:00.000Z">After</button>
+    <output id="state" aria-live="polite"></output>
+  </footer>
+  <script type="module" src="/demo-controls.js"></script>
+</body>
+</html>

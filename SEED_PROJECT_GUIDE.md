@@ -43,7 +43,7 @@ This table is the current-status record. The handoff sections further down are h
 
 | Original requirement | Actual state (on develop) | Remaining gap |
 | --- | --- | --- |
-| Easy open-source installation | Release-ready package 0.2.0-alpha.0 on the `alpha` dist-tag; fresh-install test in CI; release workflow pins Node 22.23.4 and npm 11.21.2 | Not published. Founder still creates the npm org, a bootstrap version other than 0.2.0-alpha.0, a trusted publisher allowed to `npm publish`, and the `npm` environment with a required reviewer. Install will be `npm install @sortnow/seed@alpha`. |
+| Easy open-source installation | Release-ready package 0.2.0-alpha.0 on the `alpha` dist-tag; fresh-install test in CI; release workflow pins Node 22.23.4 and npm 11.21.2 | Not published. The GitHub `npm` environment exists (required reviewer heManKuMAR6, `v*` tags only). Founder still creates the npm org, a bootstrap version other than 0.2.0-alpha.0, and a trusted publisher allowed to `npm publish`. Install will be `npm install @sortnow/seed@alpha`. |
 | Works alongside existing frontends | One script (`<seed-root>`, about 21 KB) and React `SeedRoot` on a shared renderer; late slots decorated | Plain HTML and React are exercised. Angular, Vue, and Shopify have recipes only. **No real third-party site has been integrated yet.** |
 | Brand identity stays recognizable | Brand import from CSS or tokens (`seed init`), derived palettes, locked text colour, explicit slots; pack themes require a valid brand policy | Logo and typography are protected only by slot boundaries; mapping can misread unusual token names (shown for review) |
 | Calendar-driven occasions by market | 16 occasions across US, IN, AE, and SG with sources; planner; overrides; yearly re-planning; nothing pre-selected | Movable dates (Diwali, Eid, Lunar New Year) need yearly table updates; no packs for Thanksgiving or US Mother's Day |
@@ -535,3 +535,11 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Gap fixed in README step 2 and new step 5: npm makes a package's first version `latest`. The placeholder (for example `0.0.0-bootstrap.0`, published with `--tag bootstrap`) would otherwise be what a bare `npm install @sortnow/seed` returns. After the alpha publishes, the founder runs `npm dist-tag add @sortnow/seed@0.2.0-alpha.0 latest` and deprecates the placeholder. Recommendation: make the alpha `latest`, since it is the only real version.
 - Timing: create the trusted publisher immediately before pushing the tag.
 - PRs #23 (npm 11.21.2 pin and publish sequence) and #22 (real-site trial plan) are merged into develop.
+
+## GitHub npm environment created, 2026-11-08
+
+- Created by Claude at the founder's request through the GitHub API. Environment `npm` has:
+  - a required reviewer, heManKuMAR6 (id 113200157), with self-approval allowed;
+  - no wait timer;
+  - a deployment policy that allows only refs matching the tag pattern `v*`, so no branch can use the publishing environment.
+- Release steps still for the founder: npm account and org, placeholder publish, release PR to master, trusted publisher right before tagging, tag, approve, then set `latest` (README, Releases).

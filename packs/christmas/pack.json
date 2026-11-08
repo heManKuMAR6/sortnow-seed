@@ -1,0 +1,33 @@
+{
+  "packVersion": 1,
+  "id": "christmas",
+  "version": "1.0.0",
+  "name": "Christmas",
+  "occasions": ["christmas"],
+  "license": "CC0-1.0",
+  "signatureColors": {"santa-red": "#c8102e", "gold": "#d4a017", "pine": "#2f6b3a", "frost": "#a9cbe8"},
+  "illustrations": {
+    "santa-sleigh": {"file": "santa-sleigh.svg", "label": "Santa's sleigh pulled by a reindeer", "source": "original, SortNow SEED"},
+    "tree": {"file": "tree.svg", "label": "Decorated Christmas tree", "source": "original, SortNow SEED"},
+    "gift-stack": {"file": "gift-stack.svg", "label": "Stack of wrapped gifts", "source": "original, SortNow SEED"}
+  },
+  "icons": {
+    "gift": {"file": "icon-gift.svg", "label": "Gift", "source": "original, SortNow SEED"},
+    "star": {"file": "icon-star.svg", "label": "Star", "source": "original, SortNow SEED"},
+    "snowflake": {"file": "icon-snowflake.svg", "label": "Snowflake", "source": "original, SortNow SEED"}
+  },
+  "decorations": {
+    "holly-corner": {"file": "holly-corner.svg", "source": "original, SortNow SEED"}
+  },
+  "particles": {
+    "snowflake": {"file": "particle-snowflake.svg", "source": "original, SortNow SEED"}
+  },
+  "copy": {
+    "hero": ["Wishing you a warm and joyful holiday season.", "Gifts worth unwrapping, chosen with care."],
+    "banner": ["Happy holidays from all of us.", "Holiday hours and gift ideas are here."]
+  },
+  "effects": {
+    "flyby": {"assets": ["santa-sleigh"]},
+    "particles": {"assets": ["snowflake"]}
+  }
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 110">
+  <path d="M4 10 Q120 54 236 10" fill="none" stroke="var(--seed-foreground)" stroke-width="2"/>
+  <path d="M14 14 L40 23 L22 52 Z" fill="var(--seed-accent)"/>
+  <path d="M46 25 L74 33 L56 64 Z" fill="var(--seed-sig-gold)"/>
+  <path d="M80 35 L108 40 L92 72 Z" fill="var(--seed-foreground)"/>
+  <path d="M114 41 L142 41 L128 74 Z" fill="var(--seed-accent)"/>
+  <path d="M148 40 L176 35 L164 72 Z" fill="var(--seed-sig-gold)"/>
+  <path d="M182 33 L210 25 L200 64 Z" fill="var(--seed-foreground)"/>
+  <path d="M216 23 L234 14 L234 50 Z" fill="var(--seed-accent)"/>
+  <g fill="var(--seed-sig-gold)"><circle cx="40" cy="88" r="2.4"/><circle cx="120" cy="96" r="2.4"/><circle cx="200" cy="88" r="2.4"/></g>
+</svg>

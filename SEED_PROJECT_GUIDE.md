@@ -37,22 +37,24 @@ This is not a pivot into a generic campaign dashboard, a website builder, a test
 6. The site activates that approved version on schedule and restores its base appearance afterward. Changes require renewed review. Recurring occasions produce new drafts unless an explicit future approval policy permits reuse.
 7. The next event reuses the same integration. Agents can discover and perform authoring/validation operations through documented contracts without gaining publication authority by default.
 
-### Where we are against that vision (verified repository checkpoint: 2026-11-05)
+### Where we are against that vision (checkpoint: 2026-11-08, develop after M1–M6 and the alpha review fixes)
 
-| Original requirement | Actual state | Remaining gap |
+This table is the current-status record. The handoff sections further down are history and may describe states that have since changed.
+
+| Original requirement | Actual state (on develop) | Remaining gap |
 | --- | --- | --- |
-| Easy open-source installation | Public GitHub repo and locally installable tarball | Verify namespace, simplify onboarding, and publish a reviewed npm alpha |
-| Works alongside existing frontends | React adapter with explicit wrappers and CSS variables | Customer-site adoption and additional adapters; universal support is not implemented |
-| Brand identity stays recognizable | Color palettes, locked tokens, allowed banner/hero areas | Brand setup UX, approved assets/content slots, richer design packs; no automatic logo/typography protection |
-| Calendar-driven seasonal changes | UTC runtime and date/time-zone authoring on main (PR #6) | selected-market event calendars, editable yearly planning, recurrence authoring |
-| Preview, approval, start/end, restoration | Implemented on main with trusted-host snapshots | Production approval UX, revocation/delivery choices, explicit security boundaries |
-| Portable output for an existing site | Draft download and integration recipe on main (PR #7) | Try the recipe on a site not designed for SEED |
-| Tasteful illustrations/icons/entrances | Not implemented; current visual output is primarily colors and text | Small constrained asset/effect system, reduced-motion behavior, performance limits |
-| AI understands brand/context and proposes a design | Not implemented | Optional bounded authoring service or bring-your-own-model path; no secrets in the browser |
-| Friendly to many coding agents | Read-only JSON CLI, schemas, diagnostics | Actual adoption feedback; MCP only if useful, no mandatory benchmark marathon |
-| Open source plus enterprise | MIT community code | Paid services remain conditional on demand; no evidence of paying customers yet |
+| Easy open-source installation | **On npm:** `npm install sortnow-seed` installs 0.2.0-alpha.0 (`latest`), published by hand on 2026-11-08 from develop `d260cfa` by `hemankumar6`, without provenance. Fresh-install test in CI; reviewed release workflow ready | develop is 0.2.0-alpha.1, the first workflow release with provenance. Founder adds the trusted publisher right before tagging. Pending tag cleanup: add `alpha`, remove `bootstrap`, deprecate `0.0.0-bootstrap.0` and `0.0.0-stage`. |
+| Works alongside existing frontends | One script (`<seed-root>`, about 21 KB) and React `SeedRoot` on a shared renderer; late slots decorated | Plain HTML and React are exercised. Angular, Vue, and Shopify have recipes only. **No real third-party site has been integrated yet.** |
+| Brand identity stays recognizable | Brand import from CSS or tokens (`seed init`), derived palettes, locked text colour, explicit slots; pack themes require a valid brand policy | Logo and typography are protected only by slot boundaries; mapping can misread unusual token names (shown for review) |
+| Calendar-driven occasions by market | 16 occasions across US, IN, AE, and SG with sources; planner; overrides; yearly re-planning; nothing pre-selected | Movable dates (Diwali, Eid, Lunar New Year) need yearly table updates; no packs for Thanksgiving or US Mother's Day |
+| Recognizable seasonal designs | Nine packs with brand-tinted artwork; fly-by and particle effects, at most one per visit; reduced-motion and phone fallbacks | **Founder artwork review pending**; mobile animation deliberately off |
+| Preview, approval, start/end, restoration | Exact-snapshot approval; drafts never live; restore removes only what SEED added and leaves later host style changes alone | Approval is a host-kept file, not authenticated (enterprise E2/E3); scheduling uses the visitor's clock |
+| AI understands the site and proposes a design | `seed ai-draft`: Claude proposes from installed packs, validated as a draft | **No successful live run yet** (account credits). It uses an owner-written description; it does not read the site or screenshots. |
+| Friendly to humans and agents | JSON CLI covering author, plan, replan, init, packs, occasions, and ai-draft; schemas; diagnostics | Shared operation layer and MCP server not built (E1) |
+| Open source plus enterprise | MIT runtime; enterprise design in docs/enterprise-design.md | No hosted service; no customers or pilots yet |
+| Repository process | `master` (production) and `develop` (default); ruleset "Protect master and develop" requires PRs plus the verify, browser, and install checks | Release PR from develop to master is the founder's decision |
 
-Overall: **engineering foundation with early authoring prototypes**, not the full intelligent seasonal-design product. Count merged capability separately from code in open PRs. Do not use phase counts or invented completion percentages to imply the original vision is almost done.
+Overall: **a pilot-ready seasonal website toolkit**, once one real site has been integrated and the artwork has been reviewed. The larger vision (automatic site understanding, proven cross-platform integration, hosted team operations) still needs meaningful work. Do not use phase counts or invented completion percentages to imply more than this.
 
 ## Plan of record — target architecture (founder-approved 2026-11-05)
 
@@ -98,7 +100,7 @@ RUNTIME (visitor's browser, no model calls, no network required)
 | M3 | Occasion calendar | Occasion catalogue for US, IN, AE, SG with sources; planner in the playground and CLI; 6–8 packs | "Choose India and US" → upcoming Diwali, Christmas, Republic Day drafts ready to preview |
 | M4 | Brand onboarding | `seed init` reads a tokens or CSS file the integrator points to (no repository scanning) and writes a brand profile | A real site's colours applied across every pack in minutes |
 | M5 | AI author | CLI and optional MCP, bring-your-own model, schema-constrained output | "Make a Black Friday theme for my site" → reviewable draft |
-| M6 | Release and enterprise design | Verified namespace, reviewed npm alpha, enterprise backend design (bundle delivery, server time, roles, audit) | `npm install @sortnow/seed` works for a stranger |
+| M6 | Release and enterprise design | Verified namespace, reviewed npm alpha, enterprise backend design (bundle delivery, server time, roles, audit) | `npm install @sortnow/seed@alpha` works for a stranger. This alpha does not set `latest`. |
 
 Timing: Black Friday is 2026-11-27 and Christmas is seven weeks from this checkpoint, so M1 should land while those occasions are current and be shown to site owners and agencies then. Customer conversations run alongside building; they guide scope but are not a stop-work gate. No milestone starts until the previous milestone's demo works. Server-side scheduling, signatures, Rust, and extra layers remain options justified by concrete need.
 
@@ -114,7 +116,7 @@ Timing: Black Friday is 2026-11-27 and Christmas is seven weeks from this checkp
 ### Collaboration and current assignments
 
 - Codex: integration/review owner. Clear the backlog (M0), review the schema v2 and bundle-format design in M1, merge in order.
-- Claude: proposed owner of M1 implementation (renderer, effects, packs) and M2 (web component) once M0 is merged and the founder starts the lane. Not started at this checkpoint. Do not infer a background task from an open PR.
+- Claude: owns M1, started by the founder on 2026-11-06. Branch feat/m1-design, base main e27c303. The first PR is design only: [docs/m1-design.md](docs/m1-design.md) covers schema v2, theme packs, brand tinting, the SVG sanitizer, the bundle file, the renderer, effects, and the M1 packs. It ends with open questions for Codex and the founder. Implementation (PRs A core, B packs, C renderer and demo) starts only after that design is approved. M2 (web component) follows M1.
 - Grokbot: explicitly assigned, bounded real-browser checks. Credit reported evidence and commit SHA; do not pretend another agent's results were independently rerun.
 - Founder: selects product priorities, supplies/authorizes a real-site integration, and decides external outreach, paid services, publishing, and deployments.
 - Agent comparison: postponed until explicitly assigned; no 40-run or eight-run experiment is a prerequisite for completing the product.
@@ -202,7 +204,7 @@ Before/after previews must distinguish proposed appearance from approved/schedul
 
 ### Phase 0 — identity and repository: complete
 
-Public sortnow-seed repository exists. main is the default branch. MIT license and security documentation are on main. Nightly Codex automation was created for 23:00 America/Chicago and corrected from master to main. It is local-app scheduling, not a guaranteed always-on GitHub merge service.
+Public sortnow-seed repository exists. develop is the default branch; master holds production releases (renamed from main on 2026-11-08). MIT license and security documentation are on main. Nightly Codex automation was created for 23:00 America/Chicago and corrected from master to main. It is local-app scheduling, not a guaranteed always-on GitHub merge service.
 
 ### Phase 1 — usable foundation: merged to main, PR #1
 
@@ -242,7 +244,7 @@ Known limits: snapshots are not authentication; same-origin compromised code can
 
 ## 9. Development workflow and proportionate verification
 
-Use feature branches and PRs against current main. PRs #1, #2, and #3 were reviewed and merged in dependency order on 2026-11-05. Their feature branches are historical snapshots, not the integration baseline. New work starts from refreshed main; explicitly document any necessary stacked dependency. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
+Branching model (founder decision, 2026-11-08): `master` holds production-ready releases only. `develop` is the integration branch and the GitHub default. All new work starts from refreshed `develop` on a `feature/<name>` branch (or `fix/<name>`) and merges into `develop` by PR. `master` receives only release merges from `develop` once that code is production ready, by the founder's decision. Feature branches are deleted after merging. Explicitly document any necessary stacked dependency. Never force push or overwrite user work. Nightly review must inspect changes, execute only trusted code in isolation, require successful relevant CI on the current candidate, preserve uncommitted work, and skip unresolved/security-sensitive changes. npm publishing and deployments are not authorized by routine merges.
 
 Owner preference: avoid redundant testing. Run targeted checks for changed behavior and security boundaries. Build when types or integration change. Do not repeat audits, full suites, package installations, or unrelated checks without a new dependency, failure, or relevant risk. Documentation-only changes need review, not runtime tests. CI can provide one broad integration gate for submitted code. Report precise results and untested limits.
 
@@ -268,6 +270,8 @@ Read this guide, git status, README, and relevant package files. Install with np
 - 2026-11-05: Brand policy vetoes incompatible approved content rather than silently changing it; preset output remains schema v1.
 
 - 2026-11-05: Founder's original brief recorded at the top of this guide as the reference for all plans. Review found the visible product (packs, effects, calendars, AI, other frameworks) had fallen behind safety tooling. Founder approved the plan of record: theme packs as the unit, brand-tinted SVG illustrations, a fixed effects library, more slots, a framework-neutral renderer with a web component for universality, a data-driven occasion calendar, AI as an author only, and the backend as the enterprise delivery channel. Milestones M0–M6 replace sequence A–G; M1 (Christmas and Black Friday) is the next lane after consolidation. Removed the earlier claim that holiday effects are low-differentiation.
+
+- 2026-11-08: Adopted git-flow: master (production), develop (integration, default), feature branches into develop. main renamed to master.
 
 - 2026-11-05: Phase 2 implements three presets, scoped variables, runtime brand vetoes, before/after comparison, and draft/approved view separation. No new dependencies. Validation: one TypeScript build passed, all six targeted brand tests passed, and demo bundling passed; visual browser QA remains outstanding.
 - 2026-11-05: Contrast reports are advisory: they never change validation, approval, selection, or rendering, because accessible palette enforcement remains an open decision. Ratios are judged exactly and displayed rounded down, and accent is held to the 4.5:1 text minimum because the documented mapping uses it for links.
@@ -363,3 +367,207 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Not verified: post-fix favicon in a real browser; recipe on a real external site.
 - Older handoff sections above that say a PR is open or awaiting review are historical records of that moment.
 - Next action: M1 (Christmas and Black Friday). Its first PR contains the schema v2, theme-pack, and bundle-format design for Codex review before effects are built. The founder starts the lane.
+
+## M1 design handoff — 2026-11-06
+
+- Owner: Claude. Branch: feat/m1-design, base main e27c303. Scope: docs/m1-design.md and this guide; no runtime code.
+- Contents: theme packs as package code; config references packs only by id, version, and hash. Schema v2 with slots (banner, hero, accent, overlay). Brand-tinted SVGs using `--seed-*` variables and optional signature colours. A build-time SVG allowlist sanitizer. A page-level winner. Backward-compatible brand extensions (`allowedSlots`, `effects` off by default, `signatureColors` denied by default). The `seed.bundle.json` file, which never carries approvals. A framework-neutral `mountSeed` renderer. Flyby and particle effects with strict rules and budgets. Christmas and Black Friday packs.
+- Verification: documentation only; no tests needed or run.
+- Next action: Codex reviews the design and answers its section 13 open questions with the founder. After approval, Claude implements PR A (core), PR B (packs), and PR C (renderer, effects, storefront demo) in that order.
+
+## M1 implementation handoff — 2026-11-07
+
+- Owner: Claude, at the founder's request to build M1 without waiting for review. Branch feat/m1-christmas, stacked on feat/m1-design (PR #10). Codex's design findings were never posted to GitHub and were not available, so the section 13 open questions were implemented with the design's recommended defaults: one winner per page; signature colours denied unless the brand allows them; packs inside the main package; v1 and v2 coexist; effects off unless the brand opts in. Any of these can be changed after review.
+- Core (packages/core/v2.ts, pack.ts, brand.ts, index.ts, schema.ts): schema v2 validation with canonical snapshots, `validateBundle` (rejects approvals and signatures), `resolvePack` (PACK_MISMATCH and ASSET_MISSING fail closed), `brandAllowsV2`, `selectPage`, and optional brand fields `allowedSlots`, `effects`, `signatureColors`. `selectExperience` (v1) skips v2 entries, so existing hosts are unchanged. JSON Schemas: `experience-v2`, `bundle`.
+- Packs: sources in packs/christmas and packs/black-friday. scripts/svg-sanitize.mjs is an allowlist sanitizer: no scripts, styles, handlers, external references, or hex paint; ids are prefixed. scripts/build-packs.mjs enforces budgets, hashes, and writes packages/packs/index.ts. `npm run build` fails if the generated file is stale; `npm run packs` regenerates it. Any artwork edit changes the hash, so approved experiences must be re-approved, and the demo bundle must be updated.
+- Renderer (packages/render): `mountSeed` finds `[data-seed-slot]` elements, applies variables, tint, banner, hero message and illustration, and corner decoration, then restores exactly what it changed. Effects (packages/render/effects.ts) use the Web Animations API on a non-interactive overlay. They play once per visit, are skipped under reduced motion or below 1024 px or on touch-only screens, pause when hidden, and are cancelled before printing. Hero artwork becomes a faint background under 640 px.
+- CLI: `seed packs`, `seed pack ID`, and `seed validate` for v2 and bundles against installed packs; `snapshot` and `contrast` accept v2.
+- Demo: `npm run demo:store` serves http://127.0.0.1:4175, a plain HTML storefront with an owner preview panel (dates, approve or revoke, draft preview, reduced motion, replay).
+- Verification run once: all 63 unit tests (9 new in tests/m1.test.mjs), all 13 browser tests (5 new in tests/browser/storefront.spec.mjs; one test assumption fixed and that file rerun), and a manual Chromium check of both packs at 1280 px and 375 px. The 640 px hero fallback was added after the browser run and checked manually only.
+- Not done: authoring and CLI generation of v2 drafts (owners or agents write v2 JSON by hand or copy the demo); the playground export still writes v1; the React `SeedArea` does not render v2 yet (M2); the hero fallback does not re-evaluate on resize; the founder has not reviewed the artwork; performance budgets are not measured (Grokbot, when assigned).
+- Next: founder reviews the demo and artwork; Codex reviews PRs #10 and this one; then M2 (web component, React on the renderer) or M1 polish from feedback.
+
+## Branch consolidation — 2026-11-08
+
+- Founder decision: git-flow with only two long-lived branches. `master` is production-ready code; `develop` is integration and the GitHub default; new work goes `feature/<name>` → PR → `develop`; releases go `develop` → PR → `master`.
+- Done by Claude: renamed `main` to `master` on GitHub (it stays at e27c303, PRs #1–#9, the first consolidated code). Created `develop` from it and merged PR #11 (M1) into `develop` at 4e86286. Closed PR #10, whose design commit is included in #11. Made `develop` the default branch. Deleted all 11 merged feature, fix, test, and docs branches after confirming each was already in `master` or in #11.
+- CI: pushes run only on `master` and `develop`, and pull requests run on PRs into either, so feature branches no longer run CI twice.
+- References to `main` in older handoff sections are historical and now mean `master`.
+- Next release to `master`: M1 when the founder judges it production ready, after Codex review and artwork review.
+
+## Pack authoring handoff — 2026-11-08 (step 2 after M1)
+
+- Owner: Claude. Branch feature/pack-authoring from develop cd14cba, PR into develop. Goal: owners and agents create pack themes without writing JSON.
+- `authorExperience` accepts optional `pack`, `illustration`, `icon`, `decoration`, `effect`, and `signatureColors`. With a pack it returns a schema v2 draft with full defaults: the hero gets the first illustration not used by a flyby, the banner gets the first icon, a decoration is added when the brand allows the accent slot, the pack's effect is added when brand effects are on, and signature colours are used when the brand allows them. `"none"` opts out. Explicit choices the brand or pack forbids return coded errors (BRAND_EFFECTS, BRAND_SIGNATURE, BRAND_AREA, EFFECT, ASSET, PACK, PACK_REQUIRED). Without a pack, output is unchanged v1. New Christmas and Black Friday samples carry their pack. The event JSON Schema and `seed author` help describe the new fields.
+- Playground: a Theme pack picker and design controls. Pack previews render with `mountSeed` into hero and banner slots marked on the existing components. Pack drafts download as `<id>.bundle.json`; colour-only drafts still download as `.draft.json`. The playground brand now opts in to all slots, effects, and signature colours.
+- Verification, run once: all unit tests (5 new in tests/pack-authoring.test.mjs; the brand schema-alignment test now allows optional fields), and all browser tests (1 new playground pack test). Two new-test mistakes and two ambiguous locators were fixed, and only the affected files were rerun.
+- Limits: React `SeedArea` still renders only v1 (M2); in the playground the renderer adds nodes inside a React-managed hero, which is fine for this static component but is not a pattern for dynamic React content until M2. Effect timing, direction, and density use fixed defaults (4.5 s, left to right, light) that are not exposed in the form.
+- Next: M2, the `<seed-area>` web component with React rebuilt on the renderer.
+
+## M2 handoff — universal integration, 2026-11-08
+
+- Owner: Claude. Branch feature/m2-universal from develop c5a2535, PR into develop.
+- Renderer: `mountSeed` now watches for slots added after mounting (single-page app routes, late templates) and decorates them in place without restarting the effect. It ignores its own nodes and adds `refresh()`.
+- Custom elements (packages/element): `<seed-root>` loads the bundle, approvals, and brand only from the page's own origin, or from inline `<script type="application/json" data-seed>` children, with a 256 KB limit each. It checks them, mounts the renderer on the document, and reports `data-state` plus `seed-change` and `seed-error` events. `preview-at` and `motion` are observed attributes; an unreadable `preview-at` fails closed. The `config` property is for frameworks that import JSON. `<seed-area slots>` is an optional wrapper. scripts/build-element.mjs bundles everything, including the installed packs, into dist/seed-element.js (about 13 KB gzipped, 24 KB budget, no React). It runs as part of `npm run build`. Package exports: `./element`, `./seed-element.js`.
+- React: `SeedRoot` (packs passed explicitly; optional `root` ref to scope it) renders nothing on the server and activates after mount. The playground pack preview now uses it. `SeedArea` remains the v1 component.
+- Example: examples/plain-html, a fictional bakery with its own brand, no framework, served by `npm run demo:html` on port 4176. Its approvals file stands in for a reviewed file and contains exact snapshots of its bundle.
+- Docs: docs/platforms.md covers plain HTML, React, Angular, Vue, and Shopify. Angular, Vue, and Shopify snippets are marked as not run here; no such projects or dependencies were added.
+- Verification, run once: all 73 unit tests (5 new in tests/m2.test.mjs) and all 17 browser tests (3 new in tests/browser/plain-html.spec.mjs: themed page with no React global, date switching, late slots and the seed-area wrapper, broken approvals failing closed). The plain HTML page was checked manually in Chromium with no console errors.
+- Limits: Angular, Vue, and Shopify are unverified in real projects. Live mode on a real site still relies on the visitor's clock. Two `<seed-root>` elements on one page would both decorate it; use one. In React, a slot container whose only child is text that React replaces would lose SEED's parts until the next pass.
+- Next: founder review of M1 and M2, then a release from develop to master, or M3 (occasion calendar and more packs).
+
+## M3 handoff: occasion calendar and more packs, 2026-11-08
+
+- Owner: Claude. Branch feature/m3-occasions from develop 35fd0f8, PR into develop.
+- Catalogue (packages/core/occasions.ts, exported from `@sortnow/seed/authoring`): 16 occasions across US, IN, AE, and SG.
+  - Rules: fixed dates, nth weekday (Thanksgiving, US Mother's Day), offsets from another occasion (Black Friday through Cyber Monday), and per-year tables for movable dates.
+  - Table entries carry `confirm: true` and a source: Diwali 2026-11-08 and 2027-10-29 (panchang calendars); Lunar New Year 2027-02-06 (Singapore MOM list announced 2026-06-18); Eid al-Fitr 2027-03-09 and Eid al-Adha 2027-05-16 (expected, depend on moon sighting; Gulf News, Khaleej Times, ProPakistani). These were checked by web search on 2026-11-08.
+  - Years without a table entry, such as 2028 where sources conflict, are not listed.
+  - Every occasion has lead and duration days.
+  - Priority is 30 minus the window length (capped at 20), so shorter occasions win shared days.
+  - Markets are the owner's choice; hosting location is never used.
+- Opt-in rule, implemented strictly: SEED never pre-selects any occasion. `planExperiences` requires explicit occasion ids and accepts overrides only for message, pack ("none" for colours only), startDate, and lastDate. It returns one draft bundle, per-draft source and confirm flags, and overlaps. Drafts still need approval.
+- Packs: added new-year, diwali, lunar-new-year, valentines, and celebration (seven in total). All artwork is original CC0, brand-tinted, sanitized, and hashed. Celebration uses bunting and brand colours instead of flags, avoiding flag-colour rules. The sanitizer now also allows numeric `stroke-dasharray`. The single-file script is about 18 KB gzipped with seven packs (24 KB budget).
+- CLI: `seed occasions MARKETS FROM [DAYS]` and `seed plan PLAN_FILE BRAND_FILE`. Playground: Plan by market (market checkboxes, start date, upcoming list with Include and Edit, Download plan bundle).
+- Verification, run once: unit tests (6 new in tests/m3.test.mjs; three existing assertions updated for seven packs, the authoring-only occasions module, and an extended guard that now also covers dist/render and dist/element) and all 18 browser tests (1 new playground planner test). The new artwork was reviewed in a gallery page in Chromium.
+- Limits: no packs yet for Eid, Halloween, Thanksgiving, or US Mother's Day (they plan as colours only). Movable-date tables cover 2026–2027 only and need yearly maintenance. Lead and duration windows are SEED's defaults, not market research. The founder has not reviewed the new artwork.
+- Next: founder review, then release develop to master; later Eid and Halloween packs, recurrence (re-planning next year from this year's choices), and M4 brand onboarding.
+
+## M4 handoff: brand onboarding, 2026-11-08
+
+- Owner: Claude. Branch feature/m4-brand-onboarding from develop 2e9f2a9, PR into develop.
+- packages/core/brand-import.ts, exported from `@sortnow/seed/authoring`:
+  - `importBrand(text)` accepts CSS or design-tokens JSON, with a 64 KiB limit.
+  - It reads colour values only. Hex, rgb, hsl, and `var()` chains between custom properties are resolved; names, selectors, URLs, and other CSS are never copied.
+  - Roles are mapped by name (surface or background, text or foreground, primary, brand, or accent), skipping hover, muted, and similar variants. Otherwise they are inferred: the lightest colour, the highest contrast with it, and the most saturated remaining colour. Each role reports its source token and reason.
+  - Palettes are tints of the brand's own background and accent (seasonal 10% plus a slightly deeper accent, promotion 16%, launch 5%). The foreground is locked. Accents are moved towards the text colour until they reach 4.5:1, and each adjustment is noted.
+  - The proposal has effects off and signature colours denied.
+- CLI: `seed init FILE` prints the draft and writes nothing. The playground has a Your brand panel: paste, propose, review the mapping and swatches, opt into effects or signature colours, use the brand for all previews (approvals reset), download brand.json, and return to the sample. Examples: examples/brand-import/site.css and tokens.json.
+- Verification, run once: 86 unit tests (7 new in tests/m4.test.mjs) and 19 browser tests (1 new), all passed first time; checked manually in Chromium that pasted colours drive the approved pack preview.
+- Limits: no reading of computed styles from a live URL (deliberate: no network, no scanning). Roles can be mis-mapped in unusual naming schemes, which is why the mapping is shown for review. Font and logo protection is still by slot boundaries, not imported.
+- Next: Eid and Halloween packs, recurrence (re-plan next year from this year's choices), then M5 AI drafting.
+
+## Eid and Halloween packs, 2026-11-08
+
+- Owner: Claude. Branch feature/eid-halloween-packs from develop 87e1b7f, PR into develop.
+- Eid pack: crescent with a hanging lantern, an eight-point geometric star, crescent and lantern icons, a lantern corner, and gold star particles. Signature colours are gold, emerald, and night. No figures or religious text. Used by both Eid al-Fitr and Eid al-Adha, whose dates stay flagged to confirm locally.
+- Halloween pack: friendly jack-o'-lantern, moon with bats, and a three-bat flight for the fly-by. Also pumpkin and bat icons, a cobweb corner, and autumn-leaf particles. The bats have a thin moonlight outline so the fly-by stays visible on dark sites; this was found by reviewing the artwork on light and dark backgrounds.
+- The occasion catalogue now points Eid al-Fitr, Eid al-Adha, and Halloween at these packs; Thanksgiving and US Mother's Day still plan as colours only. Nine packs in total. The single-file script is about 20.8 KB gzipped (24 KB budget). Existing pack hashes are unchanged, so existing approvals and demo bundles stay valid.
+- Verification, run once: all 87 unit tests; one earlier test used "halloween" as its example of a missing pack and was updated, then that file was rerun. Browser tests were not rerun because no renderer, element, or playground code changed. Artwork was reviewed on light and dark backgrounds in Chromium.
+- Next: yearly re-planning (next year's drafts from this year's choices), then M5 AI drafting, or a release from develop to master.
+
+## Yearly re-planning, 2026-11-08
+
+- Owner: Claude. Branch feature/yearly-replan from develop 4678539, PR into develop.
+- `replanNextYear(plan, brand)` and `seed replan PLAN_FILE BRAND_FILE`: the same markets, time zone, areas, and occasions one year on (`christmas-2026` becomes `christmas-2027`). Message and pack overrides carry over. Hand-set dates do not, and a note says so. Occasions with no published date next year are returned in `missing` and never guessed. Notes state that last year's approvals do not apply.
+- Found while building: occasions move between years (Diwali 2026-11-08, then 2027-10-29). Shifting the window by exactly one year dropped Diwali 2027. Re-planning now searches around next year's dates and fits the new window to the occasions found (the example plan restarts 2027-10-26). This is covered by a test.
+- Playground: Download plan choices (`*.plan.json`, no approvals) and Plan the same occasions next year, which shows waiting occasions and notes.
+- Verification, run once: unit tests (5 new in tests/replan.test.mjs; one quoting typo fixed, then that file rerun) and the playground browser tests (9 passed, 1 new).
+- Next: M5 AI drafting, or a release from develop to master.
+
+## M5 handoff: AI drafting, 2026-11-08
+
+- Owner: Claude. Branch feature/m5-ai-drafting from develop 3998719, PR into develop.
+- `@sortnow/seed/ai` (packages/ai): `draftWithAI(request, brand, {client})` and `seed ai-draft REQUEST_FILE BRAND_FILE`.
+  - Request: description (1–2000 characters), event fields, optional pack restriction.
+  - The model uses structured outputs (`output_config.format` json_schema). The pack, illustration, icon, decoration, effect, and preset are enums built from the installed packs; only message and rationale are free text.
+  - The proposal goes through `authorExperience`, so brand rules, asset-pack matching, and text validation apply. On rejection, one append-only repair turn returns the model's content unchanged plus SEED's errors.
+  - The result is a draft with `approved: false`, the proposal, its rationale, and the attempt count.
+  - Refusal and truncation stop reasons are handled; provider errors are mapped to plain messages without echoing credentials.
+- Model and API choices follow the claude-api skill: model `claude-opus-5-5`, effort `medium` (set explicitly), thinking left at the model default, `max_tokens` 4000 for a short JSON answer, and server-side refusal fallback (`betas: ['server-side-fallback-2026-07-01']`, `fallbacks: 'default'`).
+- Dependency: `@anthropic-ai/sdk` 1.3.0, pinned exactly and released 2026-10-23, installed with --ignore-scripts; the audit reported 0 vulnerabilities. It is an optional peer dependency and a dev dependency, loaded only by dynamic import in `createClient()`. Credentials come from the SDK's standard chain (ANTHROPIC_API_KEY or an `ant auth login` profile).
+- Trust boundaries: the site description is wrapped as data and the system prompt says to treat instructions in it as text. The model cannot add markup, URLs, code, or artwork. Nothing is approved or published. No AI code appears in dist/core, render, element, react, or seed-element.js, enforced by a test.
+- Verification, run once: 99 unit tests (7 new in tests/m5.test.mjs with a fake client covering the request shape, enums, repair, brand override, refusal, truncation, bad output, and input checks). **No live model call was made**: it costs money on the founder's account and needs their go-ahead. The playground has no AI panel, deliberately, because a browser would expose the key.
+- Live smoke test (2026-11-08, founder-approved): the request reached the Claude API with the founder's key and was rejected with 400 "credit balance is too low". No generation ran and nothing was charged. This exposed an unhelpful CLI message, fixed by `describeProviderError`, which passes on the provider's own explanation (capped, control characters stripped, never credentials) and is covered by a test. The model output itself is still unverified live.
+- Next: rerun the smoke test after adding API credits; then M6 (npm release, and the hosted backend where AI drafting can run server-side for teams).
+
+## M6 handoff: release readiness and enterprise design, 2026-11-08
+
+- Owner: Claude. Branch feature/m6-release-readiness from develop 826fc2e, PR into develop. **Nothing was published.** Publishing needs the founder's explicit action, as before.
+- Namespace check, 2026-11-08: `@sortnow/seed`, `sortnow-seed`, and `sortnow` are all unpublished, and a registry search finds no packages in the `@sortnow` scope. npm blocks automated checks of the org page, so the founder must create the free npm organization `sortnow` to own the scope. Fallback name: `sortnow-seed`. This machine is not logged into npm.
+- Package: version 0.2.0-alpha.0, CHANGELOG.md, keywords, homepage, bugs, `sideEffects` (only the custom-element entry and the single-file script), `publishConfig` (public, provenance, `alpha` dist-tag), and `prepublishOnly: npm run check`. The tarball holds only dist plus README, LICENSE, SECURITY, and CHANGELOG (about 90 KB).
+- Stranger install (`npm run smoke:install`, plus a new CI job "install"): packs the tarball, installs it with react into a fresh temp project outside the repo, and from there:
+  - uses all seven entry points (core, authoring, packs, render, element, ai without the optional SDK, react);
+  - type-checks a strict TypeScript consumer with skipLibCheck off;
+  - runs the CLI via npx.
+- Bug found by that test and fixed: dist/ai/index.d.ts imported `@anthropic-ai/sdk` types, so strict TypeScript users without the optional SDK failed to compile. The AI module now defines its own minimal client and response types, and the SDK is referenced only inside the dynamic import.
+- Release workflow (.github/workflows/release.yml): runs only on a pushed `v*` tag. It requires the `npm` GitHub environment, which the founder configures with a required reviewer. The tag must equal the package version and be on master. It then runs check, the stranger install, and the audit, and publishes with provenance via npm trusted publishing (OIDC). No npm token is stored. The Node 22 runner's bundled npm is 10.9.9, which cannot do trusted publishing; the pin to npm 11.21.2 is recorded in the next handoff.
+- Founder setup in this handoff was incomplete. Use the release-readiness handoff below: bootstrap a version other than `0.2.0-alpha.0`, allow direct `npm publish` on the trusted publisher, and create the `npm` environment before the tag.
+- Enterprise design: docs/enterprise-design.md. It covers principles, the operation layer (the first gap to close), hosted components and roles, signed bundle v2 with server-time anchoring and TTL revocation, the data model, security and data residency, phases E1 to E4 (E1 operation layer plus MCP, and E2 signing plus runtime verification, are open source and come first), and open decisions for the founder (licence, two-person rule, regions, pricing unit, delivery domain).
+- Verification, run once: all unit tests, the stranger install locally (initially failed on the AI types, then passed after the fix), and the AI tests rerun after the type change. The release workflow cannot be exercised without a tag and npm setup; it was reviewed, not run.
+- Next: founder decisions (release now or after review; enterprise design questions); then E1, the operation layer and MCP server.
+
+## Alpha review fixes, 2026-11-08
+
+- Owner: Claude, on Codex's review of develop 85f7456. Branch fix/alpha-review-findings, PR into develop.
+- Branch protection: the only ruleset still targeted `refs/heads/main`, which no longer exists. It is now "Protect master and develop" (deletion and force-push blocked, PR required, threads resolved, required checks verify, browser, and install), applied by API.
+- Pack themes without a brand policy no longer render: `selectPage` returns BRAND_REQUIRED and the base site shows. `mountSeed` and React `SeedRoot` now type `brand` as required. `<seed-root>` requires a brand and validates it (missing or invalid means `data-state="error"`).
+- Effects: at most one per visit across all themes (one session marker), and at most one per page view when storage is unavailable. Replay tools clear both.
+- Restoration: SEED restores a style property or attribute only if it still holds the value SEED set, so host changes made after activation are kept.
+- Guide: the status table above was rewritten as the single current record.
+- Verification, run once: 101 unit tests, and the browser suite (22 tests: 21 passed first time; the new brand test was rewritten to avoid a 404 console error and to cover invalid brands, then that file was rerun and passed). The stranger install is left to CI.
+
+## Release CLI and publish sequence, 2026-11-08
+
+- Owner: this release-readiness change, branched from develop `ab627553`. Nothing is published, tagged, or merged to `master` here.
+- Package stays `@sortnow/seed` at `0.2.0-alpha.0` with `publishConfig.tag` `alpha` and `publishConfig.access` `public`. Changelog heading stays `0.2.0-alpha.0 (unreleased)`.
+- Workflow runtime, checked against docs.npmjs.com/trusted-publishers on 2026-11-08 and the npm registry: trusted publishing needs npm CLI 11.5.1 or later and Node 22.14.0 or later. Node 22.23.4 (current `latest-v22.x`) bundles npm 10.9.9. npm 11.21.2 is the current npm 11 release, accepts Node `>=22.9.0`, and is what `release.yml` installs before `npm ci`. npm 12.2.2 was not selected; its engines require Node `^22.22.2 || ^24.15.0 || >=26`.
+- Install after publish: `npm install @sortnow/seed@alpha`. Bare `npm install @sortnow/seed` uses `latest`, which this publish does not set.
+- Founder sequence still to do, in order: npm account with 2FA; free org `sortnow`; one local `npm publish --provenance=false` of a version other than `0.2.0-alpha.0`; trusted publisher for repository `sortnow-seed`, workflow `release.yml`, environment `npm`, with direct `npm publish` allowed (new publishers default to staged publish only, and expire if the first successful publish is more than two days after they are created); GitHub environment `npm` with user `heManKuMAR6` (id 113200157) as a required reviewer and self-approval left on; release PR from `develop` into `master`; tag `v0.2.0-alpha.0` on the resulting `master` commit; approve that environment. The GitHub environment was not created in this change. The token available here cannot administer environments.
+- Verification for this change is the workflow pin and doc review, plus installing npm 11.21.2 on Node 22.23.4 outside the repo. Full tests and the draft-export browser check were not repeated.
+## Real-site trial: planned, 2026-11-08
+
+- Plan: docs/real-site-trial.md. One site not built for SEED, run on staging only, with written owner permission. Eleven recorded steps from baseline to owner debrief.
+- Success criteria: a themed preview within 60 minutes; 5 or fewer host markup lines changed; no layout shift or console or CSP errors; exact restore; owner rates a theme 4 or higher.
+- Timeline: run the week of 2026-11-09, fix the following week, alpha decision around 2026-11-23, ahead of Black Friday 2026-11-27.
+- Status: waiting on the founder to choose the site and provide access and permission. No agent should integrate SEED into any external site without that written permission.
+
+## npm placeholder and latest tag, 2026-11-08
+
+- Verified against docs.npmjs.com/trusted-publishers on 2026-11-08 by a fetch agent:
+  - npm CLI 11.5.1 or later and Node 22.14.0 or later are required.
+  - New configurations created after 2026-09-03 allow only `npm stage publish` until direct `npm publish` is ticked.
+  - A new configuration expires if its first successful publish is more than 2 days after it is created.
+  - The environment name is optional.
+  - Configuration happens on an existing package's settings page; no pending-publisher mechanism is mentioned.
+  - Provenance is automatic with trusted publishing.
+  - `repository.url` must match the GitHub repository.
+- Gap fixed in README step 2 and new step 5: npm makes a package's first version `latest`. The placeholder (for example `0.0.0-bootstrap.0`, published with `--tag bootstrap`) would otherwise be what a bare `npm install @sortnow/seed` returns. After the alpha publishes, the founder runs `npm dist-tag add @sortnow/seed@0.2.0-alpha.0 latest` and deprecates the placeholder. Recommendation: make the alpha `latest`, since it is the only real version.
+- Timing: create the trusted publisher immediately before pushing the tag.
+- PRs #23 (npm 11.21.2 pin and publish sequence) and #22 (real-site trial plan) are merged into develop.
+
+## GitHub npm environment created, 2026-11-08
+
+- Created by Claude at the founder's request through the GitHub API. Environment `npm` has:
+  - a required reviewer, heManKuMAR6 (id 113200157), with self-approval allowed;
+  - no wait timer;
+  - a deployment policy that allows only refs matching the tag pattern `v*`, so no branch can use the publishing environment.
+- Release steps still for the founder: npm account and org, placeholder publish, release PR to master, trusted publisher right before tagging, tag, approve, then set `latest` (README, Releases).
+
+## Package renamed to sortnow-seed, 2026-11-08 (founder decision)
+
+- Decision: publish as the unscoped `sortnow-seed`, owned only by the founder's npm account `hemankumar6`.
+- Why: the npm org `sortnow` was created during a bot-assisted session and is owned by the account `hemu9116`, which uses the bot's email. The founder cannot sign in as it, and `npm org set sortnow hemankumar6 owner` from `hemankumar6` returns 403 Forbidden. An unscoped name needs no organization.
+- Name check: `sortnow-seed` is unpublished (registry 404 on 2026-11-08).
+- Changed: package.json and package-lock.json name, and every `@sortnow/seed` reference in README, CHANGELOG, docs, examples, the React adapter doc comment, and the stranger-install script. Subpath imports are now `sortnow-seed/authoring`, `sortnow-seed/react`, and so on. The tarball name is unchanged (`sortnow-seed-<version>.tgz`). README release step 1 now says that no npm organization is needed.
+- Earlier sections of this guide that say `@sortnow/seed` are history.
+- `hemu9116` and the empty `@sortnow` org are unused and hold no packages. Removing them is optional, through the bot's email, and not required for release.
+- Verification, run once: 101 unit tests and the stranger install (fresh project, all entry points under the new name, strict types, CLI via npx).
+
+## npm package created, 2026-11-08
+
+- `sortnow-seed` exists on npm, with maintainer `hemankumar6` (2FA for authorization and publishing, security key). The founder's local publish of `0.0.0-bootstrap.0` was staged rather than published, because the account uses npm staged publishing. npm reserved the name with an empty `0.0.0-stage` version, currently `latest`. The staged bootstrap was later approved and published: registry versions are `0.0.0-stage` and `0.0.0-bootstrap.0`, with `latest` on `0.0.0-bootstrap.0` and `bin.seed` intact. Both get deprecated after the alpha becomes `latest`.
+- npm's publish-time warnings (`"bin[seed]" script name ... was invalid and removed` and the `repository.url` normalization) only rewrite `./dist/cli/index.js` to `dist/cli/index.js`. npm's normalize code keeps the bin entry. package.json now uses those normalized forms, so publishes are warning-free.
+- Next: release PR from develop to master; the trusted publisher on `sortnow-seed` (user heManKuMAR6, repository sortnow-seed, workflow release.yml, environment npm, direct `npm publish` ticked) right before the tag; tag `v0.2.0-alpha.0`; approve; then `npm dist-tag add sortnow-seed@0.2.0-alpha.0 latest`.
+
+## First npm release, 2026-11-08
+
+- What happened: while creating the package, the founder's local `npm publish --provenance=false --tag bootstrap` ran three times.
+  - `0.0.0-stage`: npm's name marker (16:34 UTC).
+  - `0.0.0-bootstrap.0`: staged, then approved (16:36).
+  - `0.2.0-alpha.0`: published by hand from develop `d260cfa`, which passed all 101 unit tests at publish time (16:37), with tag `bootstrap`.
+  - All three are by `hemankumar6`, without provenance, and include `bin.seed`.
+- Decision (Claude's recommendation, accepted): keep 0.2.0-alpha.0 as the first alpha, because npm never allows reusing a version number. `latest` now points to it, set by the founder.
+- Still for the founder: `npm dist-tag add sortnow-seed@0.2.0-alpha.0 alpha`, `npm dist-tag rm sortnow-seed bootstrap`, and deprecate `0.0.0-bootstrap.0` and `0.0.0-stage`.
+- Repository: version bumped to 0.2.0-alpha.1 on develop. README install now says `npm install sortnow-seed`. README Releases, CHANGELOG, SECURITY, and the release workflow comment describe the manual first release and the workflow-only rule from 0.2.0-alpha.1 on.
+- **Do not push `v0.2.0-alpha.0`**: the workflow would try to republish an existing version. The next tag is `v0.2.0-alpha.1`.

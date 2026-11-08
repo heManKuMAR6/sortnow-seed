@@ -73,7 +73,7 @@ test('samples are valid, carry no time zone, and need an owner-chosen one',()=>{
   for(const {key,...sample} of sampleEvents){assert.ok(!('timeZone' in sample),key);assert.equal(authorExperience({...sample,timeZone:'UTC',areas:['hero']},brand).ok,true,key);}
 });
 test('runtime entry points do not load the time-zone library',()=>{
-  for(const dir of ['dist/core','dist/react'])for(const f of readdirSync(dir).filter(f=>f.endsWith('.js')&&f!=='authoring.js'))
+  for(const dir of ['dist/core','dist/react','dist/render','dist/element'])for(const f of readdirSync(dir).filter(f=>f.endsWith('.js')&&!['authoring.js','occasions.js'].includes(f)))
     assert.ok(!readFileSync(join(dir,f),'utf8').includes('temporal-polyfill'),`${dir}/${f}`);
 });
 test('CLI authors a draft only and offers no approval path',()=>{

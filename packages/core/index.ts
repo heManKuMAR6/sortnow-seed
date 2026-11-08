@@ -1,3 +1,4 @@
+import {validateAnyExperience} from './v2.js';
 /** Configuration is data, never executable code. */
 export interface Experience {
   schemaVersion: 1;
@@ -47,7 +48,7 @@ export function validateExperience(input: unknown): Validation {
 }
 /** A stable exact-content snapshot. Not a signature, identity check, or authorization service. */
 export function approvalSnapshot(input: unknown): string {
-  const result = validateExperience(input);
+  const result = validateAnyExperience(input);
   if (!result.ok) throw new Error('Cannot snapshot invalid experience.');
   return JSON.stringify(result.value);
 }
@@ -58,6 +59,8 @@ export function selectExperience(inputs: readonly unknown[], trustedApprovals: r
   const ids = new Set<string>();
   const candidates: Experience[] = [];
   for (let i=0;i<inputs.length;i++) {
+    // Schema v2 entries are selected per page by selectPage; they never compete for v1 areas.
+    if (plain(inputs[i]) && (inputs[i] as Record<string, unknown>).schemaVersion === 2) continue;
     const result=validateExperience(inputs[i]);
     if (!result.ok) { errors.push(...result.errors.map(e=>({...e,path:`[${i}].${e.path}`}))); continue; }
     const e=result.value;
@@ -71,8 +74,12 @@ export function selectExperience(inputs: readonly unknown[], trustedApprovals: r
   return {experience:candidates[0] ?? null,errors};
 }
 
-export {isBrand,validateBrand,brandAllows,createPreset,effectivePalette} from './brand.js';
-export type {Brand,BrandValidation,Palette,Preset,ColorToken} from './brand.js';
-export {experienceSchema,brandSchema,eventSchema} from './schema.js';
+export {isBrand,validateBrand,brandAllows,createPreset,effectivePalette,paletteAllowed} from './brand.js';
+export type {Brand,BrandValidation,Palette,Preset,ColorToken,Slot} from './brand.js';
+export {validateExperienceV2,validateAnyExperience,validateBundle,resolvePack,brandAllowsV2,selectPage,SLOTS} from './v2.js';
+export type {ExperienceV2,ValidationV2,Bundle,BundleValidation,PageSelection,BannerSlot,HeroSlot,AccentSlot,OverlaySlot} from './v2.js';
+export {describePack} from './pack.js';
+export type {CompiledPack,PackAsset,AssetKind} from './pack.js';
+export {experienceSchema,experienceV2Schema,bundleSchema,brandSchema,eventSchema} from './schema.js';
 export {contrastRatio,contrastReport,brandContrastReport} from './contrast.js';
 export type {ContrastCheck,ContrastReport,BrandContrastReport} from './contrast.js';

@@ -1,48 +1,87 @@
 {
-  "name": "@sortnow/seed",
-  "version": "0.1.0-alpha.1",
-  "description": "Scheduled Experiences & Extensible Design for developers and agents",
-  "type": "module",
-  "license": "MIT",
-  "engines": {
-    "node": ">=22"
+  "name": "sortnow-seed",
+  "version": "0.2.0-alpha.1",
+  "description": "Scheduled Experiences & Extensible Design: occasion themes for existing websites, preserving brand identity, approved before they go live. For developers and agents.",
+  "keywords": [
+    "seasonal",
+    "holiday",
+    "theme",
+    "calendar",
+    "web-components",
+    "react",
+    "brand",
+    "design-tokens",
+    "schedule",
+    "agents"
+  ],
+  "homepage": "https://github.com/heManKuMAR6/sortnow-seed#readme",
+  "bugs": {
+    "url": "https://github.com/heManKuMAR6/sortnow-seed/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heManKuMAR6/sortnow-seed.git"
+    "url": "git+https://github.com/heManKuMAR6/sortnow-seed.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
   },
   "exports": {
     ".": "./dist/core/index.js",
     "./authoring": "./dist/core/authoring.js",
-    "./react": "./dist/react/index.js"
+    "./react": "./dist/react/index.js",
+    "./render": "./dist/render/index.js",
+    "./packs": "./dist/packs/index.js",
+    "./element": "./dist/element/index.js",
+    "./seed-element.js": "./dist/seed-element.js",
+    "./ai": "./dist/ai/index.js"
   },
   "types": "./dist/core/index.d.ts",
   "bin": {
-    "seed": "./dist/cli/index.js"
+    "seed": "dist/cli/index.js"
   },
   "files": [
     "dist",
     "README.md",
     "LICENSE",
-    "SECURITY.md"
+    "SECURITY.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": [
+    "./dist/element/auto.js",
+    "./dist/seed-element.js"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "node scripts/build-packs.mjs --check && tsc && node scripts/build-element.mjs",
     "test": "npm run build && node --test tests/*.test.mjs",
     "check": "npm test && npm pack --dry-run",
     "demo": "npm run build && node scripts/demo.mjs",
     "demo:second": "npm run build && node scripts/demo-second-app.mjs",
-    "test:browser": "npm run build && playwright test"
+    "test:browser": "npm run build && playwright test",
+    "packs": "node scripts/build-packs.mjs",
+    "demo:store": "npm run build && node scripts/demo-storefront.mjs",
+    "demo:html": "npm run build && node scripts/demo-plain.mjs",
+    "prepublishOnly": "npm run check",
+    "smoke:install": "node scripts/smoke-install.mjs"
   },
   "peerDependencies": {
-    "react": ">=18 <20"
+    "react": ">=18 <20",
+    "@anthropic-ai/sdk": ">=1.3.0 <2"
   },
   "peerDependenciesMeta": {
     "react": {
       "optional": true
+    },
+    "@anthropic-ai/sdk": {
+      "optional": true
     }
   },
+  "dependencies": {
+    "temporal-polyfill": "1.0.6"
+  },
   "devDependencies": {
+    "@anthropic-ai/sdk": "1.3.0",
     "@playwright/test": "1.64.1",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",
@@ -52,7 +91,9 @@
     "react-dom": "19.3.1",
     "typescript": "7.0.2"
   },
-  "dependencies": {
-    "temporal-polyfill": "1.0.6"
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "tag": "alpha"
   }
 }

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <g transform="translate(80 80)">
+    <g fill="var(--seed-sig-maroon)"><path d="M0 -74 Q16 -50 0 -30 Q-16 -50 0 -74 Z"/><path d="M0 74 Q16 50 0 30 Q-16 50 0 74 Z"/><path d="M-74 0 Q-50 16 -30 0 Q-50 -16 -74 0 Z"/><path d="M74 0 Q50 16 30 0 Q50 -16 74 0 Z"/></g>
+    <g fill="var(--seed-sig-marigold)" transform="rotate(45)"><path d="M0 -66 Q14 -46 0 -30 Q-14 -46 0 -66 Z"/><path d="M0 66 Q14 46 0 30 Q-14 46 0 66 Z"/><path d="M-66 0 Q-46 14 -30 0 Q-46 -14 -66 0 Z"/><path d="M66 0 Q46 14 30 0 Q46 -14 66 0 Z"/></g>
+    <circle r="30" fill="var(--seed-accent)"/>
+    <g fill="var(--seed-sig-flame)"><path d="M0 -26 Q8 -14 0 -6 Q-8 -14 0 -26 Z"/><path d="M0 26 Q8 14 0 6 Q-8 14 0 26 Z"/><path d="M-26 0 Q-14 8 -6 0 Q-14 -8 -26 0 Z"/><path d="M26 0 Q14 8 6 0 Q14 -8 26 0 Z"/></g>
+    <circle r="6" fill="var(--seed-sig-marigold)"/>
+    <g fill="var(--seed-background)"><circle cy="-52" r="3"/><circle cy="52" r="3"/><circle cx="-52" r="3"/><circle cx="52" r="3"/></g>
+  </g>
+</svg>

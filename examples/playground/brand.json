@@ -6,5 +6,8 @@
     "launch":{"background":"#e7eafa","foreground":"#1d3029","accent":"#4945a3"}
   },
   "allowedAreas":["banner","hero"],
-  "lockedTokens":["foreground"]
+  "lockedTokens":["foreground"],
+  "allowedSlots":["banner","hero","accent","overlay"],
+  "effects":"on",
+  "signatureColors":"allow"
 }

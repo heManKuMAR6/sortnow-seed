@@ -1,0 +1,10 @@
+{
+  "packVersion": 1, "id": "new-year", "version": "1.0.0", "name": "New Year", "occasions": ["new-year"], "license": "CC0-1.0",
+  "signatureColors": {"gold": "#d4a017", "midnight": "#1b2a4a"},
+  "illustrations": {"fireworks": {"file": "fireworks.svg", "label": "Fireworks over the night sky", "source": "original, SortNow SEED"}, "clock": {"file": "clock.svg", "label": "Clock striking midnight", "source": "original, SortNow SEED"}},
+  "icons": {"sparkle": {"file": "icon-sparkle.svg", "label": "Sparkle", "source": "original, SortNow SEED"}, "star": {"file": "icon-star.svg", "label": "Star", "source": "original, SortNow SEED"}},
+  "decorations": {"streamer-corner": {"file": "streamer-corner.svg", "source": "original, SortNow SEED"}},
+  "particles": {"sparkle": {"file": "particle-sparkle.svg", "source": "original, SortNow SEED"}},
+  "copy": {"hero": ["Here's to a bright new year.", "New year, same care in everything we make."], "banner": ["Happy New Year from all of us.", "Our New Year hours are on the visit page."]},
+  "effects": {"particles": {"assets": ["sparkle"]}}
+}

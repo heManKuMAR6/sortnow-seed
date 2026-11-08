@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <path d="M30 0 L60 0 L120 60 L120 90 Z" fill="var(--seed-sig-night)"/>
+  <path d="M30 0 L36 0 L120 84 L120 90 Z" fill="var(--seed-sig-spark)"/>
+  <path d="M54 0 L60 0 L120 60 L120 66 Z" fill="var(--seed-sig-spark)"/>
+  <path d="M84 28 L78 40 L84 40 L80 50 L91 36 L85 36 L89 28 Z" fill="var(--seed-sig-spark)"/>
+</svg>

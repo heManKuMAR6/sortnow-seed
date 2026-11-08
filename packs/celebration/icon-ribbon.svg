@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <circle cx="12" cy="9" r="6" fill="var(--seed-sig-gold)" stroke="var(--seed-accent)" stroke-width="1.2"/>
+  <path d="M8 13.5 L6 22 L9.5 20 L12 22.5 L12 15 M16 13.5 L18 22 L14.5 20 L12 22.5" fill="var(--seed-accent)"/>
+</svg>

@@ -1,0 +1,10 @@
+{
+  "packVersion": 1, "id": "celebration", "version": "1.0.0", "name": "Celebration", "occasions": ["republic-day-in", "independence-day-in", "independence-day-us", "national-day-ae", "national-day-sg"], "license": "CC0-1.0",
+  "signatureColors": {"gold": "#d4a017"},
+  "illustrations": {"bunting": {"file": "bunting.svg", "label": "Festive bunting", "source": "original, SortNow SEED"}, "starburst": {"file": "starburst.svg", "label": "Starburst", "source": "original, SortNow SEED"}},
+  "icons": {"star": {"file": "icon-star.svg", "label": "Star", "source": "original, SortNow SEED"}, "ribbon": {"file": "icon-ribbon.svg", "label": "Ribbon", "source": "original, SortNow SEED"}},
+  "decorations": {"bunting-corner": {"file": "bunting-corner.svg", "source": "original, SortNow SEED"}},
+  "particles": {"confetti": {"file": "particle-confetti.svg", "source": "original, SortNow SEED"}},
+  "copy": {"hero": ["Celebrating together today.", "A proud day for all of us."], "banner": ["Happy holiday from all of us.", "Our holiday hours are on the visit page."]},
+  "effects": {"particles": {"assets": ["confetti"]}}
+}

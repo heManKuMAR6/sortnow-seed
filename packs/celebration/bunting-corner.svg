@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 110">
+  <path d="M140 4 Q80 40 10 6" fill="none" stroke="var(--seed-foreground)" stroke-width="1.6"/>
+  <path d="M128 10 L112 18 L124 40 Z" fill="var(--seed-accent)"/>
+  <path d="M106 21 L88 26 L100 50 Z" fill="var(--seed-sig-gold)"/>
+  <path d="M82 27 L64 27 L74 52 Z" fill="var(--seed-foreground)"/>
+  <path d="M58 26 L40 21 L48 46 Z" fill="var(--seed-accent)"/>
+  <path d="M34 18 L18 11 L24 36 Z" fill="var(--seed-sig-gold)"/>
+</svg>

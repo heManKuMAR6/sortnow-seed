@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120">
+  <defs><radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="var(--seed-sig-marigold)" stop-opacity="0.55"/><stop offset="1" stop-color="var(--seed-sig-marigold)" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="50" cy="56" r="34" fill="url(#glow)"/><circle cx="120" cy="46" r="40" fill="url(#glow)"/><circle cx="190" cy="56" r="34" fill="url(#glow)"/>
+  <path d="M50 62 Q42 50 50 36 Q58 50 50 62 Z" fill="var(--seed-sig-flame)"/><path d="M50 60 Q46 52 50 44 Q54 52 50 60 Z" fill="var(--seed-sig-marigold)"/>
+  <path d="M120 54 Q110 38 120 20 Q130 38 120 54 Z" fill="var(--seed-sig-flame)"/><path d="M120 52 Q115 42 120 31 Q125 42 120 52 Z" fill="var(--seed-sig-marigold)"/>
+  <path d="M190 62 Q182 50 190 36 Q198 50 190 62 Z" fill="var(--seed-sig-flame)"/><path d="M190 60 Q186 52 190 44 Q194 52 190 60 Z" fill="var(--seed-sig-marigold)"/>
+  <path d="M20 66 Q50 64 80 66 Q76 92 50 94 Q24 92 20 66 Z" fill="var(--seed-sig-maroon)"/>
+  <path d="M84 58 Q120 55 156 58 Q151 92 120 95 Q89 92 84 58 Z" fill="var(--seed-accent)"/>
+  <path d="M160 66 Q190 64 220 66 Q216 92 190 94 Q164 92 160 66 Z" fill="var(--seed-sig-maroon)"/>
+  <path d="M26 72 Q50 76 74 72 M92 66 Q120 71 148 66 M166 72 Q190 76 214 72" fill="none" stroke="var(--seed-sig-marigold)" stroke-width="2"/>
+  <g fill="var(--seed-sig-marigold)"><circle cx="38" cy="82" r="2"/><circle cx="50" cy="84" r="2"/><circle cx="62" cy="82" r="2"/><circle cx="104" cy="80" r="2.2"/><circle cx="120" cy="83" r="2.2"/><circle cx="136" cy="80" r="2.2"/><circle cx="178" cy="82" r="2"/><circle cx="190" cy="84" r="2"/><circle cx="202" cy="82" r="2"/></g>
+  <path d="M10 104 L230 104" stroke="var(--seed-foreground)" stroke-width="1.4" opacity="0.4"/>
+</svg>

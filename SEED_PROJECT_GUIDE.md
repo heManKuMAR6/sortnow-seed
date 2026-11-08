@@ -37,22 +37,24 @@ This is not a pivot into a generic campaign dashboard, a website builder, a test
 6. The site activates that approved version on schedule and restores its base appearance afterward. Changes require renewed review. Recurring occasions produce new drafts unless an explicit future approval policy permits reuse.
 7. The next event reuses the same integration. Agents can discover and perform authoring/validation operations through documented contracts without gaining publication authority by default.
 
-### Where we are against that vision (verified repository checkpoint: 2026-11-05)
+### Where we are against that vision (checkpoint: 2026-11-08, develop after M1–M6 and the alpha review fixes)
 
-| Original requirement | Actual state | Remaining gap |
+This table is the current-status record. The handoff sections further down are history and may describe states that have since changed.
+
+| Original requirement | Actual state (on develop) | Remaining gap |
 | --- | --- | --- |
-| Easy open-source installation | Public GitHub repo and locally installable tarball | Verify namespace, simplify onboarding, and publish a reviewed npm alpha |
-| Works alongside existing frontends | M2: one self-contained script with `<seed-root>`/`<seed-area>` for plain HTML, Angular, Vue, and Shopify; React `SeedRoot`; both on the shared renderer. Exercised: plain HTML and React | Customer-site adoption and additional adapters; universal support is not implemented |
-| Brand identity stays recognizable | Color palettes, locked tokens, allowed banner/hero areas | Brand setup UX, approved assets/content slots, richer design packs; no automatic logo/typography protection |
-| Calendar-driven seasonal changes | UTC runtime and date/time-zone authoring on main (PR #6) | selected-market event calendars, editable yearly planning, recurrence authoring |
-| Preview, approval, start/end, restoration | Implemented on main with trusted-host snapshots | Production approval UX, revocation/delivery choices, explicit security boundaries |
-| Portable output for an existing site | Draft download and integration recipe on main (PR #7) | Try the recipe on a site not designed for SEED |
-| Tasteful illustrations/icons/entrances | M1 implemented on feat/m1-christmas: Christmas and Black Friday packs, brand-tinted SVG artwork, flyby and particle effects, reduced-motion and phone fallbacks, storefront demo | Founder artwork review, more packs (M3), mobile animation later |
-| AI understands brand/context and proposes a design | Not implemented | Optional bounded authoring service or bring-your-own-model path; no secrets in the browser |
-| Friendly to many coding agents | Read-only JSON CLI, schemas, diagnostics | Actual adoption feedback; MCP only if useful, no mandatory benchmark marathon |
-| Open source plus enterprise | MIT community code | Paid services remain conditional on demand; no evidence of paying customers yet |
+| Easy open-source installation | Release-ready package 0.2.0-alpha.0; a fresh-install test runs in CI; gated release workflow | Not published: founder creates the npm org `sortnow`, trusted publisher, and `npm` environment, then a release PR to master and a tag |
+| Works alongside existing frontends | One script (`<seed-root>`, about 21 KB) and React `SeedRoot` on a shared renderer; late slots decorated | Plain HTML and React are exercised. Angular, Vue, and Shopify have recipes only. **No real third-party site has been integrated yet.** |
+| Brand identity stays recognizable | Brand import from CSS or tokens (`seed init`), derived palettes, locked text colour, explicit slots; pack themes require a valid brand policy | Logo and typography are protected only by slot boundaries; mapping can misread unusual token names (shown for review) |
+| Calendar-driven occasions by market | 16 occasions across US, IN, AE, and SG with sources; planner; overrides; yearly re-planning; nothing pre-selected | Movable dates (Diwali, Eid, Lunar New Year) need yearly table updates; no packs for Thanksgiving or US Mother's Day |
+| Recognizable seasonal designs | Nine packs with brand-tinted artwork; fly-by and particle effects, at most one per visit; reduced-motion and phone fallbacks | **Founder artwork review pending**; mobile animation deliberately off |
+| Preview, approval, start/end, restoration | Exact-snapshot approval; drafts never live; restore removes only what SEED added and leaves later host style changes alone | Approval is a host-kept file, not authenticated (enterprise E2/E3); scheduling uses the visitor's clock |
+| AI understands the site and proposes a design | `seed ai-draft`: Claude proposes from installed packs, validated as a draft | **No successful live run yet** (account credits). It uses an owner-written description; it does not read the site or screenshots. |
+| Friendly to humans and agents | JSON CLI covering author, plan, replan, init, packs, occasions, and ai-draft; schemas; diagnostics | Shared operation layer and MCP server not built (E1) |
+| Open source plus enterprise | MIT runtime; enterprise design in docs/enterprise-design.md | No hosted service; no customers or pilots yet |
+| Repository process | `master` (production) and `develop` (default); ruleset "Protect master and develop" requires PRs plus the verify, browser, and install checks | Release PR from develop to master is the founder's decision |
 
-Overall: **engineering foundation with early authoring prototypes**, not the full intelligent seasonal-design product. Count merged capability separately from code in open PRs. Do not use phase counts or invented completion percentages to imply the original vision is almost done.
+Overall: **a pilot-ready seasonal website toolkit**, once one real site has been integrated and the artwork has been reviewed. The larger vision (automatic site understanding, proven cross-platform integration, hosted team operations) still needs meaningful work. Do not use phase counts or invented completion percentages to imply more than this.
 
 ## Plan of record — target architecture (founder-approved 2026-11-05)
 
@@ -494,3 +496,13 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Enterprise design: docs/enterprise-design.md. It covers principles, the operation layer (the first gap to close), hosted components and roles, signed bundle v2 with server-time anchoring and TTL revocation, the data model, security and data residency, phases E1 to E4 (E1 operation layer plus MCP, and E2 signing plus runtime verification, are open source and come first), and open decisions for the founder (licence, two-person rule, regions, pricing unit, delivery domain).
 - Verification, run once: all unit tests, the stranger install locally (initially failed on the AI types, then passed after the fix), and the AI tests rerun after the type change. The release workflow cannot be exercised without a tag and npm setup; it was reviewed, not run.
 - Next: founder decisions (release now or after review; enterprise design questions); then E1, the operation layer and MCP server.
+
+## Alpha review fixes, 2026-11-08
+
+- Owner: Claude, on Codex's review of develop 85f7456. Branch fix/alpha-review-findings, PR into develop.
+- Branch protection: the only ruleset still targeted `refs/heads/main`, which no longer exists. It is now "Protect master and develop" (deletion and force-push blocked, PR required, threads resolved, required checks verify, browser, and install), applied by API.
+- Pack themes without a brand policy no longer render: `selectPage` returns BRAND_REQUIRED and the base site shows. `mountSeed` and React `SeedRoot` now type `brand` as required. `<seed-root>` requires a brand and validates it (missing or invalid means `data-state="error"`).
+- Effects: at most one per visit across all themes (one session marker), and at most one per page view when storage is unavailable. Replay tools clear both.
+- Restoration: SEED restores a style property or attribute only if it still holds the value SEED set, so host changes made after activation are kept.
+- Guide: the status table above was rewritten as the single current record.
+- Verification, run once: 101 unit tests, and the browser suite (22 tests: 21 passed first time; the new brand test was rewritten to avoid a 404 console error and to cover invalid brands, then that file was rerun and passed). The stranger install is left to CI.

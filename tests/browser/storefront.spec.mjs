@@ -61,7 +61,10 @@ test('Black Friday and Christmas never mix, and expiry restores the exact base p
   await go(page, '2026-12-12');
   await expect(hero(page)).toHaveAttribute('data-seed-experience', 'christmas-2026');
   await expect(page.locator('[data-seed-experience="black-friday-2026"]')).toHaveCount(0);
-  await expect(overlay(page)).toHaveAttribute('data-seed-overlay', 'flyby');
+  // At most one effect per visit: the confetti already played, so Christmas stays static in this visit.
+  await page.waitForTimeout(300);
+  await expect(overlay(page)).toHaveCount(0);
+  await expect(page.locator('[data-seed-part="illustration"]')).toHaveCount(1);
   await go(page, '2026-12-27');
   await expect(status(page)).toHaveText('Showing the base site');
   await expect(parts(page)).toHaveCount(0);
@@ -77,4 +80,18 @@ test('revoking returns to the base site immediately', async ({page}) => {
   await page.getByRole('button', {name: 'Revoke Christmas'}).click();
   await expect(parts(page)).toHaveCount(0);
   await expect(overlay(page)).toHaveCount(0);
+});
+
+test('expiry never overwrites style changes the host made after SEED activated', async ({page}) => {
+  await page.emulateMedia({reducedMotion: 'reduce'});
+  await go(page, '2026-12-12');
+  await approve(page, 'Christmas');
+  await expect(hero(page)).toHaveAttribute('data-seed-experience', 'christmas-2026');
+  await hero(page).evaluate(el => { el.style.backgroundColor = 'rgb(1, 2, 3)'; el.style.outline = '2px solid red'; });
+  await go(page, '2026-12-27');
+  await expect(parts(page)).toHaveCount(0);
+  await expect(hero(page)).not.toHaveAttribute('data-seed-experience');
+  await expect(hero(page)).toHaveCSS('background-color', 'rgb(1, 2, 3)');
+  await expect(hero(page)).toHaveCSS('outline-style', 'solid');
+  expect(await hero(page).evaluate(el => el.style.getPropertyValue('--seed-accent'))).toBe('');
 });

@@ -7,22 +7,30 @@ import type {CompiledPack, ExperienceV2} from '../core/index.js';
 
 export type Motion = 'auto' | 'reduce';
 export interface EffectHandle { readonly finished: Promise<void>; cancel(): void }
-const STORAGE_PREFIX = 'seed-effect:';
+const VISIT_KEY = 'seed-effect:visit';
+/** Page-view guard for when session storage is unavailable or blocked. */
+const playedThisPage = new WeakSet<Window>();
 
 export function motionAllowed(win: Window, motion: Motion): boolean {
   if (motion === 'reduce' || typeof win.matchMedia !== 'function') return false;
   return !win.matchMedia('(prefers-reduced-motion: reduce)').matches && win.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
 }
-/** Marks the effect as seen for this visit. Storage can be missing or blocked; then it runs once per page load. */
+/**
+ * At most one effect per visit, whichever theme is showing: a second theme in the same visit stays static.
+ * Without session storage it is at most one per page view.
+ */
 function firstThisVisit(win: Window, id: string): boolean {
+  if (playedThisPage.has(win)) return false;
   try {
     const store = win.sessionStorage;
-    if (store.getItem(STORAGE_PREFIX + id)) return false;
-    store.setItem(STORAGE_PREFIX + id, '1');
-  } catch { /* fall through: once per mount */ }
+    if (store.getItem(VISIT_KEY)) return false;
+    store.setItem(VISIT_KEY, id);
+  } catch { /* storage unavailable: the page-view guard still applies */ }
+  playedThisPage.add(win);
   return true;
 }
-export function forgetEffect(win: Window, id: string) { try { win.sessionStorage.removeItem(STORAGE_PREFIX + id); } catch { /* ignore */ } }
+/** Preview tooling only: allows the effect to play again in this visit. */
+export function forgetEffect(win: Window) { playedThisPage.delete(win); try { win.sessionStorage.removeItem(VISIT_KEY); } catch { /* ignore */ } }
 
 /** Small deterministic generator so particle layouts are stable for a given experience. */
 function random(seed: string) {

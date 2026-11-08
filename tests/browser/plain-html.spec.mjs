@@ -41,3 +41,10 @@ test('broken configuration fails closed and the base site stays', async ({page})
   await expect(parts(page)).toHaveCount(0);
   await expect(page.locator('h1')).toHaveText('Bread worth waking up for.');
 });
+
+test('without a valid brand policy nothing renders', async ({page}) => {
+  await page.route('**/seed/brand.json', route => route.fulfill({contentType: 'application/json', body: '{"effects": "on"}'}));
+  await page.goto(URL);
+  await expect(root(page)).toHaveAttribute('data-state', 'error');
+  await expect(parts(page)).toHaveCount(0);
+});

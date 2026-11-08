@@ -27,6 +27,8 @@ test('element configuration is checked and fails closed', () => {
   assert.equal(checkConfig(bundle, {approved: true}, brand).errors[0].code, 'APPROVALS');
   assert.equal(checkConfig(bundle, [1], brand).ok, false);
   assert.equal(checkConfig({bundleVersion: 1, experiences: [{schemaVersion: 2}]}, [], brand).ok, false);
+  assert.equal(checkConfig(bundle, approvals, undefined).ok, false, 'brand policy is required');
+  assert.ok(checkConfig(bundle, approvals, {effects: 'on'}).errors[0].path.startsWith('brand.'));
 });
 
 test('the single-file script is self-contained, framework-free, and within budget', () => {

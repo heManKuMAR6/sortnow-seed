@@ -40,7 +40,8 @@ export interface SeedRootProps {
   approvals: readonly string[];
   /** Theme packs to allow, usually `packs` from '@sortnow/seed/packs'. Passed explicitly so apps only ship what they use. */
   packs: readonly CompiledPack[];
-  brand?: unknown;
+  /** The site's brand policy. Required: pack themes never render without it. */
+  brand: unknown;
   /** Fixed preview clock; omit for live mode. */
   previewAt?: number;
   motion?: Motion;

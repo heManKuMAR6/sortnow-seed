@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 130">
+  <rect x="10" y="20" width="160" height="104" rx="8" fill="var(--seed-background)" stroke="var(--seed-foreground)" stroke-width="2.4"/>
+  <path d="M12 24 L90 82 L168 24" fill="none" stroke="var(--seed-foreground)" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M12 122 L68 68 M168 122 L112 68" fill="none" stroke="var(--seed-foreground)" stroke-width="1.6" opacity="0.6"/>
+  <path d="M90 98 C72 86 66 78 66 70 C66 62 72 58 78 58 C84 58 88 61 90 66 C92 61 96 58 102 58 C108 58 114 62 114 70 C114 78 108 86 90 98 Z" fill="var(--seed-sig-rose)"/>
+  <path d="M150 16 C143 11 140 7 140 4 C140 1 142 0 144 0 C146 0 147 1 148 2 C149 1 150 0 152 0 C154 0 156 1 156 4 C156 7 153 11 150 16 Z" fill="var(--seed-sig-blush)"/>
+</svg>

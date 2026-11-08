@@ -15,6 +15,8 @@ const help={
     {command:'help',description:'Discover commands, limits, and trust boundaries.'},
     {command:'schema experience|experience-v2|bundle|brand|event',description:'Print raw JSON Schema for editor or agent use.'},
     {command:'validate FILE',description:'Validate one experience (v1 or v2) or a bundle, including real dates, schedule order, and v2 pack references against installed packs.'},
+    {command:'occasions MARKETS FROM_DATE [DAYS]',description:'List upcoming occasions for comma-separated markets (US,IN,AE,SG) from a date, default 120 days, with dates, theme windows, suggested packs, and sources. SEED never selects occasions for you; confirm=true marks moon-sighting or almanac dates to verify.'},
+    {command:'plan PLAN_FILE BRAND_FILE',description:'Turn the occasions you chose into one draft bundle: {markets, from, days?, timeZone, areas, occasions: [ids], overrides?}. Reports overlaps. Does not approve or publish.'},
     {command:'packs',description:'List installed theme packs with id, version, and hash.'},
     {command:'pack ID',description:'Describe one pack: asset ids, effects, copy suggestions, and signature colours. Artwork is not printed.'},
     {command:'validate-brand FILE',description:'Validate a brand policy; does not approve any experiences.'},
@@ -48,6 +50,17 @@ async function main() {
   if(command==='help' && !file && args.length===0){console.log(JSON.stringify(help));return;}
   const schemas:Record<string,unknown>={experience:experienceSchema,'experience-v2':experienceV2Schema,bundle:bundleSchema,brand:brandSchema,event:eventSchema};
   if(command==='schema' && args.length===0 && file && Object.hasOwn(schemas,file)){console.log(JSON.stringify(schemas[file]));return;}
+  if(command==='occasions' && file && args.length>=1 && args.length<=2){
+    const {upcomingOccasions}=await import('../core/authoring.js');
+    const days=args[1]===undefined?undefined:Number(args[1]);
+    const r=upcomingOccasions({markets:file.split(','),from:args[0],days});
+    console.log(JSON.stringify(r));if(!r.ok)process.exitCode=1;return;
+  }
+  if(command==='plan' && file && args.length===1){
+    const {planExperiences}=await import('../core/authoring.js');
+    const r=planExperiences(await readJson(file),await readJson(args[0]));
+    console.log(JSON.stringify(r));if(!r.ok)process.exitCode=1;return;
+  }
   if(command==='packs' && !file && args.length===0){console.log(JSON.stringify({ok:true,packs:packs.map(p=>({id:p.id,version:p.version,hash:p.hash,name:p.name,occasions:p.occasions}))}));return;}
   if(command==='pack' && file && args.length===0){
     const pack=packs.find(p=>p.id===file);

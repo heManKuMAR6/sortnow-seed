@@ -85,3 +85,21 @@ test('choosing a theme pack previews artwork, needs approval, and leaves the ori
   await expect(status(page)).toContainText('draft');
   await expect(page.getByRole('button', {name: 'Download draft bundle'})).toBeEnabled();
 });
+
+test('plan by market lists upcoming occasions, loads one into the editor, and downloads a bundle', async ({page}) => {
+  const planner = page.locator('.planner');
+  await expect(planner.getByRole('list', {name: 'Upcoming occasions'})).toHaveCount(0);
+  await planner.getByLabel('India').check();
+  await planner.locator('input[type="date"]').fill('2026-11-08');
+  await expect(planner.getByText('Republic Day (India)')).toBeVisible();
+  await expect(planner.getByText('Thanksgiving (US)')).toHaveCount(0);
+  await expect(planner.getByRole('checkbox', {name: /Include/}).first()).not.toBeChecked();
+  await planner.getByRole('button', {name: 'Edit Republic Day (India)'}).click();
+  await expect(control(page, 'Theme pack')).toHaveValue('celebration');
+  await expect(control(page, 'First day')).toHaveValue('2027-01-26');
+  await planner.getByLabel('Include Republic Day (India)').check();
+  await planner.getByLabel("Include New Year's Day").check();
+  const download = page.waitForEvent('download');
+  await planner.getByRole('button', {name: 'Download plan bundle (2)'}).click();
+  expect((await download).suggestedFilename()).toBe('seed-plan-2026-11-08.bundle.json');
+});

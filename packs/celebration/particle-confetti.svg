@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <rect x="3" y="5" width="9" height="4" rx="1" transform="rotate(-20 7.5 7)" fill="var(--seed-accent)"/>
+  <rect x="12" y="14" width="8" height="3.6" rx="1" transform="rotate(30 16 15.8)" fill="var(--seed-sig-gold)"/>
+  <circle cx="17" cy="6" r="1.8" fill="var(--seed-foreground)"/>
+</svg>

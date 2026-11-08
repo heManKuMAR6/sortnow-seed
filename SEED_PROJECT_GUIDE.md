@@ -413,3 +413,20 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Verification, run once: all 73 unit tests (5 new in tests/m2.test.mjs) and all 17 browser tests (3 new in tests/browser/plain-html.spec.mjs: themed page with no React global, date switching, late slots and the seed-area wrapper, broken approvals failing closed). The plain HTML page was checked manually in Chromium with no console errors.
 - Limits: Angular, Vue, and Shopify are unverified in real projects. Live mode on a real site still relies on the visitor's clock. Two `<seed-root>` elements on one page would both decorate it; use one. In React, a slot container whose only child is text that React replaces would lose SEED's parts until the next pass.
 - Next: founder review of M1 and M2, then a release from develop to master, or M3 (occasion calendar and more packs).
+
+## M3 handoff: occasion calendar and more packs, 2026-11-08
+
+- Owner: Claude. Branch feature/m3-occasions from develop 35fd0f8, PR into develop.
+- Catalogue (packages/core/occasions.ts, exported from `@sortnow/seed/authoring`): 16 occasions across US, IN, AE, and SG.
+  - Rules: fixed dates, nth weekday (Thanksgiving, US Mother's Day), offsets from another occasion (Black Friday through Cyber Monday), and per-year tables for movable dates.
+  - Table entries carry `confirm: true` and a source: Diwali 2026-11-08 and 2027-10-29 (panchang calendars); Lunar New Year 2027-02-06 (Singapore MOM list announced 2026-06-18); Eid al-Fitr 2027-03-09 and Eid al-Adha 2027-05-16 (expected, depend on moon sighting; Gulf News, Khaleej Times, ProPakistani). These were checked by web search on 2026-11-08.
+  - Years without a table entry, such as 2028 where sources conflict, are not listed.
+  - Every occasion has lead and duration days.
+  - Priority is 30 minus the window length (capped at 20), so shorter occasions win shared days.
+  - Markets are the owner's choice; hosting location is never used.
+- Opt-in rule, implemented strictly: SEED never pre-selects any occasion. `planExperiences` requires explicit occasion ids and accepts overrides only for message, pack ("none" for colours only), startDate, and lastDate. It returns one draft bundle, per-draft source and confirm flags, and overlaps. Drafts still need approval.
+- Packs: added new-year, diwali, lunar-new-year, valentines, and celebration (seven in total). All artwork is original CC0, brand-tinted, sanitized, and hashed. Celebration uses bunting and brand colours instead of flags, avoiding flag-colour rules. The sanitizer now also allows numeric `stroke-dasharray`. The single-file script is about 18 KB gzipped with seven packs (24 KB budget).
+- CLI: `seed occasions MARKETS FROM [DAYS]` and `seed plan PLAN_FILE BRAND_FILE`. Playground: Plan by market (market checkboxes, start date, upcoming list with Include and Edit, Download plan bundle).
+- Verification, run once: unit tests (6 new in tests/m3.test.mjs; three existing assertions updated for seven packs, the authoring-only occasions module, and an extended guard that now also covers dist/render and dist/element) and all 18 browser tests (1 new playground planner test). The new artwork was reviewed in a gallery page in Chromium.
+- Limits: no packs yet for Eid, Halloween, Thanksgiving, or US Mother's Day (they plan as colours only). Movable-date tables cover 2026–2027 only and need yearly maintenance. Lead and duration windows are SEED's defaults, not market research. The founder has not reviewed the new artwork.
+- Next: founder review, then release develop to master; later Eid and Halloween packs, recurrence (re-planning next year from this year's choices), and M4 brand onboarding.

@@ -1,0 +1,10 @@
+{
+  "packVersion": 1, "id": "valentines", "version": "1.0.0", "name": "Valentine's Day", "occasions": ["valentines-day"], "license": "CC0-1.0",
+  "signatureColors": {"rose": "#d6336c", "blush": "#f7c6d0"},
+  "illustrations": {"hearts": {"file": "hearts.svg", "label": "Cluster of hearts", "source": "original, SortNow SEED"}, "love-letter": {"file": "love-letter.svg", "label": "Envelope sealed with a heart", "source": "original, SortNow SEED"}},
+  "icons": {"heart": {"file": "icon-heart.svg", "label": "Heart", "source": "original, SortNow SEED"}, "envelope": {"file": "icon-envelope.svg", "label": "Envelope", "source": "original, SortNow SEED"}},
+  "decorations": {"heart-corner": {"file": "heart-corner.svg", "source": "original, SortNow SEED"}},
+  "particles": {"heart": {"file": "particle-heart.svg", "source": "original, SortNow SEED"}},
+  "copy": {"hero": ["Something thoughtful for someone you love.", "Made with love, wrapped with care."], "banner": ["Happy Valentine's Day from all of us.", "Order by February 10 for Valentine's delivery."]},
+  "effects": {"particles": {"assets": ["heart"]}}
+}

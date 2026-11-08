@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160">
+  <g stroke="var(--seed-sig-gold)" stroke-width="2.4" stroke-linecap="round">
+    <path d="M70 60 L70 30 M70 60 L91 39 M70 60 L100 60 M70 60 L91 81 M70 60 L70 90 M70 60 L49 81 M70 60 L40 60 M70 60 L49 39"/>
+  </g>
+  <g fill="var(--seed-sig-gold)"><circle cx="70" cy="26" r="3"/><circle cx="94" cy="36" r="3"/><circle cx="104" cy="60" r="3"/><circle cx="94" cy="84" r="3"/><circle cx="70" cy="94" r="3"/><circle cx="46" cy="84" r="3"/><circle cx="36" cy="60" r="3"/><circle cx="46" cy="36" r="3"/></g>
+  <g stroke="var(--seed-accent)" stroke-width="2" stroke-linecap="round">
+    <path d="M145 50 L145 30 M145 50 L159 36 M145 50 L165 50 M145 50 L159 64 M145 50 L145 70 M145 50 L131 64 M145 50 L125 50 M145 50 L131 36"/>
+  </g>
+  <g fill="var(--seed-accent)"><circle cx="145" cy="27" r="2.4"/><circle cx="161" cy="34" r="2.4"/><circle cx="168" cy="50" r="2.4"/><circle cx="161" cy="66" r="2.4"/><circle cx="145" cy="73" r="2.4"/><circle cx="129" cy="66" r="2.4"/><circle cx="122" cy="50" r="2.4"/><circle cx="129" cy="34" r="2.4"/></g>
+  <g stroke="var(--seed-sig-gold)" stroke-width="1.6" stroke-linecap="round" opacity="0.8">
+    <path d="M118 100 L118 88 M118 100 L127 91 M118 100 L130 100 M118 100 L127 109 M118 100 L109 109 M118 100 L106 100 M118 100 L109 91"/>
+  </g>
+  <path d="M70 92 Q72 130 66 156 M145 72 Q141 120 150 156 M118 112 Q116 136 120 156" fill="none" stroke="var(--seed-foreground)" stroke-width="1.2" stroke-dasharray="2 5" opacity="0.5"/>
+</svg>

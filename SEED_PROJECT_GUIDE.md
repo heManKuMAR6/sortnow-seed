@@ -515,3 +515,9 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Install after publish: `npm install @sortnow/seed@alpha`. Bare `npm install @sortnow/seed` uses `latest`, which this publish does not set.
 - Founder sequence still to do, in order: npm account with 2FA; free org `sortnow`; one local `npm publish --provenance=false` of a version other than `0.2.0-alpha.0`; trusted publisher for repository `sortnow-seed`, workflow `release.yml`, environment `npm`, with direct `npm publish` allowed (new publishers default to staged publish only, and expire if the first successful publish is more than two days after they are created); GitHub environment `npm` with user `heManKuMAR6` (id 113200157) as a required reviewer and self-approval left on; release PR from `develop` into `master`; tag `v0.2.0-alpha.0` on the resulting `master` commit; approve that environment. The GitHub environment was not created in this change. The token available here cannot administer environments.
 - Verification for this change is the workflow pin and doc review, plus installing npm 11.21.2 on Node 22.23.4 outside the repo. Full tests and the draft-export browser check were not repeated.
+## Real-site trial: planned, 2026-11-08
+
+- Plan: docs/real-site-trial.md. One site not built for SEED, run on staging only, with written owner permission. Eleven recorded steps from baseline to owner debrief.
+- Success criteria: a themed preview within 60 minutes; 5 or fewer host markup lines changed; no layout shift or console or CSP errors; exact restore; owner rates a theme 4 or higher.
+- Timeline: run the week of 2026-11-09, fix the following week, alpha decision around 2026-11-23, ahead of Black Friday 2026-11-27.
+- Status: waiting on the founder to choose the site and provide access and permission. No agent should integrate SEED into any external site without that written permission.

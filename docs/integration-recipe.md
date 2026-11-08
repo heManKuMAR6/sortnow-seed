@@ -47,7 +47,7 @@ npx seed validate src/seed/draft.json
 Wrap your hero in the [example component](../examples/existing-project/CampaignHero.jsx). Adjust the import paths if your files are elsewhere:
 
 ```jsx
-import { SeedArea } from '@sortnow/seed/react';
+import { SeedArea } from 'sortnow-seed/react';
 import draft from './seed/draft.json';
 // Starts as []. Only a person adds to this file, after reviewing the exact draft. Never generate it from draft.json.
 import approvals from './seed/reviewed-approvals.json';

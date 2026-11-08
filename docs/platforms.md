@@ -10,14 +10,14 @@ The base page is never removed. If anything is missing or wrong, the site keeps 
 | Platform | How | Exercised in this repository |
 | --- | --- | --- |
 | Plain HTML | `<script type="module" src="seed-element.js">` + `<seed-root>` | Yes: `examples/plain-html`, browser tests |
-| React | `SeedRoot` from `@sortnow/seed/react` | Yes: playground pack preview, browser tests |
+| React | `SeedRoot` from `sortnow-seed/react` | Yes: playground pack preview, browser tests |
 | Angular | Custom elements | Snippet only, not run here |
 | Vue | Custom elements | Snippet only, not run here |
 | Shopify themes | Theme asset + inline JSON | Snippet only, not run here |
 
 ## Plain HTML (no build step)
 
-Copy `node_modules/@sortnow/seed/dist/seed-element.js` next to your pages. It is about 13 KB gzipped, with no framework and no dependencies, and includes the installed packs.
+Copy `node_modules/sortnow-seed/dist/seed-element.js` next to your pages. It is about 13 KB gzipped, with no framework and no dependencies, and includes the installed packs.
 
 ```html
 <script type="module" src="/seed-element.js"></script>
@@ -38,8 +38,8 @@ Your CSS can use the theme colours: `background: var(--seed-accent, #a8462b)` fa
 ## React
 
 ```jsx
-import {SeedRoot} from '@sortnow/seed/react';
-import {packs} from '@sortnow/seed/packs';
+import {SeedRoot} from 'sortnow-seed/react';
+import {packs} from 'sortnow-seed/packs';
 import bundle from './seed/seed.bundle.json';
 import approvals from './seed/approvals.json';
 import brand from './seed/brand.json';
@@ -57,7 +57,7 @@ import brand from './seed/brand.json';
 
 ```ts
 // main.ts
-import '@sortnow/seed/seed-element.js';
+import 'sortnow-seed/seed-element.js';
 
 // The component or module that uses the tags
 @Component({ ..., schemas: [CUSTOM_ELEMENTS_SCHEMA] })
@@ -76,7 +76,7 @@ For configuration you import in TypeScript, set it as a property instead: `rootE
 // vite.config.js
 vue({ template: { compilerOptions: { isCustomElement: tag => tag.startsWith('seed-') } } })
 // main.js
-import '@sortnow/seed/seed-element.js';
+import 'sortnow-seed/seed-element.js';
 ```
 
 ## Shopify themes (not run here)

@@ -21,13 +21,13 @@ Open http://127.0.0.1:4173. Compare original and proposed designs, select a seas
 
 ## Install into another project
 
-Not published to npm yet. The package name stays `@sortnow/seed`, and `publishConfig.tag` is `alpha`, so a published alpha is installed with:
+Not published to npm yet. The package name stays `sortnow-seed`, and `publishConfig.tag` is `alpha`, so a published alpha is installed with:
 
 ```sh
-npm install @sortnow/seed@alpha
+npm install sortnow-seed@alpha
 ```
 
-`npm install @sortnow/seed` follows the `latest` dist-tag, which this alpha does not set. Until the alpha is on npm, pack it locally (the tarball name follows `package.json`, currently `0.2.0-alpha.0`):
+`npm install sortnow-seed` follows the `latest` dist-tag, which this alpha does not set. Until the alpha is on npm, pack it locally (the tarball name follows `package.json`, currently `0.2.0-alpha.0`):
 
 ```sh
 npm run build
@@ -37,7 +37,7 @@ npm install /absolute/path/to/sortnow-seed-0.2.0-alpha.0.tgz
 ```
 
 ```jsx
-import { SeedArea } from '@sortnow/seed/react';
+import { SeedArea } from 'sortnow-seed/react';
 import experiences from './experiences.json';
 import approvals from './reviewed-approvals.json';
 
@@ -79,7 +79,7 @@ In the playground, author an experience and choose **Download draft JSON**. Down
 Pick an event, an IANA time zone, and a date range. SEED compiles them into a draft experience in UTC. Review and approval work the same as for any other experience.
 
 ```js
-import { authorExperience } from '@sortnow/seed/authoring';
+import { authorExperience } from 'sortnow-seed/authoring';
 
 const result = authorExperience({
   name: 'Anniversary sale',
@@ -109,7 +109,7 @@ const result = authorExperience({
 }, brand);
 ```
 
-Effects and signature colours stay off until the integrator turns them on in `brand.json` (`"effects": "on"`, `"signatureColors": "allow"`, and `allowedSlots`). Explicit choices that the brand forbids return errors rather than being silently dropped. In the playground, choose **Theme pack** and download the result as a `.bundle.json`. `seed author EVENT_FILE BRAND_FILE` does the same from the command line. Render it with `mountSeed` from `@sortnow/seed/render` (see `examples/storefront`).
+Effects and signature colours stay off until the integrator turns them on in `brand.json` (`"effects": "on"`, `"signatureColors": "allow"`, and `allowedSlots`). Explicit choices that the brand forbids return errors rather than being silently dropped. In the playground, choose **Theme pack** and download the result as a `.bundle.json`. `seed author EVENT_FILE BRAND_FILE` does the same from the command line. Render it with `mountSeed` from `sortnow-seed/render` (see `examples/storefront`).
 
 ## Bring your own brand
 
@@ -143,7 +143,7 @@ What to know:
 Choose the markets your audience is in (US, India, UAE, Singapore) and SEED lists what is coming up, with theme windows, suggested packs, and the source for each date. **SEED never selects occasions for you.** Religious, national, and cultural days appear only as choices, and moon-sighting or almanac dates (Diwali, Eid, Lunar New Year) are marked to confirm locally. Years without published dates are not listed rather than guessed.
 
 ```js
-import {upcomingOccasions, planExperiences} from '@sortnow/seed/authoring';
+import {upcomingOccasions, planExperiences} from 'sortnow-seed/authoring';
 upcomingOccasions({markets: ['IN', 'AE'], from: '2026-11-08', days: 120});
 planExperiences({markets: ['IN', 'AE'], from: '2026-11-08', timeZone: 'Asia/Dubai', areas: ['banner', 'hero'],
   occasions: ['national-day-ae-2026', 'christmas-2026']}, brand); // -> one draft bundle; overlaps reported
@@ -161,7 +161,7 @@ One self-contained script (`dist/seed-element.js`, about 13 KB gzipped, no frame
 <section class="hero" data-seed-slot="hero accent">…your hero…</section>
 ```
 
-React apps use `SeedRoot` from `@sortnow/seed/react`. See [docs/platforms.md](docs/platforms.md) for React, Angular, Vue, and Shopify, and `npm run demo:html` for a framework-free example on port 4176.
+React apps use `SeedRoot` from `sortnow-seed/react`. See [docs/platforms.md](docs/platforms.md) for React, Angular, Vue, and Shopify, and `npm run demo:html` for a framework-free example on port 4176.
 
 ## Architecture
 
@@ -174,16 +174,16 @@ React apps use `SeedRoot` from `@sortnow/seed/react`. See [docs/platforms.md](do
 
 ## Releases
 
-`@sortnow/seed` is pre-1.0 and not yet on npm. `0.2.0-alpha.0` stays the package version and is not released yet ([CHANGELOG.md](CHANGELOG.md)). When it is published, install `npm install @sortnow/seed@alpha`.
+`sortnow-seed` is pre-1.0 and not yet on npm. `0.2.0-alpha.0` stays the package version and is not released yet ([CHANGELOG.md](CHANGELOG.md)). When it is published, install `npm install sortnow-seed@alpha`.
 
 Publication is the tagged workflow on `master`, not a merge. Before the first tag:
 
-1. Create the npm account (with 2FA) and the free organization `sortnow`, which owns the `@sortnow` scope. The package name stays `@sortnow/seed`.
-2. Create the package with a placeholder version other than `0.2.0-alpha.0`, for example `0.0.0-bootstrap.0`: `npm login`, then `npm publish --provenance=false --tag bootstrap`. `publishConfig.provenance` is true, so the flag is required outside GitHub Actions. Leave `0.2.0-alpha.0` unpublished for the workflow. npm makes a package's first version its `latest` regardless, so step 5 fixes that.
+1. Use the maintainer's npm account `hemankumar6`, with 2FA on. `sortnow-seed` is an unscoped package, so no npm organization is needed, and no other npm account is involved.
+2. Create the package with a placeholder version other than `0.2.0-alpha.0`, for example `0.0.0-bootstrap.0`: `npm login` as `hemankumar6` (check with `npm whoami`), then `npm publish --provenance=false --tag bootstrap`. `publishConfig.provenance` is true, so the flag is required outside GitHub Actions. Leave `0.2.0-alpha.0` unpublished for the workflow. npm makes a package's first version its `latest` regardless, so step 5 fixes that.
 3. On that package, add a trusted publisher for GitHub user `heManKuMAR6`, repository `sortnow-seed`, workflow filename `release.yml`, and environment `npm`. Tick direct `npm publish`: configurations created after 2026-09-03 allow only staged publish by default, and the workflow runs `npm publish`. **Do this last, right before tagging**: a new trusted publisher expires if its first publish is more than 2 days later.
 4. The GitHub environment `npm` already exists, with `heManKuMAR6` as the required reviewer (self-approval allowed) and limited to `v*` tags. Then open the release PR from `develop` into `master`. After it merges, tag `v0.2.0-alpha.0` on the commit that is on `master` (a squash or rebase merge is a new commit). Approve the waiting `npm` environment on that run.
-5. After the alpha is published, point `latest` at it and retire the placeholder, so a bare `npm install @sortnow/seed` gets the real package:
-   `npm dist-tag add @sortnow/seed@0.2.0-alpha.0 latest`, then `npm deprecate @sortnow/seed@0.0.0-bootstrap.0 "Placeholder; install @sortnow/seed@alpha"`.
+5. After the alpha is published, point `latest` at it and retire the placeholder, so a bare `npm install sortnow-seed` gets the real package:
+   `npm dist-tag add sortnow-seed@0.2.0-alpha.0 latest`, then `npm deprecate sortnow-seed@0.0.0-bootstrap.0 "Placeholder; install sortnow-seed@alpha"`.
 
 The workflow pins Node `22.23.4` and npm `11.21.2` so the job meets npm's trusted-publishing requirement (npm CLI 11.5.1 or later, Node 22.14.0 or later). `npm run smoke:install` checks that a fresh project can install and use the package. See [docs/enterprise-design.md](docs/enterprise-design.md) for the planned hosted mode.
 
@@ -200,8 +200,8 @@ MIT licensed. See [CONTRIBUTING.md](CONTRIBUTING.md).
 ## Brand-aware integration
 
 ```jsx
-import { createPreset } from '@sortnow/seed';
-import { SeedArea } from '@sortnow/seed/react';
+import { createPreset } from 'sortnow-seed';
+import { SeedArea } from 'sortnow-seed/react';
 // brand: see examples/playground/brand.json. settings: id, UTC dates, priority, areas, message.
 const draft = createPreset('seasonal', brand, settings);
 <SeedArea brand={brand} experiences={[draft]} approvals={reviewedSnapshots}

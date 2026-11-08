@@ -21,7 +21,7 @@ Pack source (repo: packs/<id>/)          Owner config (host repo)
   pack.json + SVG files                    brand.json      (extended, backward compatible)
         │ build-packs (sanitize, hash)      seed.bundle.json (experiences, v1 and v2)
         ▼                                   approvals.json  (unchanged: exact snapshots)
-  compiled packs inside @sortnow/seed              │
+  compiled packs inside sortnow-seed              │
         │                                          ▼
         └──────────────► core: validate → approve → schedule → select (one winner per page)
                                                    │
@@ -143,7 +143,7 @@ New optional fields in `brand.json`:
 
 The veto stays a veto. An experience is not rendered if it uses a slot outside `allowedSlots`, uses an overlay while `effects` is `off`, uses signature colours while they are denied, or has palette values that fail the existing v1 rules. Existing brand files without these fields validate as before. Effects and signature colours are off until the integrator turns them on.
 
-## 7. Decision: the renderer (`@sortnow/seed/render`, framework-neutral)
+## 7. Decision: the renderer (`sortnow-seed/render`, framework-neutral)
 
 ```ts
 mountSeed({
@@ -219,7 +219,7 @@ Each PR updates the guide. Targeted tests only, per the owner's preference.
 
 1. **Page-level winner (section 5):** agree, or keep per-slot selection?
 2. **Signature colours:** is "deny by default, brand opt-in" right, or should packs never carry fixed colours?
-3. **Packs in the main package or `@sortnow/seed-packs`?** The proposal is the main package for M1 and splitting when there are more than a few packs.
+3. **Packs in the main package or `sortnow-seed-packs`?** The proposal is the main package for M1 and splitting when there are more than a few packs.
 4. **v1/v2 coexistence rules (section 5):** acceptable, or should v2 hosts drop v1 entirely?
 5. **Effects default `off` in brand policy:** the proposal is that integrators opt in once, then owners choose per experience.
 

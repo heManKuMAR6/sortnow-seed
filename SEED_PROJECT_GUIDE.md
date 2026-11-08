@@ -43,7 +43,7 @@ This table is the current-status record. The handoff sections further down are h
 
 | Original requirement | Actual state (on develop) | Remaining gap |
 | --- | --- | --- |
-| Easy open-source installation | Release-ready package 0.2.0-alpha.0 on the `alpha` dist-tag; fresh-install test in CI; release workflow pins Node 22.23.4 and npm 11.21.2 | Not published. The GitHub `npm` environment exists (required reviewer heManKuMAR6, `v*` tags only). Founder still creates the npm org, a bootstrap version other than 0.2.0-alpha.0, and a trusted publisher allowed to `npm publish`. Install will be `npm install @sortnow/seed@alpha`. |
+| Easy open-source installation | Release-ready package `sortnow-seed` 0.2.0-alpha.0 on the `alpha` dist-tag; fresh-install test in CI; release workflow pins Node 22.23.4 and npm 11.21.2; GitHub `npm` environment exists | Not published. Founder publishes the placeholder from npm account `hemankumar6`, adds the trusted publisher right before tagging, merges the release PR, tags, approves, then sets `latest`. Install will be `npm install sortnow-seed`. |
 | Works alongside existing frontends | One script (`<seed-root>`, about 21 KB) and React `SeedRoot` on a shared renderer; late slots decorated | Plain HTML and React are exercised. Angular, Vue, and Shopify have recipes only. **No real third-party site has been integrated yet.** |
 | Brand identity stays recognizable | Brand import from CSS or tokens (`seed init`), derived palettes, locked text colour, explicit slots; pack themes require a valid brand policy | Logo and typography are protected only by slot boundaries; mapping can misread unusual token names (shown for review) |
 | Calendar-driven occasions by market | 16 occasions across US, IN, AE, and SG with sources; planner; overrides; yearly re-planning; nothing pre-selected | Movable dates (Diwali, Eid, Lunar New Year) need yearly table updates; no packs for Thanksgiving or US Mother's Day |
@@ -543,3 +543,13 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
   - no wait timer;
   - a deployment policy that allows only refs matching the tag pattern `v*`, so no branch can use the publishing environment.
 - Release steps still for the founder: npm account and org, placeholder publish, release PR to master, trusted publisher right before tagging, tag, approve, then set `latest` (README, Releases).
+
+## Package renamed to sortnow-seed, 2026-11-08 (founder decision)
+
+- Decision: publish as the unscoped `sortnow-seed`, owned only by the founder's npm account `hemankumar6`.
+- Why: the npm org `sortnow` was created during a bot-assisted session and is owned by the account `hemu9116`, which uses the bot's email. The founder cannot sign in as it, and `npm org set sortnow hemankumar6 owner` from `hemankumar6` returns 403 Forbidden. An unscoped name needs no organization.
+- Name check: `sortnow-seed` is unpublished (registry 404 on 2026-11-08).
+- Changed: package.json and package-lock.json name, and every `@sortnow/seed` reference in README, CHANGELOG, docs, examples, the React adapter doc comment, and the stranger-install script. Subpath imports are now `sortnow-seed/authoring`, `sortnow-seed/react`, and so on. The tarball name is unchanged (`sortnow-seed-<version>.tgz`). README release step 1 now says that no npm organization is needed.
+- Earlier sections of this guide that say `@sortnow/seed` are history.
+- `hemu9116` and the empty `@sortnow` org are unused and hold no packages. Removing them is optional, through the bot's email, and not required for release.
+- Verification, run once: 101 unit tests and the stranger install (fresh project, all entry points under the new name, strict types, CLI via npx).

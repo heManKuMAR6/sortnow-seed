@@ -17,6 +17,7 @@ const help={
     {command:'validate FILE',description:'Validate one experience (v1 or v2) or a bundle, including real dates, schedule order, and v2 pack references against installed packs.'},
     {command:'occasions MARKETS FROM_DATE [DAYS]',description:'List upcoming occasions for comma-separated markets (US,IN,AE,SG) from a date, default 120 days, with dates, theme windows, suggested packs, and sources. SEED never selects occasions for you; confirm=true marks moon-sighting or almanac dates to verify.'},
     {command:'plan PLAN_FILE BRAND_FILE',description:'Turn the occasions you chose into one draft bundle: {markets, from, days?, timeZone, areas, occasions: [ids], overrides?}. Reports overlaps. Does not approve or publish.'},
+    {command:'replan PLAN_FILE BRAND_FILE',description:'Build next year\'s plan from last year\'s plan file: same markets and occasions one year on, message and pack choices kept, hand-set dates dropped. Lists occasions whose next date is not published yet. Prints the new plan and draft bundle; every draft needs new approval.'},
     {command:'init FILE',description:'Propose a brand.json from a CSS file or design-tokens JSON you point to (it never scans your project). Reads colour values only, maps background, text, and accent, derives palettes, and fixes accent contrast. Effects and signature colours stay off. Prints a draft for review; writes nothing.'},
     {command:'packs',description:'List installed theme packs with id, version, and hash.'},
     {command:'pack ID',description:'Describe one pack: asset ids, effects, copy suggestions, and signature colours. Artwork is not printed.'},
@@ -61,6 +62,11 @@ async function main() {
   if(command==='plan' && file && args.length===1){
     const {planExperiences}=await import('../core/authoring.js');
     const r=planExperiences(await readJson(file),await readJson(args[0]));
+    console.log(JSON.stringify(r));if(!r.ok)process.exitCode=1;return;
+  }
+  if(command==='replan' && file && args.length===1){
+    const {replanNextYear}=await import('../core/authoring.js');
+    const r=replanNextYear(await readJson(file),await readJson(args[0]));
     console.log(JSON.stringify(r));if(!r.ok)process.exitCode=1;return;
   }
   if(command==='init' && file && args.length===0){

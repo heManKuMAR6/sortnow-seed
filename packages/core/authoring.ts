@@ -9,7 +9,8 @@ import {validateExperience, type Diagnostic, type Experience} from './index.js';
 import {validateExperienceV2, brandAllowsV2, resolvePack, type ExperienceV2} from './v2.js';
 import type {CompiledPack} from './pack.js';
 import {packs as installedPacks} from '../packs/index.js';
-import {upcomingOccasions, defaultPack, OCCASIONS_NOTICE} from './occasions.js';
+import {upcomingOccasions, defaultPack, OCCASIONS_NOTICE, OCCASIONS} from './occasions.js';
+const OCCASION_IDS = new Set(OCCASIONS.map(o => o.id));
 
 export interface EventInput {
   name: string;
@@ -214,3 +215,64 @@ export function planExperiences(input: unknown, brand: unknown, packs: readonly 
 
 export {importBrand, proposeBrand, colorsFromCss, colorsFromTokens, parseColor} from './brand-import.js';
 export type {BrandImportResult, BrandProposal, ColorSource} from './brand-import.js';
+
+export type ReplanResult =
+  | {ok: true; plan: PlanInput; result: Extract<PlanResult, {ok: true}> | null; carried: {from: string; to: string}[]; missing: {occasion: string; reason: string}[]; notes: string[]}
+  | {ok: false; errors: Diagnostic[]};
+/** The same occasion one year later: christmas-2026 -> christmas-2027. */
+export function nextOccurrenceId(id: string): string | null {
+  const m = /^([a-z][a-z0-9-]*)-(\d{4})$/.exec(id);
+  return m ? `${m[1]}-${Number(m[2]) + 1}` : null;
+}
+/**
+ * Builds next year's plan from this year's: the same markets, time zone, areas, and chosen occasions, one year on.
+ * Message and pack choices carry over; hand-set dates do not, because the calendar moved. Occasions whose next
+ * date is not published yet are reported, never guessed. Every new draft needs a new approval.
+ */
+export function replanNextYear(previous: unknown, brand: unknown, packs: readonly CompiledPack[] = installedPacks): ReplanResult {
+  if (!plain(previous)) return {ok: false, errors: [{path: '$', code: 'OBJECT_REQUIRED', message: 'Provide last year\'s plan: {markets, from, days?, timeZone, areas, occasions, overrides?}.'}]};
+  const from = typeof previous.from === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(previous.from) ? (() => { try { return Temporal.PlainDate.from(previous.from as string, {overflow: 'reject'}); } catch { return null; } })() : null;
+  if (!from) return {ok: false, errors: [{path: 'from', code: 'DATE', message: 'Use a real calendar date: YYYY-MM-DD.'}]};
+  if (!Array.isArray(previous.occasions) || !previous.occasions.length) return {ok: false, errors: [{path: 'occasions', code: 'OCCASIONS', message: 'Last year\'s plan has no chosen occasions.'}]};
+  // Occasions move between years (Diwali 2026-11-08, 2027-10-29), so search around next year's dates rather than
+  // shifting the window exactly, then fit the new window to the occasions found.
+  const days = typeof previous.days === 'number' ? previous.days : 120;
+  const searchFrom = from.add({years: 1}).subtract({days: 60});
+  const upcoming = upcomingOccasions({markets: previous.markets, from: searchFrom.toString(), days: Math.min(400, days + 120)});
+  if (!upcoming.ok) return {ok: false, errors: upcoming.errors};
+  const carried: {from: string; to: string}[] = [], missing: {occasion: string; reason: string}[] = [], notes: string[] = [];
+  const oldOverrides = plain(previous.overrides) ? previous.overrides : {};
+  const overrides: Record<string, {message?: string; pack?: string}> = {};
+  for (const id of previous.occasions) {
+    const next = typeof id === 'string' ? nextOccurrenceId(id) : null;
+    if (!next) { missing.push({occasion: String(id), reason: 'Not an occasion id.'}); continue; }
+    if (!upcoming.occasions.some(o => o.id === next)) {
+      const known = OCCASION_IDS.has(next.replace(/-\d{4}$/, ''));
+      missing.push({occasion: next, reason: known ? 'Its date for next year is not published in SEED yet. Add it when the date is announced.' : 'Unknown occasion.'});
+      continue;
+    }
+    carried.push({from: id as string, to: next});
+    const o = (oldOverrides as Record<string, unknown>)[id as string];
+    if (plain(o)) {
+      const keep: {message?: string; pack?: string} = {};
+      if (typeof o.message === 'string') keep.message = o.message;
+      if (typeof o.pack === 'string') keep.pack = o.pack;
+      if (Object.keys(keep).length) overrides[next] = keep;
+      if (o.startDate !== undefined || o.lastDate !== undefined) notes.push(`${next}: last year's hand-set dates were not carried over; the default window for next year is used. Adjust if needed.`);
+    }
+  }
+  const found = upcoming.occasions.filter(o => carried.some(c => c.to === o.id));
+  const start = found.length ? found.map(o => o.startDate).sort()[0] : from.add({years: 1}).toString();
+  const end = found.length ? found.map(o => o.lastDate).sort().at(-1)! : start;
+  const span = Temporal.PlainDate.from(start).until(Temporal.PlainDate.from(end)).days + 1;
+  const plan: PlanInput = {
+    markets: previous.markets as string[], from: start, days: Math.max(1, Math.min(400, span)),
+    timeZone: previous.timeZone as string, areas: previous.areas as Experience['areas'], occasions: carried.map(c => c.to),
+    ...(Object.keys(overrides).length ? {overrides} : {}),
+  };
+  notes.push('These are new drafts. Last year\'s approvals do not apply to them; review and approve each one again.');
+  if (!carried.length) return {ok: true, plan, result: null, carried, missing, notes};
+  const result = planExperiences(plan, brand, packs);
+  if (!result.ok) return {ok: false, errors: result.errors};
+  return {ok: true, plan, result, carried, missing, notes};
+}

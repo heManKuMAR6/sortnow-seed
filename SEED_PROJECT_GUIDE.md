@@ -453,3 +453,12 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - The occasion catalogue now points Eid al-Fitr, Eid al-Adha, and Halloween at these packs; Thanksgiving and US Mother's Day still plan as colours only. Nine packs in total. The single-file script is about 20.8 KB gzipped (24 KB budget). Existing pack hashes are unchanged, so existing approvals and demo bundles stay valid.
 - Verification, run once: all 87 unit tests; one earlier test used "halloween" as its example of a missing pack and was updated, then that file was rerun. Browser tests were not rerun because no renderer, element, or playground code changed. Artwork was reviewed on light and dark backgrounds in Chromium.
 - Next: yearly re-planning (next year's drafts from this year's choices), then M5 AI drafting, or a release from develop to master.
+
+## Yearly re-planning, 2026-11-08
+
+- Owner: Claude. Branch feature/yearly-replan from develop 4678539, PR into develop.
+- `replanNextYear(plan, brand)` and `seed replan PLAN_FILE BRAND_FILE`: the same markets, time zone, areas, and occasions one year on (`christmas-2026` becomes `christmas-2027`). Message and pack overrides carry over. Hand-set dates do not, and a note says so. Occasions with no published date next year are returned in `missing` and never guessed. Notes state that last year's approvals do not apply.
+- Found while building: occasions move between years (Diwali 2026-11-08, then 2027-10-29). Shifting the window by exactly one year dropped Diwali 2027. Re-planning now searches around next year's dates and fits the new window to the occasions found (the example plan restarts 2027-10-26). This is covered by a test.
+- Playground: Download plan choices (`*.plan.json`, no approvals) and Plan the same occasions next year, which shows waiting occasions and notes.
+- Verification, run once: unit tests (5 new in tests/replan.test.mjs; one quoting typo fixed, then that file rerun) and the playground browser tests (9 passed, 1 new).
+- Next: M5 AI drafting, or a release from develop to master.

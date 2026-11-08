@@ -27,6 +27,15 @@ export function brandFile(brand) {
   return {filename: 'brand.json', json: `${JSON.stringify(result.value, null, 2)}\n`};
 }
 export function downloadBrand(brand, env = globalThis) { save(brandFile(brand), env); }
+/** The owner's plan choices, so next year can be planned from them (seed replan). Contains no approvals. */
+export function planFile(plan, name) {
+  if (!/^[a-z0-9-]{1,80}$/.test(name)) throw new Error('Unsafe file name.');
+  const {markets, from, days, timeZone, areas, occasions, overrides} = plan;
+  if (!Array.isArray(markets) || !Array.isArray(occasions) || typeof from !== 'string' || typeof timeZone !== 'string') throw new Error('Cannot export an invalid plan.');
+  const clean = {markets, from, ...(days !== undefined ? {days} : {}), timeZone, areas, occasions, ...(overrides ? {overrides} : {})};
+  return {filename: `${name}.plan.json`, json: `${JSON.stringify(clean, null, 2)}\n`};
+}
+export function downloadPlan(plan, name, env = globalThis) { save(planFile(plan, name), env); }
 /** Saves a local file only. Downloading does not approve or publish anything. */
 export function downloadDraft(experience, env = globalThis) { save(draftFile(experience), env); }
 function save({filename, json}, env) {

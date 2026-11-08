@@ -101,7 +101,7 @@ The event runs from the start of the first day through the end of the last day i
 
 ## Development
 
-`npm run check` builds, tests, and inspects package contents. `npm audit` checks known dependency advisories. Work on feature branches and open PRs against `main`. Automated nightly review is configured separately in the owner's Codex app; it is not a GitHub-hosted merge service. Never merge absent or failing checks.
+`npm run check` builds, tests, and inspects package contents. `npm audit` checks known dependency advisories. Branch from `develop` as `feature/<name>` and open PRs against `develop`; `master` receives only production-ready releases from `develop`. Automated nightly review is configured separately in the owner's Codex app; it is not a GitHub-hosted merge service. Never merge absent or failing checks.
 
 ## Roadmap
 

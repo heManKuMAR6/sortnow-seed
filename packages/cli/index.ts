@@ -20,7 +20,7 @@ const help={
     {command:'validate-brand FILE',description:'Validate a brand policy; does not approve any experiences.'},
     {command:'snapshot FILE',description:'Create exact-content review material. Does not grant approval.'},
     {command:'inspect FILE UTC_INSTANT',description:'Preview schedule eligibility without approving or publishing.'},
-    {command:'author EVENT_FILE BRAND_FILE',description:'Compile an event, IANA time zone, and date range into a draft experience. The last day is included. Does not approve or publish.'},
+    {command:'author EVENT_FILE BRAND_FILE',description:'Compile an event, IANA time zone, and date range into a draft experience. The last day is included. Add "pack" (see seed packs) for a schema v2 draft with artwork and effects; illustration, icon, decoration, effect, and signatureColors are optional and default from the pack and brand policy. Does not approve or publish.'},
     {command:'samples',description:'List illustrative sample events. Not a holiday database; the owner still chooses the time zone.'},
     {command:'contrast FILE',description:'Advisory WCAG contrast ratios for one experience. Exit 0 even when a pair misses its minimum; read meetsMinimums.'},
     {command:'contrast-brand FILE',description:'Advisory contrast for the base and each preset palette after locked tokens apply.'},

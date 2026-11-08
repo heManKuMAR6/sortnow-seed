@@ -392,3 +392,12 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - CI: pushes run only on `master` and `develop`, and pull requests run on PRs into either, so feature branches no longer run CI twice.
 - References to `main` in older handoff sections are historical and now mean `master`.
 - Next release to `master`: M1 when the founder judges it production ready, after Codex review and artwork review.
+
+## Pack authoring handoff — 2026-11-08 (step 2 after M1)
+
+- Owner: Claude. Branch feature/pack-authoring from develop cd14cba, PR into develop. Goal: owners and agents create pack themes without writing JSON.
+- `authorExperience` accepts optional `pack`, `illustration`, `icon`, `decoration`, `effect`, and `signatureColors`. With a pack it returns a schema v2 draft with full defaults: the hero gets the first illustration not used by a flyby, the banner gets the first icon, a decoration is added when the brand allows the accent slot, the pack's effect is added when brand effects are on, and signature colours are used when the brand allows them. `"none"` opts out. Explicit choices the brand or pack forbids return coded errors (BRAND_EFFECTS, BRAND_SIGNATURE, BRAND_AREA, EFFECT, ASSET, PACK, PACK_REQUIRED). Without a pack, output is unchanged v1. New Christmas and Black Friday samples carry their pack. The event JSON Schema and `seed author` help describe the new fields.
+- Playground: a Theme pack picker and design controls. Pack previews render with `mountSeed` into hero and banner slots marked on the existing components. Pack drafts download as `<id>.bundle.json`; colour-only drafts still download as `.draft.json`. The playground brand now opts in to all slots, effects, and signature colours.
+- Verification, run once: all unit tests (5 new in tests/pack-authoring.test.mjs; the brand schema-alignment test now allows optional fields), and all browser tests (1 new playground pack test). Two new-test mistakes and two ambiguous locators were fixed, and only the affected files were rerun.
+- Limits: React `SeedArea` still renders only v1 (M2); in the playground the renderer adds nodes inside a React-managed hero, which is fine for this static component but is not a pattern for dynamic React content until M2. Effect timing, direction, and density use fixed defaults (4.5 s, left to right, light) that are not exposed in the form.
+- Next: M2, the `<seed-area>` web component with React rebuilt on the renderer.

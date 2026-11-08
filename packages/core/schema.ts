@@ -42,6 +42,12 @@ export const eventSchema = {
     message: { type: 'string', minLength: 1, maxLength: 240 },
     areas: { type: 'array', minItems: 1, maxItems: 2, uniqueItems: true, items: { enum: ['banner', 'hero'] } },
     priority: { type: 'integer', minimum: 0, maximum: 100, default: 10 },
+    pack: { type: 'string', pattern: '^[a-z][a-z0-9-]{0,31}$', description: 'Theme pack id from seed packs. With a pack the draft is schema v2 with artwork and effects; without one it is v1 colours only.' },
+    illustration: { type: 'string', description: 'Pack illustration id for the hero, or "none". Default chosen from the pack.' },
+    icon: { type: 'string', description: 'Pack icon id for the banner, or "none". Default chosen from the pack.' },
+    decoration: { type: 'string', description: 'Pack decoration id for the accent corner, or "none". Default when the brand allows the accent slot.' },
+    effect: { enum: ['flyby', 'particles', 'none'], description: 'Default: the pack effect when the brand has effects on.' },
+    signatureColors: { type: 'boolean', description: 'Use pack signature colours. Default: true when the brand allows them.' },
   },
 } as const;
 export const brandSchema = {

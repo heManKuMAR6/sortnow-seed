@@ -179,9 +179,11 @@ React apps use `SeedRoot` from `@sortnow/seed/react`. See [docs/platforms.md](do
 Publication is the tagged workflow on `master`, not a merge. Before the first tag:
 
 1. Create the npm account (with 2FA) and the free organization `sortnow`, which owns the `@sortnow` scope. The package name stays `@sortnow/seed`.
-2. Create the package with a bootstrap version other than `0.2.0-alpha.0`: `npm login`, then `npm publish --provenance=false`. `publishConfig.provenance` is true, so the flag is required outside GitHub Actions. Leave `0.2.0-alpha.0` unpublished for the workflow.
-3. On that package, add a trusted publisher for GitHub user `heManKuMAR6`, repository `sortnow-seed`, workflow filename `release.yml`, and environment `npm`. Allow direct `npm publish`. Configurations created after 2026-09-03 default to staged publish only, and the workflow runs `npm publish`.
+2. Create the package with a placeholder version other than `0.2.0-alpha.0`, for example `0.0.0-bootstrap.0`: `npm login`, then `npm publish --provenance=false --tag bootstrap`. `publishConfig.provenance` is true, so the flag is required outside GitHub Actions. Leave `0.2.0-alpha.0` unpublished for the workflow. npm makes a package's first version its `latest` regardless, so step 5 fixes that.
+3. On that package, add a trusted publisher for GitHub user `heManKuMAR6`, repository `sortnow-seed`, workflow filename `release.yml`, and environment `npm`. Tick direct `npm publish`: configurations created after 2026-09-03 allow only staged publish by default, and the workflow runs `npm publish`. **Do this last, right before tagging**: a new trusted publisher expires if its first publish is more than 2 days later.
 4. In GitHub, create environment `npm` with `heManKuMAR6` as a required reviewer before any tag is pushed, and leave self-approval allowed. Then open the release PR from `develop` into `master`. After it merges, tag `v0.2.0-alpha.0` on the commit that is on `master` (a squash or rebase merge is a new commit). Approve the waiting `npm` environment on that run.
+5. After the alpha is published, point `latest` at it and retire the placeholder, so a bare `npm install @sortnow/seed` gets the real package:
+   `npm dist-tag add @sortnow/seed@0.2.0-alpha.0 latest`, then `npm deprecate @sortnow/seed@0.0.0-bootstrap.0 "Placeholder; install @sortnow/seed@alpha"`.
 
 The workflow pins Node `22.23.4` and npm `11.21.2` so the job meets npm's trusted-publishing requirement (npm CLI 11.5.1 or later, Node 22.14.0 or later). `npm run smoke:install` checks that a fresh project can install and use the package. See [docs/enterprise-design.md](docs/enterprise-design.md) for the planned hosted mode.
 

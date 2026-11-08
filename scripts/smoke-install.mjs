@@ -22,13 +22,13 @@ try {
   run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', join(work, packed), 'react@19.3.1', 'react-dom@19.3.1']);
 
   writeFileSync(join(work, 'use.mjs'), `
-import {validateBundle, selectPage, approvalSnapshot, validateBrand} from '@sortnow/seed';
-import {authorExperience, upcomingOccasions, importBrand, planExperiences} from '@sortnow/seed/authoring';
-import {packs} from '@sortnow/seed/packs';
-import {mountSeed} from '@sortnow/seed/render';
-import {sameOriginUrl} from '@sortnow/seed/element';
-import {draftWithAI, proposalSchema} from '@sortnow/seed/ai';
-import {SeedRoot, SeedArea} from '@sortnow/seed/react';
+import {validateBundle, selectPage, approvalSnapshot, validateBrand} from 'sortnow-seed';
+import {authorExperience, upcomingOccasions, importBrand, planExperiences} from 'sortnow-seed/authoring';
+import {packs} from 'sortnow-seed/packs';
+import {mountSeed} from 'sortnow-seed/render';
+import {sameOriginUrl} from 'sortnow-seed/element';
+import {draftWithAI, proposalSchema} from 'sortnow-seed/ai';
+import {SeedRoot, SeedArea} from 'sortnow-seed/react';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {existsSync} from 'node:fs';
@@ -47,17 +47,17 @@ assert(packs.length >= 9 && typeof mountSeed === 'function' && sameOriginUrl('/x
 assert(typeof draftWithAI === 'function' && proposalSchema(packs).properties.pack.enum.includes('christmas'), 'ai entry loads without the optional SDK');
 assert(renderToStaticMarkup(createElement(SeedRoot, {experiences: [r.experience], approvals: [], packs, brand: b})) === '', 'React SeedRoot SSR');
 assert(typeof SeedArea === 'function', 'React SeedArea');
-assert(existsSync('node_modules/@sortnow/seed/dist/seed-element.js'), 'single-file script shipped');
+assert(existsSync('node_modules/sortnow-seed/dist/seed-element.js'), 'single-file script shipped');
 console.log('runtime checks passed');
 `);
   step('every entry point works from a fresh project', () => run(process.execPath, ['use.mjs']));
 
   writeFileSync(join(work, 'types.ts'), `
-import {type ExperienceV2, type Brand, selectPage} from '@sortnow/seed';
-import {authorExperience, type PlanInput} from '@sortnow/seed/authoring';
-import {packs} from '@sortnow/seed/packs';
-import {mountSeed, type SeedMount} from '@sortnow/seed/render';
-import type {AIDraftRequest} from '@sortnow/seed/ai';
+import {type ExperienceV2, type Brand, selectPage} from 'sortnow-seed';
+import {authorExperience, type PlanInput} from 'sortnow-seed/authoring';
+import {packs} from 'sortnow-seed/packs';
+import {mountSeed, type SeedMount} from 'sortnow-seed/render';
+import type {AIDraftRequest} from 'sortnow-seed/ai';
 const plan: PlanInput = {markets: ['US'], from: '2026-11-08', timeZone: 'UTC', areas: ['hero'], occasions: ['christmas-2026']};
 const req: AIDraftRequest = {description: 'x', name: 'n', timeZone: 'UTC', startDate: '2026-12-01', lastDate: '2026-12-02', areas: ['hero']};
 export const use = (b: Brand, e: ExperienceV2): [unknown, unknown, typeof mountSeed, SeedMount | null] => [selectPage([e], [], 0, {packs, brand: b}), authorExperience(plan, b), mountSeed, null];

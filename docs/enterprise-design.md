@@ -14,7 +14,7 @@ This covers point 7 of the founder's brief: a backend attached, and the second o
 
 ## 2. The gap to close first: one operation layer
 
-Today the CLI, the playground, and future tools call core functions directly. Before any server work, define the operations once in a new module, `@sortnow/seed/operations`. Each operation is a typed function with JSON in, JSON out, coded errors, and a declared permission:
+Today the CLI, the playground, and future tools call core functions directly. Before any server work, define the operations once in a new module, `sortnow-seed/operations`. Each operation is a typed function with JSON in, JSON out, coded errors, and a declared permission:
 
 | Operation | Permission | Notes |
 | --- | --- | --- |

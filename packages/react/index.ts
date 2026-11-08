@@ -38,7 +38,7 @@ export interface SeedRootProps {
   experiences: readonly unknown[];
   /** Exact snapshots from trusted host configuration. Never derive these from drafts. */
   approvals: readonly string[];
-  /** Theme packs to allow, usually `packs` from '@sortnow/seed/packs'. Passed explicitly so apps only ship what they use. */
+  /** Theme packs to allow, usually `packs` from 'sortnow-seed/packs'. Passed explicitly so apps only ship what they use. */
   packs: readonly CompiledPack[];
   /** The site's brand policy. Required: pack themes never render without it. */
   brand: unknown;

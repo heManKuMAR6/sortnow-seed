@@ -68,3 +68,20 @@ test('revoking restores the base appearance', async ({page}) => {
   await expectBase(proposed(page));
   await expect(proposed(page).locator('.hero')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
 });
+
+test('choosing a theme pack previews artwork, needs approval, and leaves the original untouched', async ({page}) => {
+  await page.locator('aside select').first().selectOption('christmas'); // the Event picker
+  await expect(control(page, 'Theme pack')).toHaveValue('christmas');
+  const preview = page.getByRole('region', {name: 'Experience preview'});
+  const originalPane = page.getByRole('region', {name: 'Original website'});
+  await expect(preview.locator('[data-seed-part="illustration"] svg')).toBeVisible();
+  await expect(status(page)).toContainText('draft');
+  await approve(page);
+  await expect(status(page)).toContainText('approved');
+  await expect(preview.locator('[data-seed-part="banner"]')).toContainText('Wishing you a warm and joyful holiday season.');
+  await expect(preview.locator('[data-seed-part="decoration"]')).toHaveCount(1);
+  await expect(originalPane.locator('[data-seed-part]')).toHaveCount(0);
+  await control(page, 'Hero illustration').selectOption('gift-stack');
+  await expect(status(page)).toContainText('draft');
+  await expect(page.getByRole('button', {name: 'Download draft bundle'})).toBeEnabled();
+});

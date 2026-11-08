@@ -1,11 +1,16 @@
-import {validateExperience} from '../../dist/core/index.js';
+import {validateAnyExperience} from '../../dist/core/index.js';
 
-/** Re-validates so only the fields of a valid Experience can ever leave the page. Never includes approvals. */
+/**
+ * Re-validates so only the fields of a valid experience can ever leave the page. Never includes approvals.
+ * Colour-only (v1) drafts export as one experience; pack (v2) drafts export as a bundle, which hosts commit as-is.
+ */
 export function draftFile(experience) {
-  const result = validateExperience(experience);
+  const result = validateAnyExperience(experience);
   if (!result.ok) throw new Error('Cannot export an invalid experience.');
-  // Validated ids contain only lowercase letters, digits, and hyphens, so this name is safe.
-  return {filename: `${result.value.id}.draft.json`, json: `${JSON.stringify(result.value, null, 2)}\n`};
+  const value = result.value;
+  // Validated ids contain only lowercase letters, digits, and hyphens, so these names are safe.
+  if (value.schemaVersion === 2) return {filename: `${value.id}.bundle.json`, json: `${JSON.stringify({bundleVersion: 1, experiences: [value]}, null, 2)}\n`};
+  return {filename: `${value.id}.draft.json`, json: `${JSON.stringify(value, null, 2)}\n`};
 }
 /** Saves a local file only. Downloading does not approve or publish anything. */
 export function downloadDraft(experience, env = globalThis) {

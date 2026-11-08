@@ -90,6 +90,21 @@ const result = authorExperience({
 
 The event runs from the start of the first day through the end of the last day in that zone. Invalid input returns `{ ok: false, errors }` with a path and message per problem. The result is always a draft: `approvalSnapshot` and owner review remain separate, and editing any date, zone, theme, or content invalidates an earlier approval. Only dates are accepted for now, not local times. Zone rules come from the host's `Intl` data, so no network is needed. The sample events are invented examples, not a holiday database.
 
+### Theme packs: artwork and effects without writing JSON
+
+Add `pack` to the same input and SEED builds a full design from that pack: a banner icon, a hero illustration, a corner decoration, one effect, and the pack's signature colours. Each choice defaults from the pack and from what your brand policy allows; set any of them yourself or pass `"none"`.
+
+```js
+const result = authorExperience({
+  name: 'Christmas', timeZone: 'America/New_York', startDate: '2026-12-01', lastDate: '2026-12-25',
+  preset: 'seasonal', message: 'Wishing you a warm and joyful holiday season.', areas: ['banner', 'hero'],
+  pack: 'christmas',          // see: seed packs
+  // illustration: 'tree', icon: 'gift', decoration: 'holly-corner', effect: 'flyby', signatureColors: true
+}, brand);
+```
+
+Effects and signature colours stay off until the integrator turns them on in `brand.json` (`"effects": "on"`, `"signatureColors": "allow"`, and `allowedSlots`). Explicit choices that the brand forbids return errors rather than being silently dropped. In the playground, choose **Theme pack** and download the result as a `.bundle.json`. `seed author EVENT_FILE BRAND_FILE` does the same from the command line. Render it with `mountSeed` from `@sortnow/seed/render` (see `examples/storefront`).
+
 ## Architecture
 
 - `packages/core`: typed contracts, validation, exact-content approval snapshots, deterministic selection.

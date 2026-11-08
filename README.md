@@ -115,6 +115,23 @@ npx seed init src/styles/theme.css     # or tokens.json (W3C $value, Style Dicti
 
 SEED reads colour values only (hex, rgb, hsl, and `var()` references between colour variables). It maps background, text, and accent by name, or infers them from the colours when names don't say. It derives seasonal, promotion, and launch palettes as gentle tints of your own colours, keeps your text colour locked, and darkens any accent that would not be readable (4.5:1), noting each change. The output is a draft `brand.json` for you to review and save. Effects and pack signature colours stay off until you set `"effects": "on"` and `"signatureColors": "allow"`. In the playground, use **Your brand** to paste CSS, preview every pack in your colours, and download `brand.json`.
 
+## Optional AI drafting
+
+Describe your site and SEED asks a Claude model (default `claude-opus-5-5`) to propose a design for an event. The model can only choose from the installed packs: every design field in its structured output is an enum of real asset ids. SEED then authors the draft through the same brand rules and validation as a person would. If SEED rejects the proposal (an asset from another pack, an effect your brand has off), the errors go back to the model once for a correction. The result is always a draft with a short rationale; you preview and approve it yourself.
+
+```sh
+npm install @anthropic-ai/sdk          # optional; only needed for AI drafting
+export ANTHROPIC_API_KEY=...           # or: ant auth login
+npx seed ai-draft request.json brand.json
+# request.json: {"description": "...", "name": "Christmas", "timeZone": "America/New_York",
+#                "startDate": "2026-12-01", "lastDate": "2026-12-25", "areas": ["banner", "hero"], "pack": "christmas"}
+```
+
+What to know:
+- The description and event details are sent to Anthropic with your credentials, and each draft is one or two paid calls.
+- Visitors' browsers never call a model. The runtime package, React adapter, and `seed-element.js` contain no AI code.
+- Server-side refusal fallback is on (`fallbacks: "default"`), so a policy decline can be retried on another model chosen by the API.
+
 ## Plan by market: upcoming occasions
 
 Choose the markets your audience is in (US, India, UAE, Singapore) and SEED lists what is coming up, with theme windows, suggested packs, and the source for each date. **SEED never selects occasions for you.** Religious, national, and cultural days appear only as choices, and moon-sighting or almanac dates (Diwali, Eid, Lunar New Year) are marked to confirm locally. Years without published dates are not listed rather than guessed.

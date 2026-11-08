@@ -18,6 +18,7 @@ const help={
     {command:'occasions MARKETS FROM_DATE [DAYS]',description:'List upcoming occasions for comma-separated markets (US,IN,AE,SG) from a date, default 120 days, with dates, theme windows, suggested packs, and sources. SEED never selects occasions for you; confirm=true marks moon-sighting or almanac dates to verify.'},
     {command:'plan PLAN_FILE BRAND_FILE',description:'Turn the occasions you chose into one draft bundle: {markets, from, days?, timeZone, areas, occasions: [ids], overrides?}. Reports overlaps. Does not approve or publish.'},
     {command:'replan PLAN_FILE BRAND_FILE',description:'Build next year\'s plan from last year\'s plan file: same markets and occasions one year on, message and pack choices kept, hand-set dates dropped. Lists occasions whose next date is not published yet. Prints the new plan and draft bundle; every draft needs new approval.'},
+    {command:'ai-draft REQUEST_FILE BRAND_FILE',description:'Optional AI drafting: a Claude model proposes a design for {description, name, timeZone, startDate, lastDate, areas, pack?} by choosing only from installed packs; SEED validates it like any draft. Sends the description and event to Anthropic using your own credentials (ANTHROPIC_API_KEY or an ant auth login profile). Requires the optional @anthropic-ai/sdk package. Returns a draft only; never approves or publishes. Not read-only: it makes a paid API call.'},
     {command:'init FILE',description:'Propose a brand.json from a CSS file or design-tokens JSON you point to (it never scans your project). Reads colour values only, maps background, text, and accent, derives palettes, and fixes accent contrast. Effects and signature colours stay off. Prints a draft for review; writes nothing.'},
     {command:'packs',description:'List installed theme packs with id, version, and hash.'},
     {command:'pack ID',description:'Describe one pack: asset ids, effects, copy suggestions, and signature colours. Artwork is not printed.'},
@@ -31,7 +32,7 @@ const help={
   ],
   limits:{fileBytes:65536,experiences:100,approvals:100},
   exitCodes:{success:0,invalidInput:1},
-  authorization:'All commands are read-only. Store snapshots in trusted configuration only after owner review. No publish or approve command exists.',
+  authorization:'All commands except ai-draft are read-only and offline; ai-draft makes one or two paid model calls with your own credentials. Store snapshots in trusted configuration only after owner review. No publish or approve command exists.',
 };
 async function readJson(path: string, raw = false) {
   // Nonblocking open prevents FIFOs from hanging before the regular-file check on POSIX.
@@ -68,6 +69,21 @@ async function main() {
     const {replanNextYear}=await import('../core/authoring.js');
     const r=replanNextYear(await readJson(file),await readJson(args[0]));
     console.log(JSON.stringify(r));if(!r.ok)process.exitCode=1;return;
+  }
+  if(command==='ai-draft' && file && args.length===1){
+    const {draftWithAI,createClient}=await import('../ai/index.js');
+    const [request,brand]=[await readJson(file),await readJson(args[0])];
+    let client;
+    try{client=await createClient();}catch(e){throw new InputError('AI_SDK',(e as Error).message,'$','Install the optional dependency, then retry.');}
+    try{
+      const r=await draftWithAI(request,brand,{client});
+      console.log(JSON.stringify(r.ok?{...r,notice:'AI-proposed draft. Review the design and message, preview it, and approve it yourself if you want it.'}:r));if(!r.ok)process.exitCode=1;
+    }catch(e){
+      const status=(e as {status?:number}).status;
+      const message=status===401||status===403?'The model provider rejected your credentials. Set ANTHROPIC_API_KEY or run ant auth login.':status===429?'Rate limited by the model provider. Try again shortly.':status!==undefined?`The model provider returned an error (${status}).`:'Could not reach the model provider. Check your connection.';
+      console.log(JSON.stringify({ok:false,errors:[{code:'AI_PROVIDER',path:'$',message}]}));process.exitCode=1;
+    }
+    return;
   }
   if(command==='init' && file && args.length===0){
     const {importBrand}=await import('../core/authoring.js');

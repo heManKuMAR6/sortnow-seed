@@ -521,3 +521,17 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Success criteria: a themed preview within 60 minutes; 5 or fewer host markup lines changed; no layout shift or console or CSP errors; exact restore; owner rates a theme 4 or higher.
 - Timeline: run the week of 2026-11-09, fix the following week, alpha decision around 2026-11-23, ahead of Black Friday 2026-11-27.
 - Status: waiting on the founder to choose the site and provide access and permission. No agent should integrate SEED into any external site without that written permission.
+
+## npm placeholder and latest tag, 2026-11-08
+
+- Verified against docs.npmjs.com/trusted-publishers on 2026-11-08 by a fetch agent:
+  - npm CLI 11.5.1 or later and Node 22.14.0 or later are required.
+  - New configurations created after 2026-09-03 allow only `npm stage publish` until direct `npm publish` is ticked.
+  - A new configuration expires if its first successful publish is more than 2 days after it is created.
+  - The environment name is optional.
+  - Configuration happens on an existing package's settings page; no pending-publisher mechanism is mentioned.
+  - Provenance is automatic with trusted publishing.
+  - `repository.url` must match the GitHub repository.
+- Gap fixed in README step 2 and new step 5: npm makes a package's first version `latest`. The placeholder (for example `0.0.0-bootstrap.0`, published with `--tag bootstrap`) would otherwise be what a bare `npm install @sortnow/seed` returns. After the alpha publishes, the founder runs `npm dist-tag add @sortnow/seed@0.2.0-alpha.0 latest` and deprecates the placeholder. Recommendation: make the alpha `latest`, since it is the only real version.
+- Timing: create the trusted publisher immediately before pushing the tag.
+- PRs #23 (npm 11.21.2 pin and publish sequence) and #22 (real-site trial plan) are merged into develop.

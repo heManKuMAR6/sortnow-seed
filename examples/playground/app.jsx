@@ -2,10 +2,10 @@ import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {SeedArea,SeedRoot} from '../../dist/react/index.js';
 import {approvalSnapshot} from '../../dist/core/index.js';
-import {authorExperience,sampleEvents,SAMPLE_NOTICE,END_SEMANTICS,MARKETS,upcomingOccasions,planExperiences,defaultPack,importBrand} from '../../dist/core/authoring.js';
+import {authorExperience,sampleEvents,SAMPLE_NOTICE,END_SEMANTICS,MARKETS,upcomingOccasions,planExperiences,defaultPack,importBrand,replanNextYear} from '../../dist/core/authoring.js';
 import {forgetEffects} from './replay.mjs';
 import {packs} from '../../dist/packs/index.js';
-import {downloadDraft,downloadBundle,downloadBrand} from './export.mjs';
+import {downloadDraft,downloadBundle,downloadBrand,downloadPlan} from './export.mjs';
 import sampleBrand from './brand.json';
 const descriptions={seasonal:'A little warmth for the winter season.',promotion:'A week of thoughtful finds. Explore our featured collection.',launch:'Introducing the studio collection. Made for everyday rituals.'};
 const zones=(()=>{try{return ['UTC',...Intl.supportedValuesOf('timeZone')];}catch{return ['UTC'];}})();
@@ -26,7 +26,10 @@ function Planner({timeZone,areas,onEdit,brand}){
  const occasions=list?.ok?list.occasions:[];
  const toggle=(set,value,on)=>set(on?[...new Set([...(set===setMarkets?markets:picked),value])]:(set===setMarkets?markets:picked).filter(v=>v!==value));
  const chosen=picked.filter(id=>occasions.some(o=>o.id===id));
- const plan=chosen.length?planExperiences({markets,from,days:120,timeZone,areas,occasions:chosen},brand):null;
+ const planInput={markets,from,days:120,timeZone,areas,occasions:chosen};
+ const plan=chosen.length?planExperiences(planInput,brand):null;
+ const [replanNote,setReplanNote]=useState(null);
+ const nextYear=()=>{const r=replanNextYear(planInput,brand);if(!r.ok){setReplanNote({errors:r.errors});return;}setFrom(r.plan.from);setPicked(r.plan.occasions);setReplanNote({missing:r.missing,notes:r.notes});};
  return <fieldset className="planner"><legend>Plan by market</legend>
   <div className="markets">{Object.entries(MARKETS).map(([code,name])=><label key={code} className="inline"><input type="checkbox" checked={markets.includes(code)} onChange={e=>toggle(setMarkets,code,e.target.checked)}/>{name}</label>)}</div>
   <label>Starting from<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label>
@@ -38,6 +41,9 @@ function Planner({timeZone,areas,onEdit,brand}){
   {plan&&!plan.ok&&<ul className="problems" role="alert">{plan.errors.map(e=><li key={e.path+e.code}><strong>{e.path}:</strong> {e.message}</li>)}</ul>}
   {plan?.ok&&plan.overlaps.length>0&&<small>Overlapping: {plan.overlaps.map(p=>p.join(' and ')).join('; ')}. The shorter occasion shows on shared days.</small>}
   <button className="secondary" disabled={!plan?.ok} onClick={()=>downloadBundle(plan.bundle,`seed-plan-${from}`)}>Download plan bundle ({plan?.ok?plan.bundle.experiences.length:0})</button>
+  <button className="secondary" disabled={!plan?.ok} onClick={()=>downloadPlan(planInput,`seed-plan-${from}`)}>Download plan choices</button>
+  <button className="secondary" disabled={!plan?.ok} onClick={nextYear}>Plan the same occasions next year</button>
+  {replanNote&&<div role="note" className="replan">{replanNote.errors?.map(e=><small key={e.code}>{e.message}</small>)}{replanNote.missing?.map(m=><small key={m.occasion}>Waiting: {m.occasion}. {m.reason}</small>)}{replanNote.notes?.map(n=><small key={n}>{n}</small>)}</div>}
   <small>{list?.ok?list.notice:''}</small>
  </fieldset>;
 }

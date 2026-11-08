@@ -122,3 +122,19 @@ test('your brand: paste CSS, review the proposal, and preview packs in those col
   await panel.getByRole('button', {name: 'Download brand.json'}).click();
   expect((await download).suggestedFilename()).toBe('brand.json');
 });
+
+test('plan the same occasions next year from this year\'s choices', async ({page}) => {
+  const planner = page.locator('.planner');
+  await planner.getByLabel('India').check();
+  await planner.locator('input[type="date"]').fill('2026-11-08');
+  await planner.getByLabel('Include Diwali (Deepavali)').check();
+  await planner.getByLabel('Include Christmas').check();
+  await planner.getByRole('button', {name: 'Plan the same occasions next year'}).click();
+  await expect(planner.locator('input[type="date"]')).toHaveValue('2027-10-26');
+  await expect(planner.getByLabel('Include Diwali (Deepavali)')).toBeChecked();
+  await expect(planner.getByText('2027-10-26 to 2027-10-31')).toBeVisible();
+  await expect(planner.getByRole('note')).toContainText('approve each one again');
+  const download = page.waitForEvent('download');
+  await planner.getByRole('button', {name: 'Download plan choices'}).click();
+  expect((await download).suggestedFilename()).toBe('seed-plan-2027-10-26.plan.json');
+});

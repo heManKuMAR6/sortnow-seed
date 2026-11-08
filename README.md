@@ -21,13 +21,19 @@ Open http://127.0.0.1:4173. Compare original and proposed designs, select a seas
 
 ## Install into another project
 
-Not published to npm yet; the @sortnow namespace is provisional.
+Not published to npm yet. The package name stays `@sortnow/seed`, and `publishConfig.tag` is `alpha`, so a published alpha is installed with:
+
+```sh
+npm install @sortnow/seed@alpha
+```
+
+`npm install @sortnow/seed` follows the `latest` dist-tag, which this alpha does not set. Until the alpha is on npm, pack it locally (the tarball name follows `package.json`, currently `0.2.0-alpha.0`):
 
 ```sh
 npm run build
 npm pack
 # From your React project:
-npm install /absolute/path/to/sortnow-seed-0.1.0-alpha.1.tgz
+npm install /absolute/path/to/sortnow-seed-0.2.0-alpha.0.tgz
 ```
 
 ```jsx
@@ -168,7 +174,16 @@ React apps use `SeedRoot` from `@sortnow/seed/react`. See [docs/platforms.md](do
 
 ## Releases
 
-`@sortnow/seed` is pre-1.0 and not yet on npm. Releases are published from `master` by a tagged, reviewed GitHub workflow with npm provenance. `npm run smoke:install` checks that a fresh project can install and use the package. See [CHANGELOG.md](CHANGELOG.md), and [docs/enterprise-design.md](docs/enterprise-design.md) for the planned hosted mode.
+`@sortnow/seed` is pre-1.0 and not yet on npm. `0.2.0-alpha.0` stays the package version and is not released yet ([CHANGELOG.md](CHANGELOG.md)). When it is published, install `npm install @sortnow/seed@alpha`.
+
+Publication is the tagged workflow on `master`, not a merge. Before the first tag:
+
+1. Create the npm account (with 2FA) and the free organization `sortnow`, which owns the `@sortnow` scope. The package name stays `@sortnow/seed`.
+2. Create the package with a bootstrap version other than `0.2.0-alpha.0`: `npm login`, then `npm publish --provenance=false`. `publishConfig.provenance` is true, so the flag is required outside GitHub Actions. Leave `0.2.0-alpha.0` unpublished for the workflow.
+3. On that package, add a trusted publisher for GitHub user `heManKuMAR6`, repository `sortnow-seed`, workflow filename `release.yml`, and environment `npm`. Allow direct `npm publish`. Configurations created after 2026-09-03 default to staged publish only, and the workflow runs `npm publish`.
+4. In GitHub, create environment `npm` with `heManKuMAR6` as a required reviewer before any tag is pushed, and leave self-approval allowed. Then open the release PR from `develop` into `master`. After it merges, tag `v0.2.0-alpha.0` on the commit that is on `master` (a squash or rebase merge is a new commit). Approve the waiting `npm` environment on that run.
+
+The workflow pins Node `22.23.4` and npm `11.21.2` so the job meets npm's trusted-publishing requirement (npm CLI 11.5.1 or later, Node 22.14.0 or later). `npm run smoke:install` checks that a fresh project can install and use the package. See [docs/enterprise-design.md](docs/enterprise-design.md) for the planned hosted mode.
 
 ## Development
 

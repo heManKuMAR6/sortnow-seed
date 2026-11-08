@@ -24,6 +24,7 @@ Everything below was merged to `develop` between 2026-11-05 and 2026-11-08.
 
 ### Compatibility
 - Schema v1 experiences, approvals, `selectExperience`, and React `SeedArea` behave as in 0.1.0.
+- This version is not released. The release that publishes it uses the `alpha` dist-tag (`npm install @sortnow/seed@alpha`) and does not move `latest`.
 
 ## 0.1.0-alpha.1
 

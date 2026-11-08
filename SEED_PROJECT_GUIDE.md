@@ -506,3 +506,10 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - Restoration: SEED restores a style property or attribute only if it still holds the value SEED set, so host changes made after activation are kept.
 - Guide: the status table above was rewritten as the single current record.
 - Verification, run once: 101 unit tests, and the browser suite (22 tests: 21 passed first time; the new brand test was rewritten to avoid a 404 console error and to cover invalid brands, then that file was rerun and passed). The stranger install is left to CI.
+
+## Real-site trial: planned, 2026-11-08
+
+- Plan: docs/real-site-trial.md. One site not built for SEED, run on staging only, with written owner permission. Eleven recorded steps from baseline to owner debrief.
+- Success criteria: a themed preview within 60 minutes; 5 or fewer host markup lines changed; no layout shift or console or CSP errors; exact restore; owner rates a theme 4 or higher.
+- Timeline: run the week of 2026-11-09, fix the following week, alpha decision around 2026-11-23, ahead of Black Friday 2026-11-27.
+- Status: waiting on the founder to choose the site and provide access and permission. No agent should integrate SEED into any external site without that written permission.

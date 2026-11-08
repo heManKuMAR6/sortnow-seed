@@ -45,7 +45,7 @@ assert(upcomingOccasions({markets: ['IN'], from: '2026-11-08'}).ok, 'occasions')
 assert(planExperiences({markets: ['US'], from: '2026-11-08', timeZone: 'UTC', areas: ['hero'], occasions: ['christmas-2026']}, b).ok, 'plan');
 assert(packs.length >= 9 && typeof mountSeed === 'function' && sameOriginUrl('/x', 'https://a.test/') === 'https://a.test/x', 'packs, render, element');
 assert(typeof draftWithAI === 'function' && proposalSchema(packs).properties.pack.enum.includes('christmas'), 'ai entry loads without the optional SDK');
-assert(renderToStaticMarkup(createElement(SeedRoot, {experiences: [r.experience], approvals: [], packs})) === '', 'React SeedRoot SSR');
+assert(renderToStaticMarkup(createElement(SeedRoot, {experiences: [r.experience], approvals: [], packs, brand: b})) === '', 'React SeedRoot SSR');
 assert(typeof SeedArea === 'function', 'React SeedArea');
 assert(existsSync('node_modules/@sortnow/seed/dist/seed-element.js'), 'single-file script shipped');
 console.log('runtime checks passed');

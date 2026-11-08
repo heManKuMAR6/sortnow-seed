@@ -7,7 +7,7 @@
  */
 import {selectPage, type CompiledPack, type Diagnostic, type ExperienceV2} from '../core/index.js';
 import {runEffect, forgetEffect, type EffectHandle, type Motion} from './effects.js';
-export {motionAllowed, type Motion} from './effects.js';
+export {motionAllowed, forgetEffect, type Motion} from './effects.js';
 
 export interface MountOptions {
   root?: Document | Element;
@@ -15,7 +15,8 @@ export interface MountOptions {
   /** Exact snapshots from trusted host configuration. Never derive these from drafts. */
   approvals: readonly string[];
   packs: readonly CompiledPack[];
-  brand?: unknown;
+  /** The site's brand policy. Required: pack themes never render without it. */
+  brand: unknown;
   /** Fixed clock for previews; omit for live mode. */
   now?: number;
   /** 'reduce' forces the static fallback; 'auto' follows the visitor's settings and screen. */
@@ -55,7 +56,10 @@ export function mountSeed(options: MountOptions): SeedMount {
   const setStyle = (el: HTMLElement, prop: string, value: string) => {
     const before = el.style.getPropertyValue(prop), priority = el.style.getPropertyPriority(prop), hadStyle = el.hasAttribute('style');
     el.style.setProperty(prop, value);
+    const applied = el.style.getPropertyValue(prop);
     undo.push(() => {
+      // If the host changed this property after SEED set it, the host's value wins and is left alone.
+      if (el.style.getPropertyValue(prop) !== applied) return;
       before ? el.style.setProperty(prop, before, priority) : el.style.removeProperty(prop);
       if (!hadStyle && !el.getAttribute('style')) el.removeAttribute('style');
     });
@@ -63,7 +67,10 @@ export function mountSeed(options: MountOptions): SeedMount {
   const setAttr = (el: Element, name: string, value: string) => {
     const before = el.getAttribute(name);
     el.setAttribute(name, value);
-    undo.push(() => before === null ? el.removeAttribute(name) : el.setAttribute(name, before));
+    undo.push(() => {
+      if (el.getAttribute(name) !== value) return;
+      before === null ? el.removeAttribute(name) : el.setAttribute(name, before);
+    });
   };
   const add = (parent: Element, child: Element, first = false) => {
     first ? parent.prepend(child) : parent.append(child);
@@ -170,7 +177,7 @@ export function mountSeed(options: MountOptions): SeedMount {
     update(next = {}) { Object.assign(opts, next); if ('now' in next) live(); apply(); },
     replay() {
       if (!current || !doc.defaultView) return;
-      forgetEffect(doc.defaultView, current.id);
+      forgetEffect(doc.defaultView);
       key = ''; apply();
     },
     refresh() { decorateNew(); },

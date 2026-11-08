@@ -72,6 +72,13 @@ test('brand policy vetoes effects, signature colours, and slots unless the integ
   assert.equal(page([christmas], [approvalSnapshot(christmas)], DEC_12, {brand: legacy}).errors[0].code, 'BRAND_VETO');
 });
 
+test('pack themes never render without the brand policy', () => {
+  const r = selectPage([christmas], [approvalSnapshot(christmas)], DEC_12, {packs});
+  assert.equal(r.experience, null);
+  assert.equal(r.errors[0].code, 'BRAND_REQUIRED');
+  assert.ok(page([christmas], [approvalSnapshot(christmas)], DEC_12).experience, 'with the brand it renders');
+});
+
 test('bundles never carry approvals or signatures', () => {
   assert.equal(validateBundle(bundle).ok, true);
   for (const field of ['approvals', 'signature']) assert.equal(validateBundle({...bundle, [field]: []}).errors[0].code, 'UNKNOWN_FIELD');

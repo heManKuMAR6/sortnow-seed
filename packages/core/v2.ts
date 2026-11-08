@@ -191,7 +191,7 @@ export interface PageSelection { experience: ExperienceV2 | null; pack: Compiled
  * approved (exact snapshot), active, brand-allowed, and resolvable against an installed pack.
  * v1 entries are ignored here and keep competing per area through selectExperience.
  */
-export function selectPage(inputs: readonly unknown[], trustedApprovals: readonly string[], now: number, options: {packs: readonly CompiledPack[]; brand?: unknown}): PageSelection {
+export function selectPage(inputs: readonly unknown[], trustedApprovals: readonly string[], now: number, options: {packs: readonly CompiledPack[]; /** Required for pack themes; without it they fail closed. */ brand?: unknown}): PageSelection {
   if (!Number.isFinite(now) || inputs.length > 100 || trustedApprovals.length > 100) return {experience: null, pack: null, errors: [{path: '$', code: 'LIMIT', message: 'Provide a finite clock and at most 100 experiences and approvals.'}]};
   const errors: Diagnostic[] = [], ids = new Set<string>();
   const candidates: {e: ExperienceV2; pack: CompiledPack}[] = [];
@@ -206,11 +206,13 @@ export function selectPage(inputs: readonly unknown[], trustedApprovals: readonl
     if (!trustedApprovals.includes(JSON.stringify(e)) || !(instant(e.startsAt) <= now && now < instant(e.endsAt))) continue;
     const resolved = resolvePack(e, options.packs);
     if (!resolved.ok) { errors.push(...resolved.errors.map(x => ({...x, path: `[${i}].${x.path}`}))); continue; }
-    if (options.brand !== undefined && !brandAllowsV2(e, options.brand)) { errors.push({path: `[${i}]`, code: 'BRAND_VETO', message: 'Brand policy does not permit this experience; the base site is shown.'}); continue; }
+    // Effects, slots, and signature colours are opt-ins in brand.json, so a pack theme never renders without it.
+    if (options.brand === undefined) { errors.push({path: `[${i}]`, code: 'BRAND_REQUIRED', message: 'Pack themes need the site brand policy (brand.json); the base site is shown.'}); continue; }
+    if (!brandAllowsV2(e, options.brand)) { errors.push({path: `[${i}]`, code: 'BRAND_VETO', message: 'Brand policy does not permit this experience; the base site is shown.'}); continue; }
     candidates.push({e, pack: resolved.pack});
   }
   // Malformed configuration fails closed for the whole page, as in v1.
-  if (errors.some(x => x.code !== 'PACK_MISMATCH' && x.code !== 'ASSET_MISSING' && x.code !== 'BRAND_VETO')) return {experience: null, pack: null, errors};
+  if (errors.some(x => !['PACK_MISMATCH', 'ASSET_MISSING', 'BRAND_VETO', 'BRAND_REQUIRED'].includes(x.code))) return {experience: null, pack: null, errors};
   candidates.sort((a, b) => b.e.priority - a.e.priority || (a.e.id < b.e.id ? -1 : a.e.id > b.e.id ? 1 : 0));
   const win = candidates[0];
   return {experience: win?.e ?? null, pack: win?.pack ?? null, errors};

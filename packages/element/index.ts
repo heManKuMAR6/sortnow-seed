@@ -10,10 +10,10 @@
  * the site keeps its base design and the element reports data-state="error".
  */
 import {mountSeed, type Motion, type SeedMount} from '../render/index.js';
-import {validateBundle, type CompiledPack, type Diagnostic} from '../core/index.js';
+import {validateBundle, validateBrand, type CompiledPack, type Diagnostic} from '../core/index.js';
 import {packs as installedPacks} from '../packs/index.js';
 
-export interface SeedConfig { experiences: readonly unknown[]; approvals: readonly string[]; brand?: unknown }
+export interface SeedConfig { experiences: readonly unknown[]; approvals: readonly string[]; brand: unknown }
 const MAX_JSON = 256 * 1024;
 
 /** Resolves a configuration URL and accepts it only on the page's own origin over http(s). */
@@ -29,7 +29,9 @@ export function checkConfig(bundle: unknown, approvals: unknown, brand: unknown)
   if (!b.ok) return {ok: false, errors: b.errors.map(e => ({...e, path: `bundle.${e.path}`}))};
   if (!Array.isArray(approvals) || approvals.length > 100 || !approvals.every(a => typeof a === 'string'))
     return {ok: false, errors: [{path: 'approvals', code: 'APPROVALS', message: 'Approvals must be an array of at most 100 exact snapshot strings.'}]};
-  return {ok: true, config: {experiences: b.value.experiences, approvals: [...approvals], brand}};
+  const policy = validateBrand(brand);
+  if (!policy.ok) return {ok: false, errors: policy.errors.map(e => ({...e, path: `brand.${e.path}`}))};
+  return {ok: true, config: {experiences: b.value.experiences, approvals: [...approvals], brand: policy.value}};
 }
 
 const Base: typeof HTMLElement = typeof HTMLElement === 'undefined' ? (class {} as typeof HTMLElement) : HTMLElement;
@@ -71,7 +73,7 @@ export class SeedRootElement extends Base {
         const inline = this.querySelector(`script[type="application/json"][data-seed="${name}"]`);
         if (inline) return JSON.parse(inline.textContent ?? '');
         const src = this.getAttribute(name);
-        if (src === null) return name === 'brand' ? undefined : fail(`Provide a ${name} attribute or inline JSON.`);
+        if (src === null) return fail(`Provide a ${name} attribute or inline JSON.`);
         const href = sameOriginUrl(src, base);
         if (!href) return fail(`Only same-origin configuration is loaded: ${src}`);
         const response = await fetch(href, {credentials: 'same-origin', headers: {Accept: 'application/json'}});

@@ -71,7 +71,7 @@ async function main() {
     console.log(JSON.stringify(r));if(!r.ok)process.exitCode=1;return;
   }
   if(command==='ai-draft' && file && args.length===1){
-    const {draftWithAI,createClient}=await import('../ai/index.js');
+    const {draftWithAI,createClient,describeProviderError}=await import('../ai/index.js');
     const [request,brand]=[await readJson(file),await readJson(args[0])];
     let client;
     try{client=await createClient();}catch(e){throw new InputError('AI_SDK',(e as Error).message,'$','Install the optional dependency, then retry.');}
@@ -79,9 +79,7 @@ async function main() {
       const r=await draftWithAI(request,brand,{client});
       console.log(JSON.stringify(r.ok?{...r,notice:'AI-proposed draft. Review the design and message, preview it, and approve it yourself if you want it.'}:r));if(!r.ok)process.exitCode=1;
     }catch(e){
-      const status=(e as {status?:number}).status;
-      const message=status===401||status===403?'The model provider rejected your credentials. Set ANTHROPIC_API_KEY or run ant auth login.':status===429?'Rate limited by the model provider. Try again shortly.':status!==undefined?`The model provider returned an error (${status}).`:'Could not reach the model provider. Check your connection.';
-      console.log(JSON.stringify({ok:false,errors:[{code:'AI_PROVIDER',path:'$',message}]}));process.exitCode=1;
+      console.log(JSON.stringify({ok:false,errors:[{code:'AI_PROVIDER',path:'$',message:describeProviderError(e)}]}));process.exitCode=1;
     }
     return;
   }

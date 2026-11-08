@@ -172,3 +172,16 @@ export async function draftWithAI(request: unknown, brand: unknown, options: {cl
   }
   return {ok: false, errors: lastErrors, proposal: last};
 }
+
+/**
+ * Plain-language message for a failed model call. Includes the provider's own explanation (for example
+ * "credit balance is too low"), which never contains credentials, and caps its length.
+ */
+export function describeProviderError(error: unknown): string {
+  const e = error as {status?: number; error?: {error?: {message?: unknown}}};
+  const detail = typeof e?.error?.error?.message === 'string' ? ` ${e.error.error.message.replace(/[\u0000-\u001f\u007f]/g, ' ').slice(0, 300)}` : '';
+  if (e?.status === 401 || e?.status === 403) return `The model provider rejected your credentials. Set ANTHROPIC_API_KEY or run ant auth login.${detail}`;
+  if (e?.status === 429) return `Rate limited by the model provider. Try again shortly.${detail}`;
+  if (typeof e?.status === 'number') return `The model provider returned an error (${e.status}).${detail}`;
+  return 'Could not reach the model provider. Check your connection.';
+}

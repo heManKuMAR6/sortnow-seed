@@ -95,3 +95,12 @@ test('AI code stays out of runtime bundles, and the CLI lists ai-draft', () => {
   const help = JSON.parse(spawnSync(process.execPath, ['dist/cli/index.js', 'help'], {encoding: 'utf8'}).stdout);
   assert.ok(help.commands.some(c => c.command.startsWith('ai-draft') && /never approves/.test(c.description)));
 });
+
+test('provider errors explain themselves without leaking credentials', async () => {
+  const {describeProviderError} = await import('../dist/ai/index.js');
+  const billing = describeProviderError({status: 400, error: {error: {type: 'invalid_request_error', message: 'Your credit balance is too low to access the Anthropic API.'}}});
+  assert.match(billing, /\(400\)\. Your credit balance is too low/);
+  assert.match(describeProviderError({status: 401}), /credentials/);
+  assert.match(describeProviderError(new TypeError('fetch failed')), /Could not reach/);
+  assert.ok(describeProviderError({status: 500, error: {error: {message: 'x\n'.repeat(400)}}}).length < 400);
+});

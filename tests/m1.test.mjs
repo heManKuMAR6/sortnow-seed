@@ -112,7 +112,7 @@ test('compiled packs are current, within budget, and pinned by the demo bundle',
 
 test('CLI lists packs and validates v2 and bundles against installed packs', () => {
   const run = (...a) => { const p = spawnSync(process.execPath, ['dist/cli/index.js', ...a], {encoding: 'utf8', timeout: 5000}); return {status: p.status, result: JSON.parse(p.stdout)}; };
-  assert.deepEqual(run('packs').result.packs.map(p => p.id), ['black-friday', 'christmas']);
+  assert.deepEqual(run('packs').result.packs.map(p => p.id), packs.map(p => p.id));
   const christmasPack = run('pack', 'christmas').result.pack;
   assert.ok(christmasPack.effects.flyby.assets.includes('santa-sleigh'));
   assert.ok(!JSON.stringify(christmasPack).includes('<svg'), 'artwork is not printed');

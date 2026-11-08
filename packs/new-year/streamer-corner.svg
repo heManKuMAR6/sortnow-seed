@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 110">
+  <path d="M140 4 Q110 30 120 50 Q130 70 104 92" fill="none" stroke="var(--seed-sig-gold)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M136 0 Q96 16 84 40 Q72 64 44 70" fill="none" stroke="var(--seed-accent)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M120 0 Q100 6 78 4" fill="none" stroke="var(--seed-sig-midnight)" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="96" cy="22" r="3" fill="var(--seed-sig-gold)"/><circle cx="62" cy="54" r="2.4" fill="var(--seed-accent)"/><circle cx="116" cy="70" r="2.6" fill="var(--seed-sig-midnight)"/><circle cx="74" cy="20" r="2" fill="var(--seed-sig-gold)"/>
+</svg>

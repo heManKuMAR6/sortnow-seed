@@ -74,6 +74,77 @@ export const blackFriday: CompiledPack = {
     }
   }
 };
+export const celebration: CompiledPack = {
+  "packVersion": 1,
+  "id": "celebration",
+  "version": "1.0.0",
+  "hash": "sha256-d41aeb700f5297ae51ff7359861ebc9994e5896d02b38afd964a27e9b529a97f",
+  "name": "Celebration",
+  "occasions": [
+    "republic-day-in",
+    "independence-day-in",
+    "independence-day-us",
+    "national-day-ae",
+    "national-day-sg"
+  ],
+  "license": "CC0-1.0",
+  "signatureColors": {
+    "gold": "#d4a017"
+  },
+  "illustrations": {
+    "bunting": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 240 110\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4 10 Q120 54 236 10\" fill=\"none\" stroke=\"var(--seed-foreground)\" stroke-width=\"2\"/><path d=\"M14 14 L40 23 L22 52 Z\" fill=\"var(--seed-accent)\"/><path d=\"M46 25 L74 33 L56 64 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M80 35 L108 40 L92 72 Z\" fill=\"var(--seed-foreground)\"/><path d=\"M114 41 L142 41 L128 74 Z\" fill=\"var(--seed-accent)\"/><path d=\"M148 40 L176 35 L164 72 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M182 33 L210 25 L200 64 Z\" fill=\"var(--seed-foreground)\"/><path d=\"M216 23 L234 14 L234 50 Z\" fill=\"var(--seed-accent)\"/><g fill=\"var(--seed-sig-gold)\"><circle cx=\"40\" cy=\"88\" r=\"2.4\"/><circle cx=\"120\" cy=\"96\" r=\"2.4\"/><circle cx=\"200\" cy=\"88\" r=\"2.4\"/></g></svg>",
+      "aspect": 2.182,
+      "label": "Festive bunting"
+    },
+    "starburst": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 160 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><g transform=\"translate(80 80)\"><path d=\"M0 -76 L10 -24 L54 -54 L24 -10 L76 0 L24 10 L54 54 L10 24 L0 76 L-10 24 L-54 54 L-24 10 L-76 0 L-24 -10 L-54 -54 L-10 -24 Z\" fill=\"var(--seed-sig-gold)\"/><circle fill=\"var(--seed-accent)\" r=\"22\"/><path d=\"M0 -12 L3.5 -4 L12 -3.7 L5.5 2 L7.4 10.3 L0 6 L-7.4 10.3 L-5.5 2 L-12 -3.7 L-3.5 -4 Z\" fill=\"var(--seed-background)\"/></g></svg>",
+      "aspect": 1,
+      "label": "Starburst"
+    }
+  },
+  "icons": {
+    "star": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 2.5 L14.8 8.6 L21.5 9.3 L16.5 13.8 L17.9 20.5 L12 17.1 L6.1 20.5 L7.5 13.8 L2.5 9.3 L9.2 8.6 Z\" fill=\"var(--seed-sig-gold)\" stroke=\"var(--seed-accent)\" stroke-linejoin=\"round\" stroke-width=\"1\"/></svg>",
+      "aspect": 1,
+      "label": "Star"
+    },
+    "ribbon": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"12\" cy=\"9\" fill=\"var(--seed-sig-gold)\" r=\"6\" stroke=\"var(--seed-accent)\" stroke-width=\"1.2\"/><path d=\"M8 13.5 L6 22 L9.5 20 L12 22.5 L12 15 M16 13.5 L18 22 L14.5 20 L12 22.5\" fill=\"var(--seed-accent)\"/></svg>",
+      "aspect": 1,
+      "label": "Ribbon"
+    }
+  },
+  "decorations": {
+    "bunting-corner": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 140 110\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M140 4 Q80 40 10 6\" fill=\"none\" stroke=\"var(--seed-foreground)\" stroke-width=\"1.6\"/><path d=\"M128 10 L112 18 L124 40 Z\" fill=\"var(--seed-accent)\"/><path d=\"M106 21 L88 26 L100 50 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M82 27 L64 27 L74 52 Z\" fill=\"var(--seed-foreground)\"/><path d=\"M58 26 L40 21 L48 46 Z\" fill=\"var(--seed-accent)\"/><path d=\"M34 18 L18 11 L24 36 Z\" fill=\"var(--seed-sig-gold)\"/></svg>",
+      "aspect": 1.273
+    }
+  },
+  "particles": {
+    "confetti": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"var(--seed-accent)\" height=\"4\" rx=\"1\" transform=\"rotate(-20 7.5 7)\" width=\"9\" x=\"3\" y=\"5\"/><rect fill=\"var(--seed-sig-gold)\" height=\"3.6\" rx=\"1\" transform=\"rotate(30 16 15.8)\" width=\"8\" x=\"12\" y=\"14\"/><circle cx=\"17\" cy=\"6\" fill=\"var(--seed-foreground)\" r=\"1.8\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "copy": {
+    "hero": [
+      "Celebrating together today.",
+      "A proud day for all of us."
+    ],
+    "banner": [
+      "Happy holiday from all of us.",
+      "Our holiday hours are on the visit page."
+    ]
+  },
+  "effects": {
+    "particles": {
+      "assets": [
+        "confetti"
+      ]
+    }
+  }
+};
 export const christmas: CompiledPack = {
   "packVersion": 1,
   "id": "christmas",
@@ -159,4 +230,278 @@ export const christmas: CompiledPack = {
     }
   }
 };
-export const packs: readonly CompiledPack[] = Object.freeze([blackFriday, christmas]);
+export const diwali: CompiledPack = {
+  "packVersion": 1,
+  "id": "diwali",
+  "version": "1.0.0",
+  "hash": "sha256-321594a46e4bd79637a364f32931b9025bd3ed00788c943dd907297257aae4af",
+  "name": "Diwali",
+  "occasions": [
+    "diwali"
+  ],
+  "license": "CC0-1.0",
+  "signatureColors": {
+    "marigold": "#f2a20c",
+    "flame": "#ff7b1c",
+    "maroon": "#7a1f2b"
+  },
+  "illustrations": {
+    "diya-row": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 240 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><defs><radialGradient cx=\"0.5\" cy=\"0.5\" id=\"seed-diwali-diya-row-glow\" r=\"0.5\"><stop offset=\"0\" stop-color=\"var(--seed-sig-marigold)\" stop-opacity=\"0.55\"/><stop offset=\"1\" stop-color=\"var(--seed-sig-marigold)\" stop-opacity=\"0\"/></radialGradient></defs><circle cx=\"50\" cy=\"56\" fill=\"url(#seed-diwali-diya-row-glow)\" r=\"34\"/><circle cx=\"120\" cy=\"46\" fill=\"url(#seed-diwali-diya-row-glow)\" r=\"40\"/><circle cx=\"190\" cy=\"56\" fill=\"url(#seed-diwali-diya-row-glow)\" r=\"34\"/><path d=\"M50 62 Q42 50 50 36 Q58 50 50 62 Z\" fill=\"var(--seed-sig-flame)\"/><path d=\"M50 60 Q46 52 50 44 Q54 52 50 60 Z\" fill=\"var(--seed-sig-marigold)\"/><path d=\"M120 54 Q110 38 120 20 Q130 38 120 54 Z\" fill=\"var(--seed-sig-flame)\"/><path d=\"M120 52 Q115 42 120 31 Q125 42 120 52 Z\" fill=\"var(--seed-sig-marigold)\"/><path d=\"M190 62 Q182 50 190 36 Q198 50 190 62 Z\" fill=\"var(--seed-sig-flame)\"/><path d=\"M190 60 Q186 52 190 44 Q194 52 190 60 Z\" fill=\"var(--seed-sig-marigold)\"/><path d=\"M20 66 Q50 64 80 66 Q76 92 50 94 Q24 92 20 66 Z\" fill=\"var(--seed-sig-maroon)\"/><path d=\"M84 58 Q120 55 156 58 Q151 92 120 95 Q89 92 84 58 Z\" fill=\"var(--seed-accent)\"/><path d=\"M160 66 Q190 64 220 66 Q216 92 190 94 Q164 92 160 66 Z\" fill=\"var(--seed-sig-maroon)\"/><path d=\"M26 72 Q50 76 74 72 M92 66 Q120 71 148 66 M166 72 Q190 76 214 72\" fill=\"none\" stroke=\"var(--seed-sig-marigold)\" stroke-width=\"2\"/><g fill=\"var(--seed-sig-marigold)\"><circle cx=\"38\" cy=\"82\" r=\"2\"/><circle cx=\"50\" cy=\"84\" r=\"2\"/><circle cx=\"62\" cy=\"82\" r=\"2\"/><circle cx=\"104\" cy=\"80\" r=\"2.2\"/><circle cx=\"120\" cy=\"83\" r=\"2.2\"/><circle cx=\"136\" cy=\"80\" r=\"2.2\"/><circle cx=\"178\" cy=\"82\" r=\"2\"/><circle cx=\"190\" cy=\"84\" r=\"2\"/><circle cx=\"202\" cy=\"82\" r=\"2\"/></g><path d=\"M10 104 L230 104\" opacity=\"0.4\" stroke=\"var(--seed-foreground)\" stroke-width=\"1.4\"/></svg>",
+      "aspect": 2,
+      "label": "Row of lit diyas"
+    },
+    "rangoli": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 160 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><g transform=\"translate(80 80)\"><g fill=\"var(--seed-sig-maroon)\"><path d=\"M0 -74 Q16 -50 0 -30 Q-16 -50 0 -74 Z\"/><path d=\"M0 74 Q16 50 0 30 Q-16 50 0 74 Z\"/><path d=\"M-74 0 Q-50 16 -30 0 Q-50 -16 -74 0 Z\"/><path d=\"M74 0 Q50 16 30 0 Q50 -16 74 0 Z\"/></g><g fill=\"var(--seed-sig-marigold)\" transform=\"rotate(45)\"><path d=\"M0 -66 Q14 -46 0 -30 Q-14 -46 0 -66 Z\"/><path d=\"M0 66 Q14 46 0 30 Q-14 46 0 66 Z\"/><path d=\"M-66 0 Q-46 14 -30 0 Q-46 -14 -66 0 Z\"/><path d=\"M66 0 Q46 14 30 0 Q46 -14 66 0 Z\"/></g><circle fill=\"var(--seed-accent)\" r=\"30\"/><g fill=\"var(--seed-sig-flame)\"><path d=\"M0 -26 Q8 -14 0 -6 Q-8 -14 0 -26 Z\"/><path d=\"M0 26 Q8 14 0 6 Q-8 14 0 26 Z\"/><path d=\"M-26 0 Q-14 8 -6 0 Q-14 -8 -26 0 Z\"/><path d=\"M26 0 Q14 8 6 0 Q14 -8 26 0 Z\"/></g><circle fill=\"var(--seed-sig-marigold)\" r=\"6\"/><g fill=\"var(--seed-background)\"><circle cy=\"-52\" r=\"3\"/><circle cy=\"52\" r=\"3\"/><circle cx=\"-52\" r=\"3\"/><circle cx=\"52\" r=\"3\"/></g></g></svg>",
+      "aspect": 1,
+      "label": "Rangoli pattern"
+    }
+  },
+  "icons": {
+    "diya": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 11 Q9 7 12 2 Q15 7 12 11 Z\" fill=\"var(--seed-sig-flame)\"/><path d=\"M3 12 Q12 11 21 12 Q20 20 12 21 Q4 20 3 12 Z\" fill=\"var(--seed-accent)\"/></svg>",
+      "aspect": 1,
+      "label": "Diya"
+    },
+    "spark": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 2 L13.6 9 L20.5 7 L15 12 L20.5 17 L13.6 15 L12 22 L10.4 15 L3.5 17 L9 12 L3.5 7 L10.4 9 Z\" fill=\"var(--seed-sig-marigold)\" stroke=\"var(--seed-accent)\" stroke-linejoin=\"round\" stroke-width=\"0.8\"/></svg>",
+      "aspect": 1,
+      "label": "Spark"
+    }
+  },
+  "decorations": {
+    "marigold-corner": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 140 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M140 2 Q90 40 20 6\" fill=\"none\" stroke=\"var(--seed-sig-maroon)\" stroke-width=\"1.4\"/><g fill=\"var(--seed-sig-marigold)\"><circle cx=\"130\" cy=\"10\" r=\"7\"/><circle cx=\"114\" cy=\"20\" r=\"7\"/><circle cx=\"96\" cy=\"26\" r=\"7\"/><circle cx=\"78\" cy=\"27\" r=\"7\"/><circle cx=\"60\" cy=\"23\" r=\"7\"/><circle cx=\"42\" cy=\"16\" r=\"7\"/><circle cx=\"26\" cy=\"9\" r=\"6\"/></g><g fill=\"var(--seed-sig-flame)\"><circle cx=\"130\" cy=\"10\" r=\"3\"/><circle cx=\"114\" cy=\"20\" r=\"3\"/><circle cx=\"96\" cy=\"26\" r=\"3\"/><circle cx=\"78\" cy=\"27\" r=\"3\"/><circle cx=\"60\" cy=\"23\" r=\"3\"/><circle cx=\"42\" cy=\"16\" r=\"3\"/><circle cx=\"26\" cy=\"9\" r=\"2.6\"/></g><path d=\"M132 16 L132 60 M98 32 L98 76\" stroke=\"var(--seed-sig-maroon)\" stroke-width=\"1.2\"/><g fill=\"var(--seed-sig-marigold)\"><circle cx=\"132\" cy=\"44\" r=\"5.5\"/><circle cx=\"132\" cy=\"58\" r=\"5\"/><circle cx=\"98\" cy=\"60\" r=\"5.5\"/><circle cx=\"98\" cy=\"74\" r=\"5\"/></g><path d=\"M128 66 Q132 74 136 66 Z M94 82 Q98 90 102 82 Z\" fill=\"var(--seed-accent)\"/></svg>",
+      "aspect": 1.167
+    }
+  },
+  "particles": {
+    "glow": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"12\" cy=\"12\" fill=\"var(--seed-sig-marigold)\" opacity=\"0.35\" r=\"6\"/><path d=\"M12 4 L13.4 10.6 L20 12 L13.4 13.4 L12 20 L10.6 13.4 L4 12 L10.6 10.6 Z\" fill=\"var(--seed-sig-marigold)\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "copy": {
+    "hero": [
+      "Wishing you a bright and joyful Diwali.",
+      "May your home be filled with light."
+    ],
+    "banner": [
+      "Happy Diwali from all of us.",
+      "Festive orders close two days before Diwali."
+    ]
+  },
+  "effects": {
+    "particles": {
+      "assets": [
+        "glow"
+      ]
+    }
+  }
+};
+export const lunarNewYear: CompiledPack = {
+  "packVersion": 1,
+  "id": "lunar-new-year",
+  "version": "1.0.0",
+  "hash": "sha256-2db129ccdc1c19d398dcd1c1cb398c20e3470dc6746f5236688a653c96b0ffa3",
+  "name": "Lunar New Year",
+  "occasions": [
+    "lunar-new-year"
+  ],
+  "license": "CC0-1.0",
+  "signatureColors": {
+    "lantern-red": "#c8102e",
+    "gold": "#d4a017",
+    "blossom": "#f2a7bb"
+  },
+  "illustrations": {
+    "lanterns": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 200 180\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 8 Q100 30 200 8\" fill=\"none\" opacity=\"0.6\" stroke=\"var(--seed-foreground)\" stroke-width=\"1.6\"/><g><path d=\"M60 18 L60 34\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"2\"/><rect fill=\"var(--seed-sig-gold)\" height=\"7\" rx=\"2\" width=\"24\" x=\"48\" y=\"32\"/><ellipse cx=\"60\" cy=\"72\" fill=\"var(--seed-sig-lantern-red)\" rx=\"34\" ry=\"34\"/><path d=\"M60 38 Q40 72 60 106 M60 38 Q80 72 60 106 M60 38 Q26 72 60 106 M60 38 Q94 72 60 106\" fill=\"none\" opacity=\"0.8\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.2\"/><rect fill=\"var(--seed-sig-gold)\" height=\"7\" rx=\"2\" width=\"24\" x=\"48\" y=\"104\"/><path d=\"M54 111 L52 134 M60 111 L60 138 M66 111 L68 134\" stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"1.6\"/></g><g><path d=\"M140 18 L140 50\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"2\"/><rect fill=\"var(--seed-sig-gold)\" height=\"6\" rx=\"2\" width=\"20\" x=\"130\" y=\"48\"/><ellipse cx=\"140\" cy=\"82\" fill=\"var(--seed-sig-lantern-red)\" rx=\"28\" ry=\"28\"/><path d=\"M140 54 Q123 82 140 110 M140 54 Q157 82 140 110 M140 54 Q112 82 140 110 M140 54 Q168 82 140 110\" fill=\"none\" opacity=\"0.8\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.1\"/><rect fill=\"var(--seed-sig-gold)\" height=\"6\" rx=\"2\" width=\"20\" x=\"130\" y=\"108\"/><path d=\"M135 114 L133 134 M140 114 L140 138 M145 114 L147 134\" stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"1.4\"/></g><circle cx=\"60\" cy=\"72\" fill=\"var(--seed-sig-gold)\" opacity=\"0.9\" r=\"9\"/><circle cx=\"140\" cy=\"82\" fill=\"var(--seed-sig-gold)\" opacity=\"0.9\" r=\"7\"/></svg>",
+      "aspect": 1.111,
+      "label": "Hanging red lanterns"
+    },
+    "blossom-branch": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 200 130\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4 120 Q60 96 100 70 Q130 50 196 30 M100 70 Q110 40 140 22 M60 96 Q70 70 58 46\" fill=\"none\" stroke=\"var(--seed-foreground)\" stroke-linecap=\"round\" stroke-width=\"4\"/><g fill=\"var(--seed-sig-blossom)\"><g transform=\"translate(140 22)\"><circle cx=\"0\" cy=\"-7\" r=\"6\"/><circle cx=\"6.7\" cy=\"-2.2\" r=\"6\"/><circle cx=\"4.1\" cy=\"5.7\" r=\"6\"/><circle cx=\"-4.1\" cy=\"5.7\" r=\"6\"/><circle cx=\"-6.7\" cy=\"-2.2\" r=\"6\"/></g><g transform=\"translate(58 46)\"><circle cx=\"0\" cy=\"-6\" r=\"5\"/><circle cx=\"5.7\" cy=\"-1.9\" r=\"5\"/><circle cx=\"3.5\" cy=\"4.9\" r=\"5\"/><circle cx=\"-3.5\" cy=\"4.9\" r=\"5\"/><circle cx=\"-5.7\" cy=\"-1.9\" r=\"5\"/></g><g transform=\"translate(176 36)\"><circle cx=\"0\" cy=\"-5\" r=\"4.4\"/><circle cx=\"4.8\" cy=\"-1.5\" r=\"4.4\"/><circle cx=\"2.9\" cy=\"4\" r=\"4.4\"/><circle cx=\"-2.9\" cy=\"4\" r=\"4.4\"/><circle cx=\"-4.8\" cy=\"-1.5\" r=\"4.4\"/></g><g transform=\"translate(100 70)\"><circle cx=\"0\" cy=\"-6\" r=\"5\"/><circle cx=\"5.7\" cy=\"-1.9\" r=\"5\"/><circle cx=\"3.5\" cy=\"4.9\" r=\"5\"/><circle cx=\"-3.5\" cy=\"4.9\" r=\"5\"/><circle cx=\"-5.7\" cy=\"-1.9\" r=\"5\"/></g></g><g fill=\"var(--seed-sig-gold)\"><circle cx=\"140\" cy=\"22\" r=\"2.6\"/><circle cx=\"58\" cy=\"46\" r=\"2.2\"/><circle cx=\"176\" cy=\"36\" r=\"2\"/><circle cx=\"100\" cy=\"70\" r=\"2.2\"/></g><g fill=\"var(--seed-sig-blossom)\" opacity=\"0.8\"><circle cx=\"122\" cy=\"40\" r=\"3\"/><circle cx=\"80\" cy=\"84\" r=\"3\"/><circle cx=\"156\" cy=\"44\" r=\"2.6\"/></g></svg>",
+      "aspect": 1.538,
+      "label": "Plum blossom branch"
+    }
+  },
+  "icons": {
+    "lantern": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 1 L12 4\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.6\"/><rect fill=\"var(--seed-sig-gold)\" height=\"2.4\" rx=\"0.8\" width=\"7\" x=\"8.5\" y=\"3.5\"/><ellipse cx=\"12\" cy=\"12\" fill=\"var(--seed-sig-lantern-red)\" rx=\"7.5\" ry=\"6.5\"/><rect fill=\"var(--seed-sig-gold)\" height=\"2.4\" rx=\"0.8\" width=\"7\" x=\"8.5\" y=\"18\"/><path d=\"M12 20.4 L12 23.5\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.4\"/></svg>",
+      "aspect": 1,
+      "label": "Lantern"
+    },
+    "blossom": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"var(--seed-sig-blossom)\" stroke=\"var(--seed-accent)\" stroke-width=\"0.6\"><circle cx=\"12\" cy=\"6\" r=\"4.4\"/><circle cx=\"17.7\" cy=\"10.1\" r=\"4.4\"/><circle cx=\"15.5\" cy=\"16.9\" r=\"4.4\"/><circle cx=\"8.5\" cy=\"16.9\" r=\"4.4\"/><circle cx=\"6.3\" cy=\"10.1\" r=\"4.4\"/></g><circle cx=\"12\" cy=\"12\" fill=\"var(--seed-sig-gold)\" r=\"2.4\"/></svg>",
+      "aspect": 1,
+      "label": "Blossom"
+    }
+  },
+  "decorations": {
+    "lantern-corner": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 120 140\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M30 0 L30 22 M80 0 L80 46 M108 0 L108 14\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.6\"/><ellipse cx=\"30\" cy=\"40\" fill=\"var(--seed-sig-lantern-red)\" rx=\"16\" ry=\"17\"/><rect fill=\"var(--seed-sig-gold)\" height=\"4\" rx=\"1.4\" width=\"14\" x=\"23\" y=\"21\"/><rect fill=\"var(--seed-sig-gold)\" height=\"4\" rx=\"1.4\" width=\"14\" x=\"23\" y=\"55\"/><path d=\"M30 59 L30 74\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.4\"/><ellipse cx=\"80\" cy=\"68\" fill=\"var(--seed-sig-lantern-red)\" rx=\"20\" ry=\"21\"/><rect fill=\"var(--seed-sig-gold)\" height=\"5\" rx=\"1.6\" width=\"18\" x=\"71\" y=\"45\"/><rect fill=\"var(--seed-sig-gold)\" height=\"5\" rx=\"1.6\" width=\"18\" x=\"71\" y=\"87\"/><path d=\"M80 92 L80 112\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.4\"/><ellipse cx=\"108\" cy=\"28\" fill=\"var(--seed-sig-lantern-red)\" rx=\"11\" ry=\"12\"/><rect fill=\"var(--seed-sig-gold)\" height=\"3\" rx=\"1\" width=\"10\" x=\"103\" y=\"14\"/><rect fill=\"var(--seed-sig-gold)\" height=\"3\" rx=\"1\" width=\"10\" x=\"103\" y=\"39\"/><circle cx=\"30\" cy=\"40\" fill=\"var(--seed-sig-gold)\" opacity=\"0.8\" r=\"4.4\"/><circle cx=\"80\" cy=\"68\" fill=\"var(--seed-sig-gold)\" opacity=\"0.8\" r=\"5.4\"/></svg>",
+      "aspect": 0.857
+    }
+  },
+  "particles": {
+    "petal": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 3 Q20 8 16 17 Q12 22 8 17 Q4 8 12 3 Z\" fill=\"var(--seed-sig-blossom)\"/><path d=\"M12 6 Q12 12 12 17\" opacity=\"0.7\" stroke=\"var(--seed-background)\" stroke-width=\"0.8\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "copy": {
+    "hero": [
+      "Wishing you a prosperous Lunar New Year.",
+      "Good fortune and good company this new year."
+    ],
+    "banner": [
+      "Happy Lunar New Year from all of us.",
+      "Our Lunar New Year hours are on the visit page."
+    ]
+  },
+  "effects": {
+    "particles": {
+      "assets": [
+        "petal"
+      ]
+    }
+  }
+};
+export const newYear: CompiledPack = {
+  "packVersion": 1,
+  "id": "new-year",
+  "version": "1.0.0",
+  "hash": "sha256-e7729b5d07dab8f15eb9d92852900eeaaf79b4498c0536d335538d6d5c231b08",
+  "name": "New Year",
+  "occasions": [
+    "new-year"
+  ],
+  "license": "CC0-1.0",
+  "signatureColors": {
+    "gold": "#d4a017",
+    "midnight": "#1b2a4a"
+  },
+  "illustrations": {
+    "fireworks": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 200 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><g stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"2.4\"><path d=\"M70 60 L70 30 M70 60 L91 39 M70 60 L100 60 M70 60 L91 81 M70 60 L70 90 M70 60 L49 81 M70 60 L40 60 M70 60 L49 39\"/></g><g fill=\"var(--seed-sig-gold)\"><circle cx=\"70\" cy=\"26\" r=\"3\"/><circle cx=\"94\" cy=\"36\" r=\"3\"/><circle cx=\"104\" cy=\"60\" r=\"3\"/><circle cx=\"94\" cy=\"84\" r=\"3\"/><circle cx=\"70\" cy=\"94\" r=\"3\"/><circle cx=\"46\" cy=\"84\" r=\"3\"/><circle cx=\"36\" cy=\"60\" r=\"3\"/><circle cx=\"46\" cy=\"36\" r=\"3\"/></g><g stroke=\"var(--seed-accent)\" stroke-linecap=\"round\" stroke-width=\"2\"><path d=\"M145 50 L145 30 M145 50 L159 36 M145 50 L165 50 M145 50 L159 64 M145 50 L145 70 M145 50 L131 64 M145 50 L125 50 M145 50 L131 36\"/></g><g fill=\"var(--seed-accent)\"><circle cx=\"145\" cy=\"27\" r=\"2.4\"/><circle cx=\"161\" cy=\"34\" r=\"2.4\"/><circle cx=\"168\" cy=\"50\" r=\"2.4\"/><circle cx=\"161\" cy=\"66\" r=\"2.4\"/><circle cx=\"145\" cy=\"73\" r=\"2.4\"/><circle cx=\"129\" cy=\"66\" r=\"2.4\"/><circle cx=\"122\" cy=\"50\" r=\"2.4\"/><circle cx=\"129\" cy=\"34\" r=\"2.4\"/></g><g opacity=\"0.8\" stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"1.6\"><path d=\"M118 100 L118 88 M118 100 L127 91 M118 100 L130 100 M118 100 L127 109 M118 100 L109 109 M118 100 L106 100 M118 100 L109 91\"/></g><path d=\"M70 92 Q72 130 66 156 M145 72 Q141 120 150 156 M118 112 Q116 136 120 156\" fill=\"none\" opacity=\"0.5\" stroke=\"var(--seed-foreground)\" stroke-dasharray=\"2 5\" stroke-width=\"1.2\"/></svg>",
+      "aspect": 1.25,
+      "label": "Fireworks over the night sky"
+    },
+    "clock": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 140 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"var(--seed-sig-gold)\" height=\"12\" rx=\"3\" width=\"16\" x=\"62\" y=\"6\"/><circle cx=\"70\" cy=\"86\" fill=\"var(--seed-sig-gold)\" r=\"62\"/><circle cx=\"70\" cy=\"86\" fill=\"var(--seed-background)\" r=\"54\"/><g stroke=\"var(--seed-foreground)\" stroke-linecap=\"round\" stroke-width=\"3\"><path d=\"M70 38 L70 46 M70 126 L70 134 M22 86 L30 86 M110 86 L118 86 M94 44.4 L90 51.3 M46 127.6 L50 120.7 M111.6 62 L104.7 66 M28.4 110 L35.3 106 M111.6 110 L104.7 106 M28.4 62 L35.3 66 M94 127.6 L90 120.7 M46 44.4 L50 51.3\"/></g><path d=\"M70 86 L70 48\" stroke=\"var(--seed-accent)\" stroke-linecap=\"round\" stroke-width=\"5\"/><path d=\"M70 86 L72 56\" stroke=\"var(--seed-foreground)\" stroke-linecap=\"round\" stroke-width=\"3.2\"/><circle cx=\"70\" cy=\"86\" fill=\"var(--seed-accent)\" r=\"5\"/><path d=\"M8 40 L18 46 M132 40 L122 46 M4 70 L14 70 M136 70 L126 70\" stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"2.4\"/></svg>",
+      "aspect": 0.875,
+      "label": "Clock striking midnight"
+    }
+  },
+  "icons": {
+    "sparkle": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 2 Q13 10 22 12 Q13 14 12 22 Q11 14 2 12 Q11 10 12 2 Z\" fill=\"var(--seed-sig-gold)\" stroke=\"var(--seed-accent)\" stroke-linejoin=\"round\" stroke-width=\"0.8\"/></svg>",
+      "aspect": 1,
+      "label": "Sparkle"
+    },
+    "star": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 2.5 L14.8 8.6 L21.5 9.3 L16.5 13.8 L17.9 20.5 L12 17.1 L6.1 20.5 L7.5 13.8 L2.5 9.3 L9.2 8.6 Z\" fill=\"var(--seed-sig-gold)\" stroke=\"var(--seed-accent)\" stroke-linejoin=\"round\" stroke-width=\"1\"/></svg>",
+      "aspect": 1,
+      "label": "Star"
+    }
+  },
+  "decorations": {
+    "streamer-corner": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 140 110\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M140 4 Q110 30 120 50 Q130 70 104 92\" fill=\"none\" stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"3\"/><path d=\"M136 0 Q96 16 84 40 Q72 64 44 70\" fill=\"none\" stroke=\"var(--seed-accent)\" stroke-linecap=\"round\" stroke-width=\"3\"/><path d=\"M120 0 Q100 6 78 4\" fill=\"none\" stroke=\"var(--seed-sig-midnight)\" stroke-linecap=\"round\" stroke-width=\"2.4\"/><circle cx=\"96\" cy=\"22\" fill=\"var(--seed-sig-gold)\" r=\"3\"/><circle cx=\"62\" cy=\"54\" fill=\"var(--seed-accent)\" r=\"2.4\"/><circle cx=\"116\" cy=\"70\" fill=\"var(--seed-sig-midnight)\" r=\"2.6\"/><circle cx=\"74\" cy=\"20\" fill=\"var(--seed-sig-gold)\" r=\"2\"/></svg>",
+      "aspect": 1.273
+    }
+  },
+  "particles": {
+    "sparkle": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 1 Q13 10 23 12 Q13 14 12 23 Q11 14 1 12 Q11 10 12 1 Z\" fill=\"var(--seed-sig-gold)\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "copy": {
+    "hero": [
+      "Here's to a bright new year.",
+      "New year, same care in everything we make."
+    ],
+    "banner": [
+      "Happy New Year from all of us.",
+      "Our New Year hours are on the visit page."
+    ]
+  },
+  "effects": {
+    "particles": {
+      "assets": [
+        "sparkle"
+      ]
+    }
+  }
+};
+export const valentines: CompiledPack = {
+  "packVersion": 1,
+  "id": "valentines",
+  "version": "1.0.0",
+  "hash": "sha256-0b894746ae3e716261af6bc31ef3d179436d94f46b991f6ed4442a1a1dac5210",
+  "name": "Valentine's Day",
+  "occasions": [
+    "valentines-day"
+  ],
+  "license": "CC0-1.0",
+  "signatureColors": {
+    "rose": "#d6336c",
+    "blush": "#f7c6d0"
+  },
+  "illustrations": {
+    "hearts": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 200 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M100 150 C40 108 20 78 20 54 C20 30 40 16 60 16 C78 16 92 26 100 42 C108 26 122 16 140 16 C160 16 180 30 180 54 C180 78 160 108 100 150 Z\" fill=\"var(--seed-sig-rose)\"/><path d=\"M58 34 C46 36 38 46 40 60\" fill=\"none\" opacity=\"0.5\" stroke=\"var(--seed-background)\" stroke-linecap=\"round\" stroke-width=\"5\"/><path d=\"M176 120 C160 108 154 100 154 93 C154 86 160 82 165 82 C170 82 174 85 176 89 C178 85 182 82 187 82 C192 82 198 86 198 93 C198 100 192 108 176 120 Z\" fill=\"var(--seed-sig-blush)\"/><path d=\"M24 128 C12 119 8 113 8 108 C8 103 12 100 16 100 C20 100 22 102 24 105 C26 102 28 100 32 100 C36 100 40 103 40 108 C40 113 36 119 24 128 Z\" fill=\"var(--seed-accent)\"/></svg>",
+      "aspect": 1.25,
+      "label": "Cluster of hearts"
+    },
+    "love-letter": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 180 130\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"var(--seed-background)\" height=\"104\" rx=\"8\" stroke=\"var(--seed-foreground)\" stroke-width=\"2.4\" width=\"160\" x=\"10\" y=\"20\"/><path d=\"M12 24 L90 82 L168 24\" fill=\"none\" stroke=\"var(--seed-foreground)\" stroke-linejoin=\"round\" stroke-width=\"2.4\"/><path d=\"M12 122 L68 68 M168 122 L112 68\" fill=\"none\" opacity=\"0.6\" stroke=\"var(--seed-foreground)\" stroke-width=\"1.6\"/><path d=\"M90 98 C72 86 66 78 66 70 C66 62 72 58 78 58 C84 58 88 61 90 66 C92 61 96 58 102 58 C108 58 114 62 114 70 C114 78 108 86 90 98 Z\" fill=\"var(--seed-sig-rose)\"/><path d=\"M150 16 C143 11 140 7 140 4 C140 1 142 0 144 0 C146 0 147 1 148 2 C149 1 150 0 152 0 C154 0 156 1 156 4 C156 7 153 11 150 16 Z\" fill=\"var(--seed-sig-blush)\"/></svg>",
+      "aspect": 1.385,
+      "label": "Envelope sealed with a heart"
+    }
+  },
+  "icons": {
+    "heart": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 21 C5 16 2 12.5 2 8.5 C2 5.5 4.3 3.5 7 3.5 C9.2 3.5 11 4.8 12 6.8 C13 4.8 14.8 3.5 17 3.5 C19.7 3.5 22 5.5 22 8.5 C22 12.5 19 16 12 21 Z\" fill=\"var(--seed-sig-rose)\"/></svg>",
+      "aspect": 1,
+      "label": "Heart"
+    },
+    "envelope": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"none\" height=\"14\" rx=\"2\" stroke=\"var(--seed-accent)\" stroke-width=\"1.8\" width=\"19\" x=\"2.5\" y=\"5\"/><path d=\"M3 6 L12 13 L21 6\" fill=\"none\" stroke=\"var(--seed-accent)\" stroke-linejoin=\"round\" stroke-width=\"1.8\"/></svg>",
+      "aspect": 1,
+      "label": "Envelope"
+    }
+  },
+  "decorations": {
+    "heart-corner": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 130 110\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M130 0 Q100 30 60 10\" fill=\"none\" opacity=\"0.6\" stroke=\"var(--seed-sig-rose)\" stroke-width=\"1.2\"/><path d=\"M108 48 C92 37 86 30 86 22 C86 15 91 11 97 11 C102 11 106 14 108 18 C110 14 114 11 119 11 C125 11 130 15 130 22 C130 30 124 37 108 48 Z\" fill=\"var(--seed-sig-rose)\"/><path d=\"M74 34 C64 27 60 22 60 17 C60 13 63 10 67 10 C70 10 73 12 74 15 C75 12 78 10 81 10 C85 10 88 13 88 17 C88 22 84 27 74 34 Z\" fill=\"var(--seed-sig-blush)\"/><path d=\"M116 78 C109 73 106 69 106 65 C106 62 108 60 111 60 C113 60 115 61 116 63 C117 61 119 60 121 60 C124 60 126 62 126 65 C126 69 123 73 116 78 Z\" fill=\"var(--seed-accent)\"/></svg>",
+      "aspect": 1.182
+    }
+  },
+  "particles": {
+    "heart": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 21 C5 16 2 12.5 2 8.5 C2 5.5 4.3 3.5 7 3.5 C9.2 3.5 11 4.8 12 6.8 C13 4.8 14.8 3.5 17 3.5 C19.7 3.5 22 5.5 22 8.5 C22 12.5 19 16 12 21 Z\" fill=\"var(--seed-sig-rose)\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "copy": {
+    "hero": [
+      "Something thoughtful for someone you love.",
+      "Made with love, wrapped with care."
+    ],
+    "banner": [
+      "Happy Valentine's Day from all of us.",
+      "Order by February 10 for Valentine's delivery."
+    ]
+  },
+  "effects": {
+    "particles": {
+      "assets": [
+        "heart"
+      ]
+    }
+  }
+};
+export const packs: readonly CompiledPack[] = Object.freeze([blackFriday, celebration, christmas, diwali, lunarNewYear, newYear, valentines]);

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 160">
+  <rect x="62" y="6" width="16" height="12" rx="3" fill="var(--seed-sig-gold)"/>
+  <circle cx="70" cy="86" r="62" fill="var(--seed-sig-gold)"/>
+  <circle cx="70" cy="86" r="54" fill="var(--seed-background)"/>
+  <g stroke="var(--seed-foreground)" stroke-width="3" stroke-linecap="round">
+    <path d="M70 38 L70 46 M70 126 L70 134 M22 86 L30 86 M110 86 L118 86 M94 44.4 L90 51.3 M46 127.6 L50 120.7 M111.6 62 L104.7 66 M28.4 110 L35.3 106 M111.6 110 L104.7 106 M28.4 62 L35.3 66 M94 127.6 L90 120.7 M46 44.4 L50 51.3"/>
+  </g>
+  <path d="M70 86 L70 48" stroke="var(--seed-accent)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M70 86 L72 56" stroke="var(--seed-foreground)" stroke-width="3.2" stroke-linecap="round"/>
+  <circle cx="70" cy="86" r="5" fill="var(--seed-accent)"/>
+  <path d="M8 40 L18 46 M132 40 L122 46 M4 70 L14 70 M136 70 L126 70" stroke="var(--seed-sig-gold)" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

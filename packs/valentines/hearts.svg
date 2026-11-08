@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160">
+  <path d="M100 150 C40 108 20 78 20 54 C20 30 40 16 60 16 C78 16 92 26 100 42 C108 26 122 16 140 16 C160 16 180 30 180 54 C180 78 160 108 100 150 Z" fill="var(--seed-sig-rose)"/>
+  <path d="M58 34 C46 36 38 46 40 60" fill="none" stroke="var(--seed-background)" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+  <path d="M176 120 C160 108 154 100 154 93 C154 86 160 82 165 82 C170 82 174 85 176 89 C178 85 182 82 187 82 C192 82 198 86 198 93 C198 100 192 108 176 120 Z" fill="var(--seed-sig-blush)"/>
+  <path d="M24 128 C12 119 8 113 8 108 C8 103 12 100 16 100 C20 100 22 102 24 105 C26 102 28 100 32 100 C36 100 40 103 40 108 C40 113 36 119 24 128 Z" fill="var(--seed-accent)"/>
+</svg>

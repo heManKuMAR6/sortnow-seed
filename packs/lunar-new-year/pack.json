@@ -1,0 +1,10 @@
+{
+  "packVersion": 1, "id": "lunar-new-year", "version": "1.0.0", "name": "Lunar New Year", "occasions": ["lunar-new-year"], "license": "CC0-1.0",
+  "signatureColors": {"lantern-red": "#c8102e", "gold": "#d4a017", "blossom": "#f2a7bb"},
+  "illustrations": {"lanterns": {"file": "lanterns.svg", "label": "Hanging red lanterns", "source": "original, SortNow SEED"}, "blossom-branch": {"file": "blossom-branch.svg", "label": "Plum blossom branch", "source": "original, SortNow SEED"}},
+  "icons": {"lantern": {"file": "icon-lantern.svg", "label": "Lantern", "source": "original, SortNow SEED"}, "blossom": {"file": "icon-blossom.svg", "label": "Blossom", "source": "original, SortNow SEED"}},
+  "decorations": {"lantern-corner": {"file": "lantern-corner.svg", "source": "original, SortNow SEED"}},
+  "particles": {"petal": {"file": "particle-petal.svg", "source": "original, SortNow SEED"}},
+  "copy": {"hero": ["Wishing you a prosperous Lunar New Year.", "Good fortune and good company this new year."], "banner": ["Happy Lunar New Year from all of us.", "Our Lunar New Year hours are on the visit page."]},
+  "effects": {"particles": {"assets": ["petal"]}}
+}

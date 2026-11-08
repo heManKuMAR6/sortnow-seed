@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180">
+  <path d="M0 8 Q100 30 200 8" fill="none" stroke="var(--seed-foreground)" stroke-width="1.6" opacity="0.6"/>
+  <g>
+    <path d="M60 18 L60 34" stroke="var(--seed-sig-gold)" stroke-width="2"/>
+    <rect x="48" y="32" width="24" height="7" rx="2" fill="var(--seed-sig-gold)"/>
+    <ellipse cx="60" cy="72" rx="34" ry="34" fill="var(--seed-sig-lantern-red)"/>
+    <path d="M60 38 Q40 72 60 106 M60 38 Q80 72 60 106 M60 38 Q26 72 60 106 M60 38 Q94 72 60 106" fill="none" stroke="var(--seed-sig-gold)" stroke-width="1.2" opacity="0.8"/>
+    <rect x="48" y="104" width="24" height="7" rx="2" fill="var(--seed-sig-gold)"/>
+    <path d="M54 111 L52 134 M60 111 L60 138 M66 111 L68 134" stroke="var(--seed-sig-gold)" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+  <g>
+    <path d="M140 18 L140 50" stroke="var(--seed-sig-gold)" stroke-width="2"/>
+    <rect x="130" y="48" width="20" height="6" rx="2" fill="var(--seed-sig-gold)"/>
+    <ellipse cx="140" cy="82" rx="28" ry="28" fill="var(--seed-sig-lantern-red)"/>
+    <path d="M140 54 Q123 82 140 110 M140 54 Q157 82 140 110 M140 54 Q112 82 140 110 M140 54 Q168 82 140 110" fill="none" stroke="var(--seed-sig-gold)" stroke-width="1.1" opacity="0.8"/>
+    <rect x="130" y="108" width="20" height="6" rx="2" fill="var(--seed-sig-gold)"/>
+    <path d="M135 114 L133 134 M140 114 L140 138 M145 114 L147 134" stroke="var(--seed-sig-gold)" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+  <circle cx="60" cy="72" r="9" fill="var(--seed-sig-gold)" opacity="0.9"/><circle cx="140" cy="82" r="7" fill="var(--seed-sig-gold)" opacity="0.9"/>
+</svg>

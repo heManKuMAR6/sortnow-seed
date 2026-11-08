@@ -70,6 +70,7 @@ function checkAttr(where, element, name, value, ctx) {
   if (name === 'viewBox') { if (element !== 'svg' || !NUMBERS.test(value)) fail(at, 'numeric viewBox on the root only'); return value.trim().split(/[\s,]+/).join(' '); }
   if (name === 'id') { if (!ID.test(value)) fail(at, 'ids are lowercase letters, digits, and hyphens'); ctx.ids.add(value); return `${ctx.prefix}-${value}`; }
   if (name === 'd') { if (!PATH.test(value)) fail(at, 'path data only'); return value.trim().replace(/\s+/g, ' '); }
+  if (name === 'stroke-dasharray') { if (!NUMBERS.test(value)) fail(at, 'numbers only'); return value.trim().replace(/\s+/g, ' '); }
   if (name === 'points') { if (!NUMBERS.test(value)) fail(at, 'numbers only'); return value.trim().replace(/\s+/g, ' '); }
   if (name === 'transform' || name === 'gradientTransform') { if (!TRANSFORM.test(value)) fail(at, 'transform functions with numbers only'); return value.trim().replace(/\s+/g, ' '); }
   if (GEOMETRY.includes(name)) { if (!NUMBER.test(value.replace(/%$/, ''))) fail(at, 'a number'); return value; }

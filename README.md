@@ -105,6 +105,19 @@ const result = authorExperience({
 
 Effects and signature colours stay off until the integrator turns them on in `brand.json` (`"effects": "on"`, `"signatureColors": "allow"`, and `allowedSlots`). Explicit choices that the brand forbids return errors rather than being silently dropped. In the playground, choose **Theme pack** and download the result as a `.bundle.json`. `seed author EVENT_FILE BRAND_FILE` does the same from the command line. Render it with `mountSeed` from `@sortnow/seed/render` (see `examples/storefront`).
 
+## Plan by market: upcoming occasions
+
+Choose the markets your audience is in (US, India, UAE, Singapore) and SEED lists what is coming up, with theme windows, suggested packs, and the source for each date. **SEED never selects occasions for you.** Religious, national, and cultural days appear only as choices, and moon-sighting or almanac dates (Diwali, Eid, Lunar New Year) are marked to confirm locally. Years without published dates are not listed rather than guessed.
+
+```js
+import {upcomingOccasions, planExperiences} from '@sortnow/seed/authoring';
+upcomingOccasions({markets: ['IN', 'AE'], from: '2026-11-08', days: 120});
+planExperiences({markets: ['IN', 'AE'], from: '2026-11-08', timeZone: 'Asia/Dubai', areas: ['banner', 'hero'],
+  occasions: ['national-day-ae-2026', 'christmas-2026']}, brand); // -> one draft bundle; overlaps reported
+```
+
+CLI: `seed occasions IN,AE 2026-11-08 120` and `seed plan PLAN_FILE BRAND_FILE`. In the playground, use **Plan by market**. Installed packs: Christmas, Black Friday, New Year, Diwali, Lunar New Year, Valentine's Day, and Celebration (for national days, using brand colours and bunting rather than flags).
+
 ## Any website: plain HTML, React, Angular, Vue, Shopify
 
 One self-contained script (`dist/seed-element.js`, about 13 KB gzipped, no framework) adds `<seed-root>`. Mark your own elements with `data-seed-slot="banner"`, `"hero accent"`, and so on:

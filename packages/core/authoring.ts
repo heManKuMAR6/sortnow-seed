@@ -9,6 +9,7 @@ import {validateExperience, type Diagnostic, type Experience} from './index.js';
 import {validateExperienceV2, brandAllowsV2, resolvePack, type ExperienceV2} from './v2.js';
 import type {CompiledPack} from './pack.js';
 import {packs as installedPacks} from '../packs/index.js';
+import {upcomingOccasions, defaultPack, OCCASIONS_NOTICE} from './occasions.js';
 
 export interface EventInput {
   name: string;
@@ -161,4 +162,52 @@ function authorPackExperience(input: Record<string, unknown>, pack: CompiledPack
   if (!resolved.ok) return {ok: false, errors: resolved.errors};
   if (!brandAllowsV2(checked.value, brand)) return {ok: false, errors: [{path: '$', code: 'BRAND_POLICY', message: 'Brand policy does not permit this design.'}]};
   return {ok: true, draft: true, approved: false, experience: checked.value, schedule};
+}
+
+export {MARKETS, OCCASIONS, OCCASIONS_NOTICE, upcomingOccasions, defaultPack} from './occasions.js';
+export type {Market, Category, Occasion, OccasionInstance} from './occasions.js';
+
+export interface PlanInput {
+  markets: string[]; from: string; days?: number; timeZone: string; areas: Experience['areas'];
+  /** Instance ids from upcomingOccasions that the owner ticked. Nothing is planned unless chosen. */
+  occasions: string[];
+  overrides?: Record<string, {message?: string; pack?: string; startDate?: string; lastDate?: string}>;
+}
+export type PlanResult =
+  | {ok: true; draft: true; approved: false; bundle: {bundleVersion: 1; experiences: (Experience | ExperienceV2)[]}; drafts: {occasion: string; confirm: boolean; source: string; schedule: Schedule}[]; overlaps: string[][]; notice: string}
+  | {ok: false; errors: Diagnostic[]};
+
+/** Turns the occasions an owner chose into one draft bundle. Each draft goes through authorExperience and still needs approval. */
+export function planExperiences(input: unknown, brand: unknown, packs: readonly CompiledPack[] = installedPacks): PlanResult {
+  if (!plain(input)) return {ok: false, errors: [{path: '$', code: 'OBJECT_REQUIRED', message: 'Expected a plain JSON object describing the plan.'}]};
+  const errors: Diagnostic[] = [];
+  for (const k of Object.keys(input)) if (!['markets', 'from', 'days', 'timeZone', 'areas', 'occasions', 'overrides'].includes(k)) errors.push({path: k, code: 'UNKNOWN_FIELD', message: 'Unsupported field.'});
+  const upcoming = upcomingOccasions({markets: input.markets, from: input.from, days: input.days});
+  if (!upcoming.ok) return {ok: false, errors: [...errors, ...upcoming.errors]};
+  const chosen = input.occasions, overrides = input.overrides ?? {};
+  if (!Array.isArray(chosen) || !chosen.length || new Set(chosen).size !== chosen.length) errors.push({path: 'occasions', code: 'OCCASIONS', message: 'Choose one or more upcoming occasions by id. SEED never chooses them for you.'});
+  if (!plain(overrides)) errors.push({path: 'overrides', code: 'OBJECT_REQUIRED', message: 'Overrides map occasion ids to message, pack, startDate, or lastDate.'});
+  if (errors.length) return {ok: false, errors};
+  const experiences: (Experience | ExperienceV2)[] = [], drafts: {occasion: string; confirm: boolean; source: string; schedule: Schedule}[] = [];
+  for (const id of chosen as unknown[]) {
+    const instance = upcoming.occasions.find(o => o.id === id);
+    if (!instance) { errors.push({path: `occasions`, code: 'OCCASION', message: `${String(id)} is not upcoming in these markets and dates.`}); continue; }
+    const over = (overrides as Record<string, unknown>)[instance.id] ?? {};
+    if (!plain(over) || Object.keys(over).some(k => !['message', 'pack', 'startDate', 'lastDate'].includes(k))) { errors.push({path: `overrides.${instance.id}`, code: 'OVERRIDE', message: 'Override only message, pack, startDate, or lastDate.'}); continue; }
+    const pack = over.pack === 'none' ? undefined : (over.pack as string | undefined) ?? defaultPack(instance, packs);
+    const result = authorExperience({
+      name: instance.name, timeZone: input.timeZone, startDate: over.startDate ?? instance.startDate, lastDate: over.lastDate ?? instance.lastDate,
+      preset: instance.preset, message: over.message ?? instance.message, areas: input.areas, priority: instance.priority, ...(pack ? {pack} : {}),
+    }, brand, packs);
+    if (!result.ok) { errors.push(...result.errors.map(e => ({...e, path: `occasions.${instance.id}.${e.path}`}))); continue; }
+    experiences.push(result.experience);
+    drafts.push({occasion: instance.id, confirm: instance.confirm, source: instance.source, schedule: result.schedule});
+  }
+  if (errors.length) return {ok: false, errors};
+  const overlaps: string[][] = [];
+  for (let i = 0; i < drafts.length; i++) for (let j = i + 1; j < drafts.length; j++) {
+    const a = drafts[i].schedule, b = drafts[j].schedule;
+    if (a.startsAt < b.endsAt && b.startsAt < a.endsAt) overlaps.push([drafts[i].occasion, drafts[j].occasion]);
+  }
+  return {ok: true, draft: true, approved: false, bundle: {bundleVersion: 1, experiences}, drafts, overlaps, notice: `${OCCASIONS_NOTICE} Where drafts overlap, the shorter occasion has higher priority.`};
 }

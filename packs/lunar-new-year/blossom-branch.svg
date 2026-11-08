@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 130">
+  <path d="M4 120 Q60 96 100 70 Q130 50 196 30 M100 70 Q110 40 140 22 M60 96 Q70 70 58 46" fill="none" stroke="var(--seed-foreground)" stroke-width="4" stroke-linecap="round"/>
+  <g fill="var(--seed-sig-blossom)">
+    <g transform="translate(140 22)"><circle cx="0" cy="-7" r="6"/><circle cx="6.7" cy="-2.2" r="6"/><circle cx="4.1" cy="5.7" r="6"/><circle cx="-4.1" cy="5.7" r="6"/><circle cx="-6.7" cy="-2.2" r="6"/></g>
+    <g transform="translate(58 46)"><circle cx="0" cy="-6" r="5"/><circle cx="5.7" cy="-1.9" r="5"/><circle cx="3.5" cy="4.9" r="5"/><circle cx="-3.5" cy="4.9" r="5"/><circle cx="-5.7" cy="-1.9" r="5"/></g>
+    <g transform="translate(176 36)"><circle cx="0" cy="-5" r="4.4"/><circle cx="4.8" cy="-1.5" r="4.4"/><circle cx="2.9" cy="4" r="4.4"/><circle cx="-2.9" cy="4" r="4.4"/><circle cx="-4.8" cy="-1.5" r="4.4"/></g>
+    <g transform="translate(100 70)"><circle cx="0" cy="-6" r="5"/><circle cx="5.7" cy="-1.9" r="5"/><circle cx="3.5" cy="4.9" r="5"/><circle cx="-3.5" cy="4.9" r="5"/><circle cx="-5.7" cy="-1.9" r="5"/></g>
+  </g>
+  <g fill="var(--seed-sig-gold)"><circle cx="140" cy="22" r="2.6"/><circle cx="58" cy="46" r="2.2"/><circle cx="176" cy="36" r="2"/><circle cx="100" cy="70" r="2.2"/></g>
+  <g fill="var(--seed-sig-blossom)" opacity="0.8"><circle cx="122" cy="40" r="3"/><circle cx="80" cy="84" r="3"/><circle cx="156" cy="44" r="2.6"/></g>
+</svg>

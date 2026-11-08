@@ -1,0 +1,10 @@
+{
+  "packVersion": 1, "id": "diwali", "version": "1.0.0", "name": "Diwali", "occasions": ["diwali"], "license": "CC0-1.0",
+  "signatureColors": {"marigold": "#f2a20c", "flame": "#ff7b1c", "maroon": "#7a1f2b"},
+  "illustrations": {"diya-row": {"file": "diya-row.svg", "label": "Row of lit diyas", "source": "original, SortNow SEED"}, "rangoli": {"file": "rangoli.svg", "label": "Rangoli pattern", "source": "original, SortNow SEED"}},
+  "icons": {"diya": {"file": "icon-diya.svg", "label": "Diya", "source": "original, SortNow SEED"}, "spark": {"file": "icon-spark.svg", "label": "Spark", "source": "original, SortNow SEED"}},
+  "decorations": {"marigold-corner": {"file": "marigold-corner.svg", "source": "original, SortNow SEED"}},
+  "particles": {"glow": {"file": "particle-glow.svg", "source": "original, SortNow SEED"}},
+  "copy": {"hero": ["Wishing you a bright and joyful Diwali.", "May your home be filled with light."], "banner": ["Happy Diwali from all of us.", "Festive orders close two days before Diwali."]},
+  "effects": {"particles": {"assets": ["glow"]}}
+}

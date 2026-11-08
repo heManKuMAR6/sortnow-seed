@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100">
+  <g fill="var(--seed-sig-night)" stroke="var(--seed-sig-moon)" stroke-width="1.2" stroke-linejoin="round">
+    <path d="M150 40 Q162 22 174 34 Q180 20 186 30 Q190 22 194 32 Q200 20 206 34 Q218 22 230 40 Q216 38 206 48 Q198 42 190 46 Q182 42 174 48 Q164 38 150 40 Z"/>
+    <circle cx="190" cy="38" r="5"/><path d="M186 34 L184 28 L189 33 Z M194 34 L196 28 L191 33 Z"/>
+    <path d="M70 60 Q78 48 86 56 Q90 46 94 53 Q97 47 100 54 Q104 46 108 56 Q116 48 124 60 Q114 58 108 65 Q102 61 97 64 Q92 61 86 65 Q80 58 70 60 Z"/>
+    <path d="M10 30 Q16 21 22 27 Q25 20 28 25 Q30 21 32 26 Q35 20 38 27 Q44 21 50 30 Q43 29 38 34 Q34 31 30 33 Q26 31 22 34 Q17 29 10 30 Z"/>
+  </g>
+  <g fill="var(--seed-sig-moon)"><circle cx="188" cy="37" r="1"/><circle cx="192" cy="37" r="1"/></g>
+</svg>

@@ -1,0 +1,10 @@
+{
+  "packVersion": 1, "id": "halloween", "version": "1.0.0", "name": "Halloween", "occasions": ["halloween"], "license": "CC0-1.0",
+  "signatureColors": {"pumpkin": "#f07f13", "night": "#1c1427", "moon": "#f4e3a1", "leaf": "#b5541c"},
+  "illustrations": {"pumpkin": {"file": "pumpkin.svg", "label": "Friendly jack-o'-lantern", "source": "original, SortNow SEED"}, "moon-bats": {"file": "moon-bats.svg", "label": "Full moon with bats", "source": "original, SortNow SEED"}, "bat-flight": {"file": "bat-flight.svg", "label": "Three bats in flight", "source": "original, SortNow SEED"}},
+  "icons": {"pumpkin": {"file": "icon-pumpkin.svg", "label": "Pumpkin", "source": "original, SortNow SEED"}, "bat": {"file": "icon-bat.svg", "label": "Bat", "source": "original, SortNow SEED"}},
+  "decorations": {"cobweb-corner": {"file": "cobweb-corner.svg", "source": "original, SortNow SEED"}},
+  "particles": {"leaf": {"file": "particle-leaf.svg", "source": "original, SortNow SEED"}},
+  "copy": {"hero": ["A little spooky, a lot of fun.", "Treats for everyone this Halloween."], "banner": ["Happy Halloween from all of us.", "Halloween treats are in store all week."]},
+  "effects": {"flyby": {"assets": ["bat-flight"]}, "particles": {"assets": ["leaf"]}}
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path d="M11.5 6 Q11 3 13 2 L13.6 3 Q12.4 4 12.8 6 Z" fill="var(--seed-sig-leaf)"/>
+  <ellipse cx="8" cy="14" rx="5.5" ry="7.5" fill="var(--seed-sig-pumpkin)"/><ellipse cx="16" cy="14" rx="5.5" ry="7.5" fill="var(--seed-sig-pumpkin)"/><ellipse cx="12" cy="14" rx="5.5" ry="8" fill="var(--seed-sig-pumpkin)"/>
+  <path d="M8.5 12 L10.5 11.5 L10 13.5 Z M15.5 12 L13.5 11.5 L14 13.5 Z M8.5 16 Q12 19 15.5 16" fill="var(--seed-sig-night)" stroke="var(--seed-sig-night)" stroke-width="0.6"/>
+</svg>

@@ -90,3 +90,17 @@ test('plan bundles download safely and the CLI exposes occasions and plan', () =
     assert.equal(planned.result.approved, false);
   } finally { rmSync(dir, {recursive: true}); }
 });
+
+test('Eid and Halloween plan with their own packs and the brand-allowed effect', () => {
+  const ae = planExperiences({markets: ['AE'], from: '2027-03-01', days: 90, timeZone: 'Asia/Dubai', areas: ['banner', 'hero'], occasions: ['eid-al-fitr-2027', 'eid-al-adha-2027']}, brand);
+  assert.equal(ae.ok, true, JSON.stringify(ae.errors));
+  for (const e of ae.bundle.experiences) { assert.equal(e.pack.id, 'eid'); assert.equal(e.slots.overlay.effect, 'particles'); }
+  assert.ok(ae.drafts.every(d => d.confirm), 'moon-sighting dates stay flagged');
+  const us = planExperiences({markets: ['US'], from: '2027-10-01', days: 60, timeZone: 'America/New_York', areas: ['banner', 'hero'], occasions: ['halloween-2027']}, brand);
+  assert.equal(us.ok, true, JSON.stringify(us.errors));
+  const h = us.bundle.experiences[0];
+  assert.equal(h.pack.id, 'halloween');
+  assert.equal(h.slots.overlay.effect, 'flyby', 'bats fly by');
+  assert.equal(h.slots.hero.illustration, 'pumpkin');
+  assert.equal(h.startsAt, '2027-10-18T04:00:00.000Z');
+});

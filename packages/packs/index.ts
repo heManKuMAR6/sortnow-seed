@@ -299,6 +299,156 @@ export const diwali: CompiledPack = {
     }
   }
 };
+export const eid: CompiledPack = {
+  "packVersion": 1,
+  "id": "eid",
+  "version": "1.0.0",
+  "hash": "sha256-da70e1b58aaf03cbb0b9048585ecd65d35cf9deb85471b868b35749b5840439a",
+  "name": "Eid",
+  "occasions": [
+    "eid-al-fitr",
+    "eid-al-adha"
+  ],
+  "license": "CC0-1.0",
+  "signatureColors": {
+    "gold": "#c9a227",
+    "emerald": "#0f6b4f",
+    "night": "#14213d"
+  },
+  "illustrations": {
+    "crescent-lantern": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 200 190\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M86 16 A58 58 0 1 0 150 100 A46 46 0 1 1 86 16 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M150 26 L154 37 L166 37 L156 44 L160 56 L150 49 L140 56 L144 44 L134 37 L146 37 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M120 70 L120 98\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.6\"/><path d=\"M110 98 L130 98 L134 106 L106 106 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M106 106 L134 106 L138 136 L120 150 L102 136 Z\" fill=\"var(--seed-sig-emerald)\"/><path d=\"M112 110 L128 110 L131 134 L120 143 L109 134 Z\" fill=\"var(--seed-sig-gold)\" opacity=\"0.85\"/><path d=\"M120 112 L120 140 M112 124 L128 124\" stroke=\"var(--seed-sig-emerald)\" stroke-width=\"1.4\"/><path d=\"M102 136 L120 150 L138 136\" fill=\"none\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"2\"/><path d=\"M120 150 L120 162\" stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"2\"/><circle cx=\"120\" cy=\"165\" fill=\"var(--seed-sig-gold)\" r=\"3\"/><g fill=\"var(--seed-sig-gold)\" opacity=\"0.7\"><circle cx=\"30\" cy=\"30\" r=\"2\"/><circle cx=\"182\" cy=\"80\" r=\"1.8\"/><circle cx=\"170\" cy=\"150\" r=\"1.6\"/><circle cx=\"20\" cy=\"150\" r=\"1.6\"/></g></svg>",
+      "aspect": 1.053,
+      "label": "Crescent moon with a hanging lantern"
+    },
+    "geometric-star": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 160 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><g transform=\"translate(80 80)\"><rect fill=\"var(--seed-sig-emerald)\" height=\"104\" width=\"104\" x=\"-52\" y=\"-52\"/><rect fill=\"var(--seed-sig-emerald)\" height=\"104\" transform=\"rotate(45)\" width=\"104\" x=\"-52\" y=\"-52\"/><rect fill=\"none\" height=\"88\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"2.4\" width=\"88\" x=\"-44\" y=\"-44\"/><rect fill=\"none\" height=\"88\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"2.4\" transform=\"rotate(45)\" width=\"88\" x=\"-44\" y=\"-44\"/><circle fill=\"var(--seed-sig-gold)\" r=\"30\"/><rect fill=\"var(--seed-sig-emerald)\" height=\"34\" width=\"34\" x=\"-17\" y=\"-17\"/><rect fill=\"var(--seed-sig-emerald)\" height=\"34\" transform=\"rotate(45)\" width=\"34\" x=\"-17\" y=\"-17\"/><circle fill=\"var(--seed-sig-gold)\" r=\"8\"/></g></svg>",
+      "aspect": 1,
+      "label": "Eight-point geometric star"
+    }
+  },
+  "icons": {
+    "crescent": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M11 2.5 A9.5 9.5 0 1 0 20.5 15 A7.5 7.5 0 1 1 11 2.5 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M18 4 L18.8 6.2 L21 6.3 L19.3 7.7 L19.9 9.9 L18 8.6 L16.1 9.9 L16.7 7.7 L15 6.3 L17.2 6.2 Z\" fill=\"var(--seed-sig-gold)\"/></svg>",
+      "aspect": 1,
+      "label": "Crescent and star"
+    },
+    "lantern": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 1 L12 4\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.4\"/><path d=\"M9 4 L15 4 L16 6 L8 6 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M8 6 L16 6 L17 16 L12 20 L7 16 Z\" fill=\"var(--seed-sig-emerald)\"/><path d=\"M10 8 L14 8 L14.8 15 L12 17.4 L9.2 15 Z\" fill=\"var(--seed-sig-gold)\" opacity=\"0.85\"/><path d=\"M12 20 L12 23\" stroke=\"var(--seed-sig-gold)\" stroke-linecap=\"round\" stroke-width=\"1.4\"/></svg>",
+      "aspect": 1,
+      "label": "Lantern"
+    }
+  },
+  "decorations": {
+    "lantern-corner": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 130 130\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M34 0 L34 30 M84 0 L84 56 M114 0 L114 18\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.4\"/><g><path d=\"M27 30 L41 30 L44 36 L24 36 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M24 36 L44 36 L47 58 L34 68 L21 58 Z\" fill=\"var(--seed-sig-emerald)\"/><path d=\"M29 40 L39 40 L41 56 L34 61 L27 56 Z\" fill=\"var(--seed-sig-gold)\" opacity=\"0.85\"/></g><g><path d=\"M75 56 L93 56 L97 64 L71 64 Z\" fill=\"var(--seed-sig-gold)\"/><path d=\"M71 64 L97 64 L101 92 L84 105 L67 92 Z\" fill=\"var(--seed-sig-emerald)\"/><path d=\"M77 69 L91 69 L94 90 L84 97 L74 90 Z\" fill=\"var(--seed-sig-gold)\" opacity=\"0.85\"/><path d=\"M84 105 L84 116\" stroke=\"var(--seed-sig-gold)\" stroke-width=\"1.6\"/></g><path d=\"M114 18 A9 9 0 1 0 124 30 A7 7 0 1 1 114 18 Z\" fill=\"var(--seed-sig-gold)\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "particles": {
+    "star": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 2 L14 9.2 L21.5 9.4 L15.5 13.8 L17.8 21 L12 16.6 L6.2 21 L8.5 13.8 L2.5 9.4 L10 9.2 Z\" fill=\"var(--seed-sig-gold)\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "copy": {
+    "hero": [
+      "Eid Mubarak to everyone celebrating.",
+      "Wishing you and your family a blessed Eid."
+    ],
+    "banner": [
+      "Eid Mubarak from all of us.",
+      "Our Eid hours are on the visit page."
+    ]
+  },
+  "effects": {
+    "particles": {
+      "assets": [
+        "star"
+      ]
+    }
+  }
+};
+export const halloween: CompiledPack = {
+  "packVersion": 1,
+  "id": "halloween",
+  "version": "1.0.0",
+  "hash": "sha256-23fe312cfd2321b68cec45d6727fcbe2ffe9ec1b70e22626d14f44f35638c6bd",
+  "name": "Halloween",
+  "occasions": [
+    "halloween"
+  ],
+  "license": "CC0-1.0",
+  "signatureColors": {
+    "pumpkin": "#f07f13",
+    "night": "#1c1427",
+    "moon": "#f4e3a1",
+    "leaf": "#b5541c"
+  },
+  "illustrations": {
+    "pumpkin": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 180 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M86 30 Q84 14 96 6 L100 12 Q92 18 94 30 Z\" fill=\"var(--seed-sig-leaf)\"/><path d=\"M96 16 Q112 6 126 16 Q112 22 98 20 Z\" fill=\"var(--seed-accent)\"/><ellipse cx=\"54\" cy=\"92\" fill=\"var(--seed-sig-pumpkin)\" rx=\"38\" ry=\"56\"/><ellipse cx=\"126\" cy=\"92\" fill=\"var(--seed-sig-pumpkin)\" rx=\"38\" ry=\"56\"/><ellipse cx=\"90\" cy=\"92\" fill=\"var(--seed-sig-pumpkin)\" rx=\"40\" ry=\"60\"/><path d=\"M70 40 Q60 92 70 146 M110 40 Q120 92 110 146\" fill=\"none\" opacity=\"0.6\" stroke=\"var(--seed-sig-leaf)\" stroke-width=\"2\"/><path d=\"M58 74 L76 70 L70 88 Z M122 74 L104 70 L110 88 Z\" fill=\"var(--seed-sig-night)\"/><path d=\"M86 92 L94 92 L90 100 Z\" fill=\"var(--seed-sig-night)\"/><path d=\"M56 108 Q90 136 124 108 Q118 124 108 128 L104 120 L98 130 L90 122 L82 130 L76 120 L72 128 Q62 124 56 108 Z\" fill=\"var(--seed-sig-night)\"/><path d=\"M60 60 Q66 54 72 58\" fill=\"none\" opacity=\"0.7\" stroke=\"var(--seed-sig-moon)\" stroke-linecap=\"round\" stroke-width=\"3\"/></svg>",
+      "aspect": 1.125,
+      "label": "Friendly jack-o'-lantern"
+    },
+    "moon-bats": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 200 160\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"110\" cy=\"76\" fill=\"var(--seed-sig-moon)\" r=\"62\"/><circle cx=\"88\" cy=\"56\" fill=\"var(--seed-sig-moon)\" opacity=\"0.4\" r=\"10\" stroke=\"var(--seed-sig-night)\" stroke-width=\"1\"/><circle cx=\"132\" cy=\"96\" fill=\"var(--seed-sig-moon)\" opacity=\"0.4\" r=\"14\" stroke=\"var(--seed-sig-night)\" stroke-width=\"1\"/><circle cx=\"126\" cy=\"50\" fill=\"var(--seed-sig-moon)\" opacity=\"0.4\" r=\"6\" stroke=\"var(--seed-sig-night)\" stroke-width=\"1\"/><path d=\"M60 60 Q66 52 72 58 Q76 50 80 56 Q84 50 88 58 Q94 52 100 60 Q92 60 86 66 Q80 62 74 66 Q68 60 60 60 Z\" fill=\"var(--seed-sig-night)\"/><path d=\"M130 30 Q134 25 138 29 Q141 24 143 28 Q145 24 148 29 Q152 25 156 30 Q151 30 147 34 Q143 31 139 34 Q135 30 130 30 Z\" fill=\"var(--seed-sig-night)\"/><path d=\"M24 108 Q28 103 32 107 Q35 102 37 106 Q39 102 42 107 Q46 103 50 108 Q45 108 41 112 Q37 109 33 112 Q29 108 24 108 Z\" fill=\"var(--seed-sig-night)\"/></svg>",
+      "aspect": 1.25,
+      "label": "Full moon with bats"
+    },
+    "bat-flight": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 240 100\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"var(--seed-sig-night)\" stroke=\"var(--seed-sig-moon)\" stroke-linejoin=\"round\" stroke-width=\"1.2\"><path d=\"M150 40 Q162 22 174 34 Q180 20 186 30 Q190 22 194 32 Q200 20 206 34 Q218 22 230 40 Q216 38 206 48 Q198 42 190 46 Q182 42 174 48 Q164 38 150 40 Z\"/><circle cx=\"190\" cy=\"38\" r=\"5\"/><path d=\"M186 34 L184 28 L189 33 Z M194 34 L196 28 L191 33 Z\"/><path d=\"M70 60 Q78 48 86 56 Q90 46 94 53 Q97 47 100 54 Q104 46 108 56 Q116 48 124 60 Q114 58 108 65 Q102 61 97 64 Q92 61 86 65 Q80 58 70 60 Z\"/><path d=\"M10 30 Q16 21 22 27 Q25 20 28 25 Q30 21 32 26 Q35 20 38 27 Q44 21 50 30 Q43 29 38 34 Q34 31 30 33 Q26 31 22 34 Q17 29 10 30 Z\"/></g><g fill=\"var(--seed-sig-moon)\"><circle cx=\"188\" cy=\"37\" r=\"1\"/><circle cx=\"192\" cy=\"37\" r=\"1\"/></g></svg>",
+      "aspect": 2.4,
+      "label": "Three bats in flight"
+    }
+  },
+  "icons": {
+    "pumpkin": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M11.5 6 Q11 3 13 2 L13.6 3 Q12.4 4 12.8 6 Z\" fill=\"var(--seed-sig-leaf)\"/><ellipse cx=\"8\" cy=\"14\" fill=\"var(--seed-sig-pumpkin)\" rx=\"5.5\" ry=\"7.5\"/><ellipse cx=\"16\" cy=\"14\" fill=\"var(--seed-sig-pumpkin)\" rx=\"5.5\" ry=\"7.5\"/><ellipse cx=\"12\" cy=\"14\" fill=\"var(--seed-sig-pumpkin)\" rx=\"5.5\" ry=\"8\"/><path d=\"M8.5 12 L10.5 11.5 L10 13.5 Z M15.5 12 L13.5 11.5 L14 13.5 Z M8.5 16 Q12 19 15.5 16\" fill=\"var(--seed-sig-night)\" stroke=\"var(--seed-sig-night)\" stroke-width=\"0.6\"/></svg>",
+      "aspect": 1,
+      "label": "Pumpkin"
+    },
+    "bat": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 10 Q4 6 7 8.5 Q8.5 5.5 10 7.5 Q11 5.5 12 7 Q13 5.5 14 7.5 Q15.5 5.5 17 8.5 Q20 6 23 10 Q19 10 17 13 Q15 11.5 13.5 13 Q12 11.5 10.5 13 Q9 11.5 7 13 Q5 10 1 10 Z\" fill=\"var(--seed-accent)\"/></svg>",
+      "aspect": 1,
+      "label": "Bat"
+    }
+  },
+  "decorations": {
+    "cobweb-corner": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 120 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"none\" opacity=\"0.55\" stroke=\"var(--seed-foreground)\" stroke-width=\"1.2\"><path d=\"M120 0 L0 0 M120 0 L20 60 M120 0 L60 100 M120 0 L120 120\"/><path d=\"M96 0 Q100 10 106 12 Q112 18 120 22\"/><path d=\"M70 0 Q78 18 88 22 Q98 32 100 42 Q108 44 120 48\"/><path d=\"M44 0 Q56 26 70 32 Q80 48 82 62 Q98 70 120 76\"/><path d=\"M18 0 Q34 34 50 42 Q62 64 64 82 Q90 94 120 102\"/></g><path d=\"M84 44 L84 70\" stroke=\"var(--seed-foreground)\" stroke-width=\"1\"/><ellipse cx=\"84\" cy=\"76\" fill=\"var(--seed-sig-night)\" rx=\"5\" ry=\"6\"/><path d=\"M79 74 L73 70 M79 78 L73 80 M89 74 L95 70 M89 78 L95 80\" stroke=\"var(--seed-sig-night)\" stroke-width=\"1.2\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "particles": {
+    "leaf": {
+      "svg": "<svg aria-hidden=\"true\" focusable=\"false\" height=\"100%\" viewBox=\"0 0 24 24\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 2 Q20 6 20 13 Q19 20 12 22 Q5 20 4 13 Q4 6 12 2 Z\" fill=\"var(--seed-sig-leaf)\"/><path d=\"M12 4 L12 22 M12 10 L8 7 M12 10 L16 7 M12 15 L7 12 M12 15 L17 12\" fill=\"none\" stroke=\"var(--seed-sig-pumpkin)\" stroke-width=\"1\"/></svg>",
+      "aspect": 1
+    }
+  },
+  "copy": {
+    "hero": [
+      "A little spooky, a lot of fun.",
+      "Treats for everyone this Halloween."
+    ],
+    "banner": [
+      "Happy Halloween from all of us.",
+      "Halloween treats are in store all week."
+    ]
+  },
+  "effects": {
+    "flyby": {
+      "assets": [
+        "bat-flight"
+      ]
+    },
+    "particles": {
+      "assets": [
+        "leaf"
+      ]
+    }
+  }
+};
 export const lunarNewYear: CompiledPack = {
   "packVersion": 1,
   "id": "lunar-new-year",
@@ -504,4 +654,4 @@ export const valentines: CompiledPack = {
     }
   }
 };
-export const packs: readonly CompiledPack[] = Object.freeze([blackFriday, celebration, christmas, diwali, lunarNewYear, newYear, valentines]);
+export const packs: readonly CompiledPack[] = Object.freeze([blackFriday, celebration, christmas, diwali, eid, halloween, lunarNewYear, newYear, valentines]);

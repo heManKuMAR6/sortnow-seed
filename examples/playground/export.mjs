@@ -1,4 +1,4 @@
-import {validateAnyExperience, validateBundle} from '../../dist/core/index.js';
+import {validateAnyExperience, validateBundle, validateBrand} from '../../dist/core/index.js';
 
 /**
  * Re-validates so only the fields of a valid experience can ever leave the page. Never includes approvals.
@@ -20,6 +20,13 @@ export function bundleFile(bundle, name) {
   return {filename: `${name}.bundle.json`, json: `${JSON.stringify(result.value, null, 2)}\n`};
 }
 export function downloadBundle(bundle, name, env = globalThis) { save(bundleFile(bundle, name), env); }
+/** A reviewed brand policy as brand.json. Re-validated so only policy fields leave the page. */
+export function brandFile(brand) {
+  const result = validateBrand(brand);
+  if (!result.ok) throw new Error('Cannot export an invalid brand policy.');
+  return {filename: 'brand.json', json: `${JSON.stringify(result.value, null, 2)}\n`};
+}
+export function downloadBrand(brand, env = globalThis) { save(brandFile(brand), env); }
 /** Saves a local file only. Downloading does not approve or publish anything. */
 export function downloadDraft(experience, env = globalThis) { save(draftFile(experience), env); }
 function save({filename, json}, env) {

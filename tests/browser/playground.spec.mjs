@@ -103,3 +103,22 @@ test('plan by market lists upcoming occasions, loads one into the editor, and do
   await planner.getByRole('button', {name: 'Download plan bundle (2)'}).click();
   expect((await download).suggestedFilename()).toBe('seed-plan-2026-11-08.bundle.json');
 });
+
+test('your brand: paste CSS, review the proposal, and preview packs in those colours', async ({page}) => {
+  const panel = page.locator('.brand-panel');
+  await panel.locator('textarea').fill(':root{--color-surface:#f8f6f1;--color-text:#1f2a24;--color-primary:#2f6b4f}');
+  await panel.getByRole('button', {name: 'Propose brand'}).click();
+  const proposal = panel.getByLabel('Proposed brand');
+  await expect(proposal).toContainText('--color-primary');
+  await expect(proposal.getByRole('checkbox', {name: /Allow effects/})).not.toBeChecked();
+  await proposal.getByRole('button', {name: 'Use this brand'}).click();
+  await expect(panel.getByRole('button', {name: 'Download brand.json'})).toBeVisible();
+  await page.locator('aside select').first().selectOption('christmas');
+  await approve(page);
+  const hero = page.getByRole('region', {name: 'Experience preview'}).locator('[data-seed-experience]').first();
+  await expect(hero).toHaveCSS('--seed-foreground', '#1f2a24');
+  await expect(page.locator('[data-seed-overlay]')).toHaveCount(0);
+  const download = page.waitForEvent('download');
+  await panel.getByRole('button', {name: 'Download brand.json'}).click();
+  expect((await download).suggestedFilename()).toBe('brand.json');
+});

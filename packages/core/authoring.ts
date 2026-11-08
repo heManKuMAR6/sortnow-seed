@@ -211,3 +211,6 @@ export function planExperiences(input: unknown, brand: unknown, packs: readonly 
   }
   return {ok: true, draft: true, approved: false, bundle: {bundleVersion: 1, experiences}, drafts, overlaps, notice: `${OCCASIONS_NOTICE} Where drafts overlap, the shorter occasion has higher priority.`};
 }
+
+export {importBrand, proposeBrand, colorsFromCss, colorsFromTokens, parseColor} from './brand-import.js';
+export type {BrandImportResult, BrandProposal, ColorSource} from './brand-import.js';

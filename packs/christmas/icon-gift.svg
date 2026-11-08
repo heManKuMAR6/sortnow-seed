@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <rect x="3.5" y="9" width="17" height="12" rx="1.5" fill="none" stroke="var(--seed-accent)" stroke-width="1.8"/>
+  <rect x="2.5" y="6.5" width="19" height="4" rx="1" fill="var(--seed-accent)"/>
+  <path d="M12 6.5 L12 21" stroke="var(--seed-background)" stroke-width="1.8"/>
+  <path d="M12 6.5 Q8 1.5 6.5 4 Q6 6.5 12 6.5 Q18 6.5 17.5 4 Q16 1.5 12 6.5 Z" fill="none" stroke="var(--seed-accent)" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>

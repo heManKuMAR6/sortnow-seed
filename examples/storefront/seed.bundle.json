@@ -1,0 +1,91 @@
+{
+  "bundleVersion": 1,
+  "experiences": [
+    {
+      "schemaVersion": 2,
+      "id": "black-friday-2026",
+      "startsAt": "2026-11-27T00:00:00.000Z",
+      "endsAt": "2026-12-01T00:00:00.000Z",
+      "priority": 20,
+      "pack": {
+        "id": "black-friday",
+        "version": "1.0.0",
+        "hash": "sha256-2896c52f37c9377127733b067ae58a0097527251c273dcc7bcc1da14ee3ab239"
+      },
+      "palette": {
+        "background": "#f6f1ea",
+        "foreground": "#2b2622",
+        "accent": "#9a3b12"
+      },
+      "signatureColors": [
+        "night",
+        "spark"
+      ],
+      "slots": {
+        "banner": {
+          "message": "Black Friday week: explore this year's picks.",
+          "icon": "bolt"
+        },
+        "hero": {
+          "message": "Our biggest week of the year is here.",
+          "illustration": "shopping-bag",
+          "placement": "end"
+        },
+        "accent": {
+          "decoration": "ribbon-corner",
+          "corner": "top-end"
+        },
+        "overlay": {
+          "effect": "particles",
+          "particle": "confetti",
+          "density": "light",
+          "durationMs": 4500
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "id": "christmas-2026",
+      "startsAt": "2026-12-01T00:00:00.000Z",
+      "endsAt": "2026-12-26T00:00:00.000Z",
+      "priority": 10,
+      "pack": {
+        "id": "christmas",
+        "version": "1.0.0",
+        "hash": "sha256-a7cdb197a43fc0cd13d36d8954a88de19e0de5eba24362ce5a3925380671b30b"
+      },
+      "palette": {
+        "background": "#f4ece2",
+        "foreground": "#2b2622",
+        "accent": "#7a2e2e"
+      },
+      "signatureColors": [
+        "santa-red",
+        "gold",
+        "pine",
+        "frost"
+      ],
+      "slots": {
+        "banner": {
+          "message": "Happy holidays from all of us.",
+          "icon": "gift"
+        },
+        "hero": {
+          "message": "Wishing you a warm and joyful holiday season.",
+          "illustration": "tree",
+          "placement": "end"
+        },
+        "accent": {
+          "decoration": "holly-corner",
+          "corner": "top-end"
+        },
+        "overlay": {
+          "effect": "flyby",
+          "asset": "santa-sleigh",
+          "direction": "ltr",
+          "durationMs": 4500
+        }
+      }
+    }
+  ]
+}

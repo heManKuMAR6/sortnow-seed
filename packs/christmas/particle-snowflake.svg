@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g fill="none" stroke="var(--seed-sig-frost)" stroke-width="2" stroke-linecap="round">
+    <path d="M12 3 L12 21 M4.2 7.5 L19.8 16.5 M4.2 16.5 L19.8 7.5"/>
+    <path d="M10 5 L12 7 L14 5 M10 19 L12 17 L14 19"/>
+  </g>
+</svg>

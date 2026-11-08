@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
+  <rect x="52" y="132" width="16" height="20" rx="2" fill="var(--seed-foreground)"/>
+  <path d="M60 18 L104 136 L16 136 Z" fill="var(--seed-sig-pine)"/>
+  <path d="M60 18 L92 96 L28 96 Z" fill="var(--seed-sig-pine)" opacity="0.88"/>
+  <path d="M60 18 L80 62 L40 62 Z" fill="var(--seed-sig-pine)" opacity="0.76"/>
+  <path d="M34 80 Q60 92 86 74 M26 112 Q60 126 96 104" fill="none" stroke="var(--seed-sig-gold)" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="44" cy="100" r="4.5" fill="var(--seed-sig-santa-red)"/>
+  <circle cx="74" cy="90" r="4.5" fill="var(--seed-accent)"/>
+  <circle cx="60" cy="70" r="4" fill="var(--seed-sig-santa-red)"/>
+  <circle cx="82" cy="122" r="5" fill="var(--seed-sig-santa-red)"/>
+  <circle cx="38" cy="126" r="5" fill="var(--seed-accent)"/>
+  <circle cx="58" cy="114" r="4.5" fill="var(--seed-sig-gold)"/>
+  <path d="M60 4 L64 13 L74 14 L66 20 L69 30 L60 25 L51 30 L54 20 L46 14 L56 13 Z" fill="var(--seed-sig-gold)"/>
+</svg>

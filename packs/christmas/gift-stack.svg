@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 120">
+  <rect x="10" y="56" width="74" height="58" rx="4" fill="var(--seed-sig-santa-red)"/>
+  <rect x="42" y="56" width="10" height="58" fill="var(--seed-sig-gold)"/>
+  <rect x="6" y="48" width="82" height="14" rx="3" fill="var(--seed-sig-santa-red)"/>
+  <rect x="42" y="48" width="10" height="14" fill="var(--seed-sig-gold)"/>
+  <path d="M47 48 Q30 30 38 26 Q46 24 47 48 Q50 24 58 26 Q66 30 47 48 Z" fill="var(--seed-sig-gold)"/>
+  <rect x="84" y="72" width="58" height="42" rx="4" fill="var(--seed-accent)"/>
+  <rect x="108" y="72" width="9" height="42" fill="var(--seed-background)" opacity="0.9"/>
+  <rect x="80" y="66" width="66" height="11" rx="3" fill="var(--seed-accent)"/>
+  <path d="M112 66 Q100 52 106 49 Q112 48 112 66 Q116 48 122 49 Q128 52 112 66 Z" fill="var(--seed-background)"/>
+  <rect x="30" y="8" width="44" height="40" rx="3" fill="var(--seed-sig-pine)"/>
+  <rect x="48" y="8" width="8" height="40" fill="var(--seed-sig-gold)"/>
+  <rect x="30" y="24" width="44" height="8" fill="var(--seed-sig-gold)"/>
+</svg>

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import {open} from 'node:fs/promises';
 import {constants} from 'node:fs';
-import {validateExperience,approvalSnapshot,instant,selectExperience,validateBrand,experienceSchema,brandSchema,eventSchema,contrastReport,brandContrastReport} from '../core/index.js';
+import {validateExperience,approvalSnapshot,instant,selectExperience,validateBrand,experienceSchema,experienceV2Schema,bundleSchema,brandSchema,eventSchema,contrastReport,brandContrastReport,validateExperienceV2,validateBundle,resolvePack,describePack,type ExperienceV2,type Diagnostic} from '../core/index.js';
+import {packs} from '../packs/index.js';
 const [command,file,...args]=process.argv.slice(2);
 class InputError extends Error {
   constructor(public code:string,message:string,public path='$',public hint='Run seed help for supported commands.') { super(message); }
@@ -12,8 +13,10 @@ const help={
   ok:true,protocolVersion:1,readOnly:true,
   commands:[
     {command:'help',description:'Discover commands, limits, and trust boundaries.'},
-    {command:'schema experience|brand|event',description:'Print raw JSON Schema for editor or agent use.'},
-    {command:'validate FILE',description:'Validate one experience, including real dates and schedule order.'},
+    {command:'schema experience|experience-v2|bundle|brand|event',description:'Print raw JSON Schema for editor or agent use.'},
+    {command:'validate FILE',description:'Validate one experience (v1 or v2) or a bundle, including real dates, schedule order, and v2 pack references against installed packs.'},
+    {command:'packs',description:'List installed theme packs with id, version, and hash.'},
+    {command:'pack ID',description:'Describe one pack: asset ids, effects, copy suggestions, and signature colours. Artwork is not printed.'},
     {command:'validate-brand FILE',description:'Validate a brand policy; does not approve any experiences.'},
     {command:'snapshot FILE',description:'Create exact-content review material. Does not grant approval.'},
     {command:'inspect FILE UTC_INSTANT',description:'Preview schedule eligibility without approving or publishing.'},
@@ -43,8 +46,14 @@ async function readJson(path: string) {
 }
 async function main() {
   if(command==='help' && !file && args.length===0){console.log(JSON.stringify(help));return;}
-  const schemas={experience:experienceSchema,brand:brandSchema,event:eventSchema};
-  if(command==='schema' && args.length===0 && (file==='experience'||file==='brand'||file==='event')){console.log(JSON.stringify(schemas[file]));return;}
+  const schemas:Record<string,unknown>={experience:experienceSchema,'experience-v2':experienceV2Schema,bundle:bundleSchema,brand:brandSchema,event:eventSchema};
+  if(command==='schema' && args.length===0 && file && Object.hasOwn(schemas,file)){console.log(JSON.stringify(schemas[file]));return;}
+  if(command==='packs' && !file && args.length===0){console.log(JSON.stringify({ok:true,packs:packs.map(p=>({id:p.id,version:p.version,hash:p.hash,name:p.name,occasions:p.occasions}))}));return;}
+  if(command==='pack' && file && args.length===0){
+    const pack=packs.find(p=>p.id===file);
+    if(!pack)throw new InputError('PACK','Unknown pack.','id','Run seed packs to list installed packs.');
+    console.log(JSON.stringify({ok:true,pack:describePack(pack)}));return;
+  }
   if(command==='samples' && !file && args.length===0){
     // Loaded on demand so other commands never touch the time-zone library.
     const {sampleEvents,SAMPLE_NOTICE,END_SEMANTICS}=await import('../core/authoring.js');
@@ -64,6 +73,24 @@ async function main() {
     if(!brand.ok){console.log(JSON.stringify({ok:false,errors:brand.errors.map(e=>({...e,hint:brandHint}))}));process.exitCode=1;}
     else if(command==='validate-brand')console.log(JSON.stringify(brand));
     else console.log(JSON.stringify({ok:true,advisory:true,certified:false,...brandContrastReport(brand.value),notice:contrastNotice}));
+    return;
+  }
+  const isObject=input!==null&&typeof input==='object'&&!Array.isArray(input);
+  if(isObject&&'bundleVersion' in input||isObject&&input.schemaVersion===2){
+    if(command!=='validate'&&command!=='snapshot'&&command!=='contrast')throw new InputError('USAGE','This command supports schema v1 experiences only.','$','Use seed validate for bundles and v2 experiences.');
+    const checked=('bundleVersion' in input)?validateBundle(input):validateExperienceV2(input);
+    if(!checked.ok){console.log(JSON.stringify(checked));process.exitCode=1;return;}
+    const list='experiences' in checked.value?checked.value.experiences:[checked.value];
+    const packErrors:Diagnostic[]=[];
+    list.forEach((e,i)=>{if(e.schemaVersion!==2)return;const r=resolvePack(e,packs);if(!r.ok)packErrors.push(...r.errors.map(x=>({...x,path:('bundleVersion' in input?`experiences[${i}].`:'')+x.path})));});
+    if(packErrors.length){console.log(JSON.stringify({ok:false,errors:packErrors}));process.exitCode=1;return;}
+    if(command==='snapshot'){
+      if('bundleVersion' in input)throw new InputError('USAGE','Snapshot one experience at a time.','$','Pass a single experience file so each one is reviewed separately.');
+      console.log(JSON.stringify({ok:true,snapshot:approvalSnapshot(input),notice:'Store only after owner review in trusted configuration.'}));
+    } else if(command==='contrast'){
+      if('bundleVersion' in input)throw new InputError('USAGE','Check contrast one experience at a time.');
+      console.log(JSON.stringify({ok:true,advisory:true,certified:false,...contrastReport((checked.value as ExperienceV2).palette),notice:contrastNotice}));
+    } else console.log(JSON.stringify(checked));
     return;
   }
   const result=validateExperience(input);

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 130">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="var(--seed-sig-santa-red)"/>
+      <stop offset="1" stop-color="var(--seed-sig-santa-red)" stop-opacity="0.82"/>
+    </linearGradient>
+  </defs>
+  <path d="M154 60 Q210 44 290 62" fill="none" stroke="var(--seed-sig-gold)" stroke-width="1.6"/>
+  <path d="M152 66 Q212 58 284 72" fill="none" stroke="var(--seed-sig-gold)" stroke-width="1.2" opacity="0.7"/>
+  <g>
+    <ellipse cx="256" cy="76" rx="33" ry="12.5" fill="var(--seed-foreground)"/>
+    <path d="M276 70 Q286 58 293 46 L304 50 Q295 64 287 79 Z" fill="var(--seed-foreground)"/>
+    <ellipse cx="305" cy="45" rx="11.5" ry="6.5" transform="rotate(-14 305 45)" fill="var(--seed-foreground)"/>
+    <circle cx="316" cy="42" r="3.4" fill="var(--seed-sig-santa-red)"/>
+    <path d="M297 39 L290 25 M290 25 L283 21 M290 25 L292 16 M302 38 L303 22 M303 22 L297 15 M303 22 L309 15" fill="none" stroke="var(--seed-foreground)" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M294 42 L288 38" stroke="var(--seed-foreground)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M278 84 L294 90 L303 84" fill="none" stroke="var(--seed-foreground)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M271 86 L285 99 L294 95" fill="none" stroke="var(--seed-foreground)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M232 82 L212 90 L201 86" fill="none" stroke="var(--seed-foreground)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M238 85 L220 99 L208 99" fill="none" stroke="var(--seed-foreground)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M224 70 L214 64" stroke="var(--seed-foreground)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M262 64 Q270 70 268 82" fill="none" stroke="var(--seed-sig-gold)" stroke-width="2.2"/>
+    <circle cx="268" cy="84" r="2.6" fill="var(--seed-sig-gold)"/>
+  </g>
+  <path d="M46 68 Q40 36 60 30 Q80 34 78 68 Z" fill="var(--seed-accent)"/>
+  <path d="M53 35 Q61 42 69 35" fill="none" stroke="var(--seed-background)" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="104" cy="54" r="20" fill="url(#body)"/>
+  <rect x="85" y="55" width="38" height="6" rx="2" fill="var(--seed-foreground)"/>
+  <rect x="100" y="54.5" width="7" height="7" rx="1" fill="var(--seed-sig-gold)"/>
+  <path d="M114 50 Q130 52 142 60" fill="none" stroke="var(--seed-sig-santa-red)" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="145" cy="61" r="4.4" fill="var(--seed-foreground)"/>
+  <circle cx="107" cy="27" r="10" fill="var(--seed-background)" stroke="var(--seed-foreground)" stroke-width="1"/>
+  <path d="M96 30 Q98 46 108 46 Q118 46 119 30 Q108 36 96 30 Z" fill="var(--seed-background)" stroke="var(--seed-foreground)" stroke-width="1"/>
+  <circle cx="111" cy="25" r="1.3" fill="var(--seed-foreground)"/>
+  <path d="M95 21 Q103 0 126 10 L121 18 Z" fill="var(--seed-sig-santa-red)"/>
+  <rect x="93" y="17.5" width="25" height="5.5" rx="2.75" fill="var(--seed-background)" stroke="var(--seed-foreground)" stroke-width="0.8"/>
+  <circle cx="127" cy="11" r="4.2" fill="var(--seed-background)" stroke="var(--seed-foreground)" stroke-width="0.8"/>
+  <path d="M38 62 L152 62 Q170 62 173 44 L186 38 Q193 41 188 52 Q181 94 142 98 L62 98 Q38 98 38 78 Z" fill="url(#body)"/>
+  <path d="M44 84 L172 84" stroke="var(--seed-sig-gold)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M186 38 Q194 30 200 36" fill="none" stroke="var(--seed-sig-gold)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M62 98 L58 110 M142 98 L146 110" stroke="var(--seed-sig-gold)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M26 110 L172 110 Q200 110 202 92" fill="none" stroke="var(--seed-sig-gold)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="8" cy="72" r="1.6" fill="var(--seed-sig-gold)" opacity="0.8"/>
+  <circle cx="18" cy="90" r="1.1" fill="var(--seed-sig-gold)" opacity="0.6"/>
+  <circle cx="4" cy="104" r="1.4" fill="var(--seed-sig-gold)" opacity="0.5"/>
+</svg>

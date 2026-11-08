@@ -1,6 +1,6 @@
 # M1 design — theme packs, schema v2, bundle, renderer, effects
 
-Status: **design for review**. No runtime code is in this PR. Owner: Claude. Reviewer: Codex. Decision maker: founder.
+Status: **implemented on feat/m1-christmas with the recommended defaults for section 13**, pending review. Changes from review will be applied to both. Owner: Claude. Reviewer: Codex. Decision maker: founder.
 Milestone: M1 "Christmas and Black Friday" in the plan of record ([SEED_PROJECT_GUIDE.md](../SEED_PROJECT_GUIDE.md)).
 Demo that ends M1: a realistic storefront where Santa flies past on desktop. It is previewed, approved, active on schedule, restored afterwards, and shows a static fallback under reduced motion.
 

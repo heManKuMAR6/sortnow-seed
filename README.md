@@ -175,11 +175,12 @@ React apps use `SeedRoot` from `sortnow-seed/react`. See [docs/platforms.md](doc
 `sortnow-seed` is published on npm by the maintainer account `hemankumar6` (2FA required for publishing). See [CHANGELOG.md](CHANGELOG.md).
 
 - **0.2.0-alpha.0** (2026-11-08) was published by hand from `develop` commit `d260cfa`, without provenance. It is `latest`. Placeholder versions `0.0.0-bootstrap.0` and `0.0.0-stage` exist from creating the package and are being deprecated.
+- **0.2.0-alpha.1** (2026-11-09) is the first release through the reviewed workflow, with provenance (dist-tag `alpha`). The trusted publisher for `release.yml` and environment `npm` is configured.
 - **From 0.2.0-alpha.1 on,** releases go only through `.github/workflows/release.yml`: a reviewed workflow with npm trusted publishing and provenance. Never run `npm publish` by hand again.
 
 To release the next version:
 1. Merge a release PR from `develop` into `master`. The version in `package.json` must be unpublished (currently `0.2.0-alpha.1`).
-2. **Right before tagging,** on the npm package settings add a trusted publisher: GitHub user `heManKuMAR6`, repository `sortnow-seed`, workflow `release.yml`, environment `npm`, with direct `npm publish` ticked. Configurations created after 2026-09-03 default to staged publish only, and a new configuration expires if unused for 2 days. This is only needed once.
+2. The trusted publisher (`heManKuMAR6/sortnow-seed`, `release.yml`, environment `npm`, npm publish allowed) is already configured. Check it is still listed under the package's Settings before tagging.
 3. Tag the `master` commit `v<version>` (for example `v0.2.0-alpha.1`) and push the tag. Approve the waiting `npm` environment run in GitHub.
 4. The workflow publishes with the `alpha` dist-tag. To make it the default install: `npm dist-tag add sortnow-seed@<version> latest`.
 

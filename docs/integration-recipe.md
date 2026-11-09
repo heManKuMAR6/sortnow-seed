@@ -1,6 +1,6 @@
 # Add a SEED draft to an existing React site
 
-This takes a draft from the playground to your own hero. Your site keeps its base appearance until a person approves the exact draft. The finished files are in [examples/existing-project](../examples/existing-project).
+This recipe is for a **colour-only schema v1 draft**, with no theme pack selected. For pack bundles and schema v2, use [SeedRoot or the web component](platforms.md). It takes a draft from the playground to your own hero. Your site keeps its base appearance until a person approves the exact draft. The finished files are in [examples/existing-project](../examples/existing-project).
 
 Your site needs React 18 or 19 and a bundler that can import JSON. React 19.3.1 is the only version tested so far; see [compatibility](compatibility.md).
 
@@ -10,22 +10,15 @@ In a SEED checkout, run `npm ci --ignore-scripts`, then `npm run demo`, and open
 
 Downloading doesn't approve or publish anything. The file contains only the experience.
 
-**Colors come from the playground's sample brand.** To use your own, edit `examples/playground/brand.json` first and restart the demo. If you pass your own `brand` to `SeedArea` later, a draft with other colors is blocked and the base appearance stays.
+**Colors initially come from the sample brand.** Use the playground’s Your brand panel to import CSS or tokens and review the mapping before authoring. If you pass your own `brand` to `SeedArea` later, a draft with other colors is blocked and the base appearance stays.
 
-## 2. Install the package from a local tarball
-
-SEED isn't on npm yet. In the SEED checkout:
+## 2. Install the package
 
 ```sh
-npm run build
-npm pack
+npm install sortnow-seed@0.2.0-alpha.1
 ```
 
-In your project, using the real path:
-
-```sh
-npm install /absolute/path/to/sortnow-seed-0.1.0-alpha.1.tgz
-```
+For an unreleased checkout, run `npm run build` and `npm pack`, then install the actual tarball filename printed by npm in your target project. Do not copy a historical version filename.
 
 ## 3. Add the draft and an empty approvals file
 

@@ -579,3 +579,7 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - The web form needs a security-key confirmation for each save. Automated clicks cannot trigger WebAuthn, so the founder clicked "Use security key" personally. The connection is now `heManKuMAR6/sortnow-seed`, `release.yml`, environment `npm`, permissions npm publish and npm stage publish. Status was "Pending validation" until the first publish.
 - The failed job was re-run, and Claude approved the `npm` environment through the API at the founder's request. `sortnow-seed@0.2.0-alpha.1` was published by GitHub Actions with provenance (sigstore log index 3761402201) and dist-tag `alpha`; `bin.seed` is intact.
 - Lessons: confirm the trusted publisher is listed (`npm trust list` or the package Settings page) before tagging; the founder must perform security-key prompts personally; GitHub environment approval needs the `npm` checkbox ticked before "Approve and deploy".
+
+## Codex full review – 2026-11-09
+
+Review lane claimed by Codex: isolated worktree `/tmp/seed-full-review`, branch `fix/full-review-report`, baseline develop `c1ae2a31e0f51400c35a25aa3d177b96be435217`. Scope: independent full verification and review, bounded fix PRs, and this report. No merges, releases, settings changes, paid API calls, or publication. Baseline verification and findings will be recorded below; existing founder checkout is untouched.

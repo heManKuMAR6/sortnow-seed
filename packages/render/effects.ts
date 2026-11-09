@@ -85,17 +85,22 @@ export function runEffect(doc: Document, e: ExperienceV2, pack: CompiledPack, va
     }
   }
   doc.body.append(layer);
+  const motionQuery = win.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionChange = () => { if (motionQuery.matches) cancel(); };
   const visibility = () => { for (const a of animations) doc.hidden ? a.pause() : a.play(); };
   let done = false;
   const cleanup = () => {
     if (done) return; done = true;
     doc.removeEventListener('visibilitychange', visibility);
     win.removeEventListener('beforeprint', cancel);
+    motionQuery.removeEventListener('change', motionChange);
     layer.remove();
   };
   function cancel() { for (const a of animations) a.cancel(); cleanup(); }
   doc.addEventListener('visibilitychange', visibility);
   win.addEventListener('beforeprint', cancel);
+  motionQuery.addEventListener('change', motionChange);
+  visibility();
   const finished = Promise.all(animations.map(a => a.finished)).then(cleanup, cleanup);
   return {finished, cancel};
 }

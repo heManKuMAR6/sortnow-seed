@@ -2,7 +2,7 @@
 
 All notable changes to `sortnow-seed`. This project is pre-1.0: minor versions may change contracts, and every change that affects stored experiences or approvals is called out.
 
-## 0.2.0-alpha.1 (unreleased)
+## 0.2.0-alpha.1 (2026-11-09)
 
 ### Changed
 - Package name is `sortnow-seed`, unscoped and owned by the maintainer's npm account; `@sortnow/seed` was never published.

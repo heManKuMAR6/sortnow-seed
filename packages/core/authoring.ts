@@ -82,6 +82,8 @@ export function authorExperience(input: unknown, brand: unknown, packs: readonly
   for (const k of Object.keys(input)) if (!FIELDS.includes(k)) error(k, 'UNKNOWN_FIELD', 'Unsupported field. Local times, recurrence, HTML, and URLs are not accepted.');
   const {name, timeZone, startDate, lastDate, preset, message, areas, priority = 10} = input;
   if (typeof name !== 'string' || !name.trim() || name.length > 80 || /[\u0000-\u001f\u007f]/.test(name)) error('name', 'EVENT_NAME', 'Use 1–80 characters of plain text.');
+  if (!Array.isArray(areas) || areas.length < 1 || areas.length > 2 || new Set(areas).size !== areas.length || areas.some(a => a !== 'banner' && a !== 'hero'))
+    error('areas', 'AREAS', 'Choose one or both unique areas: banner, hero.');
   const zone = resolveZone(timeZone);
   if (!zone) error('timeZone', 'TIME_ZONE', 'Choose an IANA time zone such as America/New_York, or UTC. Offsets like +05:30 and abbreviations like EST are not accepted.');
   const start = resolveDate(startDate), last = resolveDate(lastDate);

@@ -197,12 +197,12 @@ export function selectPage(inputs: readonly unknown[], trustedApprovals: readonl
   const candidates: {e: ExperienceV2; pack: CompiledPack}[] = [];
   for (let i = 0; i < inputs.length; i++) {
     const raw = inputs[i];
-    if (!(plain(raw) && raw.schemaVersion === 2)) continue;
-    const r = validateExperienceV2(raw);
+    const r = validateAnyExperience(raw);
     if (!r.ok) { errors.push(...r.errors.map(x => ({...x, path: `[${i}].${x.path}`}))); continue; }
     const e = r.value;
     if (ids.has(e.id)) return {experience: null, pack: null, errors: [{path: 'id', code: 'DUPLICATE', message: 'Experience IDs must be unique.'}]};
     ids.add(e.id);
+    if (e.schemaVersion !== 2) continue;
     if (!trustedApprovals.includes(JSON.stringify(e)) || !(instant(e.startsAt) <= now && now < instant(e.endsAt))) continue;
     const resolved = resolvePack(e, options.packs);
     if (!resolved.ok) { errors.push(...resolved.errors.map(x => ({...x, path: `[${i}].${x.path}`}))); continue; }

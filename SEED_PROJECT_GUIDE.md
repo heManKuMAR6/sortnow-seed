@@ -583,3 +583,6 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 ## Codex review fix: authoring input validation — 2026-11-09
 
 Owner Codex; branch `fix/authoring-input-validation`, base develop c1ae2a3. Pack authoring now rejects absent, non-array, empty, duplicate, and unknown areas before accessing them. Previously some inputs threw and others silently authored a different draft. Changed packages/core/authoring.ts and tests/authoring-input-review.test.mjs. Both new regressions failed before the fix; TypeScript build and the two regressions plus five pack-authoring tests pass after it. No dependency changes. Next: founder reviews this PR; no merge or publication performed.
+## Codex review fix: mixed-version collection validation — 2026-11-09
+
+Owner Codex; branch `fix/mixed-collection-validation`, base develop c1ae2a3. Both selectors validate all entries and check duplicate IDs before filtering by supported rendering version. Previously malformed entries and duplicates across v1/v2 could be skipped and valid siblings rendered despite the documented whole-collection fail-closed rule. Three new regressions failed before the fix; TypeScript compilation and targeted collection/core/M1 tests passed afterwards. Valid v1/v2 selection priorities and exact snapshots are unchanged. Next: founder review, no merge or publication.

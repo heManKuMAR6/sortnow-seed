@@ -44,22 +44,27 @@ export function mountSeed(options: MountOptions): SeedMount {
   const opts = {...options, motion: options.motion ?? 'auto'};
   const root = opts.root ?? document;
   const doc = (root as Element).ownerDocument ?? (root as Document);
-  const undo: (() => void)[] = [];
+  let undo: (() => void)[] = [], added: Element[] = [];
+  const slots = new Map<HTMLElement, {undo: (() => void)[]; added: Element[]; names: string | null}>();
+  const restoreSlot = (el: HTMLElement) => {
+    const state = slots.get(el); slots.delete(el);
+    if (state) while (state.undo.length) state.undo.pop()!();
+  };
   let key = '', current: ExperienceV2 | null = null, effect: EffectHandle | null = null, timer: ReturnType<typeof setInterval> | undefined;
   let active: {e: ExperienceV2; pack: CompiledPack; vars: Record<string, string>} | null = null, pending = false;
 
   const restore = () => {
     effect?.cancel(); effect = null;
-    while (undo.length) undo.pop()!();
+    for (const el of slots.keys()) restoreSlot(el);
     current = null; active = null;
   };
   const setStyle = (el: HTMLElement, prop: string, value: string) => {
     const before = el.style.getPropertyValue(prop), priority = el.style.getPropertyPriority(prop), hadStyle = el.hasAttribute('style');
     el.style.setProperty(prop, value);
-    const applied = el.style.getPropertyValue(prop);
+    const applied = el.style.getPropertyValue(prop), appliedPriority = el.style.getPropertyPriority(prop);
     undo.push(() => {
       // If the host changed this property after SEED set it, the host's value wins and is left alone.
-      if (el.style.getPropertyValue(prop) !== applied) return;
+      if (el.style.getPropertyValue(prop) !== applied || el.style.getPropertyPriority(prop) !== appliedPriority) return;
       before ? el.style.setProperty(prop, before, priority) : el.style.removeProperty(prop);
       if (!hadStyle && !el.getAttribute('style')) el.removeAttribute('style');
     });
@@ -74,7 +79,7 @@ export function mountSeed(options: MountOptions): SeedMount {
   };
   const add = (parent: Element, child: Element, first = false) => {
     first ? parent.prepend(child) : parent.append(child);
-    undo.push(() => child.remove());
+    added.push(child); undo.push(() => child.remove());
   };
   const positioned = (el: HTMLElement) => { if (doc.defaultView?.getComputedStyle(el).position === 'static') setStyle(el, 'position', 'relative'); };
   const part = (name: string, tag = 'span') => { const el = doc.createElement(tag); el.setAttribute('data-seed-part', name); return el; };
@@ -86,12 +91,15 @@ export function mountSeed(options: MountOptions): SeedMount {
     return el;
   };
 
-  const slotsIn = (scope: ParentNode) => Array.from(scope.querySelectorAll<HTMLElement>('[data-seed-slot]'));
+  const slotsIn = (scope: ParentNode) => [...(scope instanceof HTMLElement && scope.hasAttribute('data-seed-slot') ? [scope] : []), ...Array.from(scope.querySelectorAll<HTMLElement>('[data-seed-slot]'))];
   /** Decorates slots the current experience has not touched yet. Safe to call repeatedly. */
   function decorateNew() {
     pending = false;
     if (!active) return;
-    for (const el of slotsIn(root)) if (el.getAttribute('data-seed-experience') !== active.e.id) decorate(el, active.e, active.pack, active.vars);
+    for (const [el, state] of slots) {
+      if (!root.contains(el) || el.getAttribute('data-seed-slot') !== state.names || state.added.some(n => !el.contains(n))) restoreSlot(el);
+    }
+    for (const el of slotsIn(root)) if (!slots.has(el)) decorate(el, active.e, active.pack, active.vars);
   }
   function render(e: ExperienceV2, pack: CompiledPack) {
     const vars: Record<string, string> = {'--seed-background': e.palette.background, '--seed-foreground': e.palette.foreground, '--seed-accent': e.palette.accent};
@@ -106,6 +114,8 @@ export function mountSeed(options: MountOptions): SeedMount {
       const names = (el.getAttribute('data-seed-slot') ?? '').split(/\s+/);
       const used = names.filter(n => n === 'banner' || n === 'hero' || n === 'accent').filter(n => e.slots[n as 'banner'] !== undefined);
       if (!used.length) return;
+      undo = []; added = [];
+      slots.set(el, {undo, added, names: el.getAttribute('data-seed-slot')});
       setAttr(el, 'data-seed-experience', e.id);
       for (const [k, v] of Object.entries(vars)) setStyle(el, k, v);
       const tint = el.getAttribute('data-seed-mode') !== 'variables';
@@ -150,8 +160,8 @@ export function mountSeed(options: MountOptions): SeedMount {
   const observer = opts.watch !== false && typeof MutationObserver !== 'undefined' ? new MutationObserver(records => {
     if (!active || pending) return;
     const fresh = records.some(r => r.type === 'attributes'
-      ? (r.target as Element).hasAttribute('data-seed-slot')
-      : Array.from(r.addedNodes).some(n => n instanceof Element && !ownNode(n) && (n.hasAttribute('data-seed-slot') || !!n.querySelector('[data-seed-slot]'))));
+      ? true
+      : r.removedNodes.length > 0 || Array.from(r.addedNodes).some(n => n instanceof Element && !ownNode(n) && (n.hasAttribute('data-seed-slot') || !!n.querySelector('[data-seed-slot]'))));
     if (fresh) { pending = true; queueMicrotask(decorateNew); }
   }) : null;
   observer?.observe(root, {childList: true, subtree: true, attributes: true, attributeFilter: ['data-seed-slot']});
@@ -163,7 +173,10 @@ export function mountSeed(options: MountOptions): SeedMount {
     if (next !== key) {
       restore();
       key = next;
-      if (sel.experience && sel.pack) { current = sel.experience; render(sel.experience, sel.pack); }
+      if (sel.experience && sel.pack) {
+        try { current = sel.experience; render(sel.experience, sel.pack); }
+        catch { restore(); sel.errors.push({path: '$', code: 'RENDER_UNAVAILABLE', message: 'Rendering is blocked by the host environment; base appearance restored.'}); }
+      }
     }
     opts.onChange?.({experience: current, errors: sel.errors});
   }
@@ -172,6 +185,22 @@ export function mountSeed(options: MountOptions): SeedMount {
     doc.removeEventListener('visibilitychange', apply);
     if (opts.now === undefined) { timer = setInterval(apply, 1000); doc.addEventListener('visibilitychange', apply); }
   };
+  const printUndo: (() => void)[] = [];
+  const afterPrint = () => { while (printUndo.length) printUndo.pop()!(); };
+  const beforePrint = () => {
+    afterPrint();
+    for (const state of slots.values()) for (const el of state.added) {
+      if (el.getAttribute('aria-hidden') !== 'true' || !(el instanceof HTMLElement)) continue;
+      const value = el.style.getPropertyValue('display'), priority = el.style.getPropertyPriority('display');
+      el.style.setProperty('display', 'none', 'important');
+      printUndo.push(() => {
+        if (el.style.getPropertyValue('display') === 'none' && el.style.getPropertyPriority('display') === 'important')
+          value ? el.style.setProperty('display', value, priority) : el.style.removeProperty('display');
+      });
+    }
+  };
+  doc.defaultView?.addEventListener('beforeprint', beforePrint);
+  doc.defaultView?.addEventListener('afterprint', afterPrint);
   live(); apply();
   return {
     update(next = {}) { Object.assign(opts, next); if ('now' in next) live(); apply(); },
@@ -181,7 +210,7 @@ export function mountSeed(options: MountOptions): SeedMount {
       key = ''; apply();
     },
     refresh() { decorateNew(); },
-    destroy() { observer?.disconnect(); clearInterval(timer); doc.removeEventListener('visibilitychange', apply); restore(); key = ''; },
+    destroy() { doc.defaultView?.removeEventListener('beforeprint', beforePrint); doc.defaultView?.removeEventListener('afterprint', afterPrint); afterPrint(); observer?.disconnect(); clearInterval(timer); doc.removeEventListener('visibilitychange', apply); restore(); key = ''; },
     get current() { return current; },
   };
 }

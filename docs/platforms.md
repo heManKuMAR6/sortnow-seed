@@ -3,7 +3,7 @@
 SEED needs two things from a site: the places it may decorate, and the reviewed configuration.
 
 - **Slots:** add `data-seed-slot` to elements you already have: `banner`, `hero`, `accent` (corner decoration), or several separated by spaces. The overlay effect needs no slot. There is never a logo slot. If you cannot add attributes, wrap the markup in `<seed-area slots="hero">`.
-- **Configuration:** a bundle (`seed.bundle.json` from the playground or `seed author`), the approvals file (exact snapshots, written only after owner review), and `brand.json`.
+- **Configuration:** a bundle (`seed.bundle.json` from the playground; `seed author` returns an authoring result whose experience must be placed in a bundle), the approvals file (exact snapshots, written only after owner review), and `brand.json`.
 
 The base page is never removed. If anything is missing or wrong, the site keeps its normal design.
 
@@ -17,7 +17,7 @@ The base page is never removed. If anything is missing or wrong, the site keeps 
 
 ## Plain HTML (no build step)
 
-Copy `node_modules/sortnow-seed/dist/seed-element.js` next to your pages. It is about 13 KB gzipped, with no framework and no dependencies, and includes the installed packs.
+Copy `node_modules/sortnow-seed/dist/seed-element.js` next to your pages. It is about 21 KB gzipped, with no framework and no dependencies, and includes the installed packs.
 
 ```html
 <script type="module" src="/seed-element.js"></script>
@@ -95,4 +95,12 @@ import 'sortnow-seed/seed-element.js';
 
 4. Add `data-seed-slot="hero accent"` to the hero section's wrapper, and `data-seed-slot="banner"` to the announcement bar.
 
-The `seed-*` snippets contain the JSON files unchanged. Changing the bundle or artwork requires a new owner approval, as everywhere else.
+The `seed-*` snippets must contain **HTML-safe serialized JSON**, not the JSON files pasted unchanged. Even in `type="application/json"`, the HTML parser treats a literal `</script>` inside a message as the end of the element, before SEED can validate it. This applies to bundles, brands, and approvals alike.
+
+When generating a snippet from a parsed JSON value, serialize it and escape every `<` as a JSON Unicode escape:
+
+```js
+const htmlSafeJson = value => JSON.stringify(value).replace(/</g, '\\u003c');
+```
+
+Use the resulting text as the snippet body. Do not HTML-entity-encode it (`&quot;` does not decode inside a script element). JSON parsing restores the original message and snapshot bytes, so approval matching is unchanged. Prefer same-origin JSON files or the `config` property when possible. Changing the bundle or artwork requires a new owner approval.

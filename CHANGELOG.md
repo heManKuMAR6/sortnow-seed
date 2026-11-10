@@ -2,7 +2,24 @@
 
 All notable changes to `sortnow-seed`. This project is pre-1.0: minor versions may change contracts, and every change that affects stored experiences or approvals is called out.
 
-## 0.2.0-alpha.1 (unreleased)
+## 0.2.0-alpha.2 (unreleased)
+
+Fixes from Codex's independent full review (PRs #30–#37). Upgrading is recommended for anyone using `<seed-root>` or inline configuration.
+
+### Security
+- `<seed-root>` checks the real document origin, not `<base href>`, so a foreign base URL can no longer make another site's configuration look same-origin. Redirects are rejected, byte limits are enforced while streaming and for inline JSON, and property `config` is validated.
+- Revocation works: clearing `config` or changing the approvals URL removes an active theme immediately. A second `<seed-root>` on the same page is rejected instead of decorating twice.
+- Docs: inline JSON in HTML (for example Shopify snippets) must be HTML-safe serialized, with `<` escaped as `\u003c`. Pasting raw JSON could let a message containing `</script>` end the script element early.
+- AI drafting validates the model's proposal against the full schema locally, rejects bad event input before any paid call, and no longer echoes provider error text.
+
+### Fixed
+- Renderer: per-slot restore, so removing or replacing a slot restores or redecorates cleanly; a host's later `!important` styles are kept; switching on reduced motion cancels a running effect; decorative art is hidden when printing; if Trusted Types blocks artwork the page is left untouched.
+- Selection fails closed on malformed entries of either schema version and on duplicate IDs across versions.
+- Pack authoring rejects malformed `areas` with a clear error.
+- Singapore uses its own gazetted 2027 dates (Deepavali Oct 28, Hari Raya Puasa Mar 10, Hari Raya Haji May 17) as separate occasions. Saved Singapore plans that used `diwali-<year>` should switch to `diwali-sg-<year>`.
+- `seed help` reports `readOnly: false`, because `ai-draft` makes paid calls.
+
+## 0.2.0-alpha.1 (2026-11-09)
 
 ### Changed
 - Package name is `sortnow-seed`, unscoped and owned by the maintainer's npm account; `@sortnow/seed` was never published.

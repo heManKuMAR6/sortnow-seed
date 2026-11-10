@@ -59,13 +59,12 @@ export function selectExperience(inputs: readonly unknown[], trustedApprovals: r
   const ids = new Set<string>();
   const candidates: Experience[] = [];
   for (let i=0;i<inputs.length;i++) {
-    // Schema v2 entries are selected per page by selectPage; they never compete for v1 areas.
-    if (plain(inputs[i]) && (inputs[i] as Record<string, unknown>).schemaVersion === 2) continue;
-    const result=validateExperience(inputs[i]);
+    const result=validateAnyExperience(inputs[i]);
     if (!result.ok) { errors.push(...result.errors.map(e=>({...e,path:`[${i}].${e.path}`}))); continue; }
     const e=result.value;
     if (ids.has(e.id)) return {experience:null,errors:[{path:'id',code:'DUPLICATE',message:'Experience IDs must be unique.'}]};
     ids.add(e.id);
+    if(e.schemaVersion !== 1) continue;
     if (trustedApprovals.includes(approvalSnapshot(e)) && e.areas.includes(area) && instant(e.startsAt)<=now && now<instant(e.endsAt)) candidates.push(e);
   }
   // Fail closed on any malformed configuration rather than partially publish it.

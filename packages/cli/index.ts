@@ -10,7 +10,7 @@ class InputError extends Error {
 const contrastNotice='Advisory only: not a certification and not an approval gate. Ratios cover color pairs, not how the host maps tokens onto elements. Accent is held to the text minimum; 3:1 applies if it is used only for non-text.';
 const brandHint='Compare with seed schema brand: required palettes, unique allowed areas, locked tokens, and six-digit hex colors.';
 const help={
-  ok:true,protocolVersion:1,readOnly:true,
+  ok:true,protocolVersion:1,readOnly:false,
   commands:[
     {command:'help',description:'Discover commands, limits, and trust boundaries.'},
     {command:'schema experience|experience-v2|bundle|brand|event',description:'Print raw JSON Schema for editor or agent use.'},

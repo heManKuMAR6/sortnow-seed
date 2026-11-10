@@ -128,13 +128,22 @@ function toEvent(req: AIDraftRequest, p: AIProposal) {
   return {...base, pack: p.pack, illustration: p.illustration, icon: p.icon, decoration: p.decoration, effect: p.effect, signatureColors: p.signatureColors};
 }
 
-function parseProposal(message: ModelResponse): {ok: true; proposal: AIProposal} | {ok: false; errors: Diagnostic[]} {
+function parseProposal(message: ModelResponse, packs: readonly CompiledPack[], only?: string): {ok: true; proposal: AIProposal} | {ok: false; errors: Diagnostic[]} {
   if (message.stop_reason === 'refusal') return {ok: false, errors: [{path: '$', code: 'REFUSAL', message: 'The model declined this request. Revise the description and try again.'}]};
   if (message.stop_reason === 'max_tokens') return {ok: false, errors: [{path: '$', code: 'TRUNCATED', message: 'The model response was cut off. Try again.'}]};
   const text = message.content.find(b => b.type === 'text')?.text;
   try {
-    const value = JSON.parse(text ?? '') as AIProposal;
-    if (typeof value.rationale !== 'string' || value.rationale.length > 600) value.rationale = String(value.rationale ?? '').slice(0, 600);
+    const value = JSON.parse(text ?? '');
+    const schema = proposalSchema(packs, only);
+    if (!value || typeof value !== 'object' || Array.isArray(value) ||
+        Object.keys(value).some(k => !schema.required.includes(k as typeof schema.required[number])) ||
+        schema.required.some(k => !Object.hasOwn(value, k))) throw new Error('Invalid proposal shape');
+    for (const [key, rule] of Object.entries(schema.properties)) {
+      if (typeof value[key] !== rule.type || ('enum' in rule && !(rule.enum as readonly unknown[]).includes(value[key])))
+        throw new Error('Invalid proposal field');
+    }
+    for (const [key, max] of [['message', 240], ['rationale', 600]] as const)
+      if (!value[key].trim() || value[key].length > max || /[\u0000-\u001f\u007f]/.test(value[key])) throw new Error('Invalid proposal text');
     return {ok: true, proposal: value};
   } catch { return {ok: false, errors: [{path: '$', code: 'MODEL_OUTPUT', message: 'The model did not return a readable proposal. Try again.'}]}; }
 }
@@ -150,6 +159,11 @@ export async function draftWithAI(request: unknown, brand: unknown, options: {cl
   if (!policy.ok) problems.push(...policy.errors.map(e => ({...e, path: `brand.${e.path}`})));
   if (problems.length) return {ok: false, errors: problems};
   const req = request as AIDraftRequest, b = (policy as {ok: true; value: Brand}).value;
+  // Validate event structure before any paid request. Final authoring still enforces the real brand policy.
+  const event = authorExperience({name: req.name, timeZone: req.timeZone, startDate: req.startDate,
+    lastDate: req.lastDate, areas: req.areas, preset: 'seasonal', message: 'Validation preview'},
+    {...b, allowedAreas: ['banner', 'hero']});
+  if (!event.ok) return event;
   const model = options.model ?? DEFAULT_MODEL;
   const messages: ModelMessage[] = [{role: 'user', content: userPrompt(req, b, packs)}];
   let last: AIProposal | undefined, lastErrors: Diagnostic[] = [];
@@ -161,7 +175,7 @@ export async function draftWithAI(request: unknown, brand: unknown, options: {cl
       output_config: {effort: 'medium', format: {type: 'json_schema', schema: proposalSchema(packs, req.pack)}},
       system: SYSTEM, messages,
     });
-    const parsed = parseProposal(response);
+    const parsed = parseProposal(response, packs, req.pack);
     if (!parsed.ok) return {ok: false, errors: parsed.errors, ...(last ? {proposal: last} : {})};
     last = parsed.proposal;
     const authored = authorExperience(toEvent(req, parsed.proposal), b, packs);
@@ -178,12 +192,12 @@ export async function draftWithAI(request: unknown, brand: unknown, options: {cl
 }
 
 /**
- * Plain-language message for a failed model call. Includes the provider's own explanation (for example
- * "credit balance is too low"), which never contains credentials, and caps its length.
+ * Plain-language message for a failed model call. Uses fixed messages only. Provider-supplied error text is untrusted and may echo request data or credentials.
  */
 export function describeProviderError(error: unknown): string {
   const e = error as {status?: number; error?: {error?: {message?: unknown}}};
-  const detail = typeof e?.error?.error?.message === 'string' ? ` ${e.error.error.message.replace(/[\u0000-\u001f\u007f]/g, ' ').slice(0, 300)}` : '';
+  const billing = typeof e?.error?.error?.message === 'string' && /credit balance is too low/i.test(e.error.error.message);
+  const detail = billing ? ' Your credit balance is too low to access the Anthropic API.' : '';
   if (e?.status === 401 || e?.status === 403) return `The model provider rejected your credentials. Set ANTHROPIC_API_KEY or run ant auth login.${detail}`;
   if (e?.status === 429) return `Rate limited by the model provider. Try again shortly.${detail}`;
   if (typeof e?.status === 'number') return `The model provider returned an error (${e.status}).${detail}`;

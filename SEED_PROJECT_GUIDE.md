@@ -693,3 +693,7 @@ Fresh-project imports covered core, authoring, packs, render, element, ai (witho
 ### Handoff
 
 Report owner Codex; report branch `fix/full-review-report`, base c1ae2a3; this PR changes only the guide. Runtime fixes are isolated in #30–#36. Evidence already run is recorded above; do not rerun merely because another agent takes over. Original checkout is preserved. Next action: founder reviews the fix and report PRs, resolves any guide append conflicts by retaining both records, and decides integration/release timing. No remaining blocker to delivering this review; unsupported environments and unperformed live/customer tests are explicitly recorded as limitations.
+
+## Release 0.2.0-alpha.2, 2026-11-10
+
+- Version bumped to 0.2.0-alpha.2 on develop with a CHANGELOG entry covering the Codex review fixes (#30–#37). Release path: this PR into develop, then a release PR develop → master, then tag `v0.2.0-alpha.2` on the master merge commit, then founder approval of the `npm` environment. Publishing is by trusted publishing with provenance.

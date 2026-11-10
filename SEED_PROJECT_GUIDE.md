@@ -580,6 +580,9 @@ Follow-up on the same branch (Claude, at the founder's request): recorded the fo
 - The failed job was re-run, and Claude approved the `npm` environment through the API at the founder's request. `sortnow-seed@0.2.0-alpha.1` was published by GitHub Actions with provenance (sigstore log index 3761402201) and dist-tag `alpha`; `bin.seed` is intact.
 - Lessons: confirm the trusted publisher is listed (`npm trust list` or the package Settings page) before tagging; the founder must perform security-key prompts personally; GitHub environment approval needs the `npm` checkbox ticked before "Approve and deploy".
 
+## Codex review fix: authoring input validation — 2026-11-09
+
+Owner Codex; branch `fix/authoring-input-validation`, base develop c1ae2a3. Pack authoring now rejects absent, non-array, empty, duplicate, and unknown areas before accessing them. Previously some inputs threw and others silently authored a different draft. Changed packages/core/authoring.ts and tests/authoring-input-review.test.mjs. Both new regressions failed before the fix; TypeScript build and the two regressions plus five pack-authoring tests pass after it. No dependency changes. Next: founder reviews this PR; no merge or publication performed.
 ## Codex review fix: mixed-version collection validation — 2026-11-09
 
 Owner Codex; branch `fix/mixed-collection-validation`, base develop c1ae2a3. Both selectors validate all entries and check duplicate IDs before filtering by supported rendering version. Previously malformed entries and duplicates across v1/v2 could be skipped and valid siblings rendered despite the documented whole-collection fail-closed rule. Three new regressions failed before the fix; TypeScript compilation and targeted collection/core/M1 tests passed afterwards. Valid v1/v2 selection priorities and exact snapshots are unchanged. Next: founder review, no merge or publication.

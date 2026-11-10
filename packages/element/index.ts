@@ -15,11 +15,12 @@ import {packs as installedPacks} from '../packs/index.js';
 
 export interface SeedConfig { experiences: readonly unknown[]; approvals: readonly string[]; brand: unknown }
 const MAX_JSON = 256 * 1024;
+const owners = new WeakMap<Document, SeedRootElement>();
 
 /** Resolves a configuration URL and accepts it only on the page's own origin over http(s). */
-export function sameOriginUrl(value: string, base: string): string | null {
+export function sameOriginUrl(value: string, base: string, pageUrl = base): string | null {
   try {
-    const url = new URL(value, base), page = new URL(base);
+    const url = new URL(value, base), page = new URL(pageUrl);
     return url.origin === page.origin && (url.protocol === 'https:' || url.protocol === 'http:') ? url.href : null;
   } catch { return null; }
 }
@@ -37,14 +38,20 @@ export function checkConfig(bundle: unknown, approvals: unknown, brand: unknown)
 const Base: typeof HTMLElement = typeof HTMLElement === 'undefined' ? (class {} as typeof HTMLElement) : HTMLElement;
 
 export class SeedRootElement extends Base {
-  static observedAttributes = ['preview-at', 'motion'];
+  static observedAttributes = ['preview-at', 'motion', 'bundle', 'approvals', 'brand'];
   #mount: SeedMount | null = null;
   #config: SeedConfig | null = null;
   #packs: readonly CompiledPack[] = installedPacks;
   #generation = 0;
 
   /** For frameworks that import configuration directly instead of loading files. */
-  set config(value: SeedConfig | null) { this.#config = value; this.#generation++; this.#apply(); }
+  set config(value: SeedConfig | null) {
+    this.#generation++;
+    if (value === null) { this.#config = null; this.#stop(); this.setAttribute('data-state', 'base'); return; }
+    const checked = checkConfig({bundleVersion: 1, experiences: value?.experiences}, value?.approvals, value?.brand);
+    if (!checked.ok) { this.#error(checked.errors); return; }
+    this.#config = checked.config; this.#apply();
+  }
   get config() { return this.#config; }
   set packs(value: readonly CompiledPack[]) { this.#packs = value; this.#mount?.destroy(); this.#mount = null; this.#apply(); }
   get packs() { return this.#packs; }
@@ -55,8 +62,16 @@ export class SeedRootElement extends Base {
     this.hidden = true;
     if (this.#config) this.#apply(); else void this.#load();
   }
-  disconnectedCallback() { this.#mount?.destroy(); this.#mount = null; }
-  attributeChangedCallback() { this.#mount?.update({now: this.#now(), motion: this.#motion()}); }
+  disconnectedCallback() { this.#generation++; this.#stop(); }
+  attributeChangedCallback(name: string) {
+    if (['bundle', 'approvals', 'brand'].includes(name)) {
+      if (this.isConnected) { this.#config = null; void this.#load(); }
+    } else this.#mount?.update({now: this.#now(), motion: this.#motion()});
+  }
+  #stop() {
+    this.#mount?.destroy(); this.#mount = null;
+    if (owners.get(this.ownerDocument) === this) owners.delete(this.ownerDocument);
+  }
 
   #now(): number | undefined {
     const value = this.getAttribute('preview-at');
@@ -67,23 +82,27 @@ export class SeedRootElement extends Base {
 
   async #load() {
     const generation = ++this.#generation;
+    this.#stop(); this.setAttribute('data-state', 'base');
     try {
       const doc = this.ownerDocument, base = doc.baseURI;
       const read = async (name: string): Promise<unknown> => {
         const inline = this.querySelector(`script[type="application/json"][data-seed="${name}"]`);
-        if (inline) return JSON.parse(inline.textContent ?? '');
+        if (inline) {
+          const text = inline.textContent ?? '';
+          if (new TextEncoder().encode(text).byteLength > MAX_JSON) return fail(`${name} exceeds ${MAX_JSON} bytes.`);
+          return JSON.parse(text);
+        }
         const src = this.getAttribute(name);
         if (src === null) return fail(`Provide a ${name} attribute or inline JSON.`);
-        const href = sameOriginUrl(src, base);
+        const href = sameOriginUrl(src, base, doc.URL);
         if (!href) return fail(`Only same-origin configuration is loaded: ${src}`);
-        const response = await fetch(href, {credentials: 'same-origin', headers: {Accept: 'application/json'}});
+        const response = await fetch(href, {credentials: 'same-origin', mode: 'same-origin', redirect: 'error', headers: {Accept: 'application/json'}});
         if (!response.ok) return fail(`Could not load ${src} (${response.status}).`);
-        const text = await response.text();
-        if (text.length > MAX_JSON) return fail(`${src} exceeds ${MAX_JSON} bytes.`);
+        const text = await boundedText(response, src);
         return JSON.parse(text);
       };
       const [bundle, approvals, brand] = await Promise.all([read('bundle'), read('approvals'), read('brand')]);
-      if (generation !== this.#generation) return;
+      if (generation !== this.#generation || !this.isConnected) return;
       const checked = checkConfig(bundle, approvals, brand);
       if (!checked.ok) return this.#error(checked.errors);
       this.#config = checked.config;
@@ -99,6 +118,9 @@ export class SeedRootElement extends Base {
     // Defer one microtask so slots parsed or upgraded in the same pass are present.
     queueMicrotask(() => {
       if (this.#mount || !this.isConnected || this.#config === null) return;
+      const owner = owners.get(this.ownerDocument);
+      if (owner && owner !== this) return this.#error([{path: '$', code: 'DUPLICATE_ROOT', message: 'Only one seed-root may control a document.'}]);
+      owners.set(this.ownerDocument, this);
       const c = this.#config;
       this.#mount = mountSeed({root: this.ownerDocument, experiences: c.experiences, approvals: c.approvals, brand: c.brand, packs: this.#packs, now: this.#now(), motion: this.#motion(),
         onChange: ({experience, errors}) => {
@@ -108,10 +130,25 @@ export class SeedRootElement extends Base {
     });
   }
   #error(errors: Diagnostic[]) {
-    this.#mount?.destroy(); this.#mount = null;
+    this.#config = null; this.#stop();
     this.setAttribute('data-state', 'error');
     this.dispatchEvent(new CustomEvent('seed-error', {bubbles: true, detail: {errors}}));
   }
+}
+async function boundedText(response: Response, source: string): Promise<string> {
+  const reader = response.body?.getReader();
+  if (!reader) return '';
+  const decoder = new TextDecoder(); let bytes = 0, text = '';
+  try {
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > MAX_JSON) { await reader.cancel(); return fail(`${source} exceeds ${MAX_JSON} bytes.`); }
+      text += decoder.decode(value, {stream: true});
+    }
+    return text + decoder.decode();
+  } finally { reader.releaseLock(); }
 }
 function fail(message: string): never { throw new Error(message); }
 
